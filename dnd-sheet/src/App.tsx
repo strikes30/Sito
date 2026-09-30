@@ -11,6 +11,7 @@ import {
   modificatore,
   calcolaPuntiFerita,
   calcolaBonusCompetenza,
+  calcolaClasseArmatura,
 } from "./utils/calcoliPersonaggio";
 
 import classi from "./data/classi.json";
@@ -105,6 +106,19 @@ function App() {
   setPersonaggioCreato(true);
 }
 
+
+// Stato per le abilità competenti del personaggio
+const [abilitaCompetenti, setAbilitaCompetenti] = useState<string[]>([]);
+
+// Funzione per cambiare lo stato di competenza di un'abilità
+function cambiaCompetenzaAbilita(id: string) {
+  setAbilitaCompetenti((precedenti) =>
+    precedenti.includes(id)
+      ? precedenti.filter((abilitaId) => abilitaId !== id)
+      : [...precedenti, id],
+  );
+}
+
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
   if (!personaggioCreato) {
   return (
@@ -147,6 +161,11 @@ function App() {
       )
       : null;
 
+  const classeArmatura =
+  caratteristiche.Destrezza !== null
+    ? calcolaClasseArmatura(caratteristiche.Destrezza)
+    : null;
+
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
@@ -167,6 +186,9 @@ function App() {
     secondaLinguaId={secondaLinguaId}
     caratteristiche={caratteristiche}
     modificatore={modificatore}
+    classeArmatura={classeArmatura}
+    abilitaCompetenti={abilitaCompetenti}
+onCambiaCompetenzaAbilita={cambiaCompetenzaAbilita}
   />
 );
 }

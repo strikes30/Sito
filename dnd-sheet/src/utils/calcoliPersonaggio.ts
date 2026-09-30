@@ -27,3 +27,10 @@ export function calcolaPuntiFerita(
 
     return pfPrimoLivello + (livello - 1) * pfLivelliSuccessivi;
 }
+
+// Funzione per calcolare classe armatura (CA) in base a destrezza e bonus di competenza
+export function calcolaClasseArmatura(
+  destrezza: number,
+): number {
+  return 10 + modificatore(destrezza);
+}

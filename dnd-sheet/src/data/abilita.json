@@ -1,0 +1,92 @@
+[
+    {
+        "id": "atletica",
+        "nome": "Atletica",
+        "caratteristica": "Forza"
+    },
+    {
+        "id": "acrobazia",
+        "nome": "Acrobazia",
+        "caratteristica": "Destrezza"
+    },
+    {
+        "id": "furtività",
+        "nome": "Furtività",
+        "caratteristica": "Destrezza"
+    },
+    {
+        "id": "rapidita",
+        "nome": "Rapidità di mano",
+        "caratteristica": "Destrezza"
+    },
+    {
+        "id": "arcano",
+        "nome": "Arcano",
+        "caratteristica": "Intelligenza"
+    },
+    {
+        "id": "indagare",
+        "nome": "Indagare",
+        "caratteristica": "Intelligenza"
+    },
+    {
+        "id": "natura",
+        "nome": "Natura",
+        "caratteristica": "Intelligenza"
+    },
+    {
+        "id": "religione",
+        "nome": "Religione",
+        "caratteristica": "Intelligenza"
+    },
+    {
+        "id": "storia",
+        "nome": "Storia",
+        "caratteristica": "Intelligenza"
+    },
+    {
+        "id": "addestrare animali",
+        "nome": "Addestrare animali",
+        "caratteristica": "Saggezza"
+    },
+    {
+        "id": "intuizione",
+        "nome": "Intuizione",
+        "caratteristica": "Saggezza"
+    },
+    {
+        "id": "medicina",
+        "nome": "Medicina",
+        "caratteristica": "Saggezza"
+    },
+    {
+        "id": "percezione",
+        "nome": "Percezione",
+        "caratteristica": "Saggezza"
+    },
+    {
+        "id": "sopravvivenza",
+        "nome": "Sopravvivenza",
+        "caratteristica": "Saggezza"
+    },
+    {
+        "id": "inganno",
+        "nome": "Inganno",
+        "caratteristica": "Carisma"
+    },
+    {
+        "id": "intimidire",
+        "nome": "Intimidire",
+        "caratteristica": "Carisma"
+    },
+    {
+        "id": "intrattenere",
+        "nome": "Intrattenere",
+        "caratteristica": "Carisma"
+    },
+    {
+        "id": "persuasione",
+        "nome": "Persuasione",
+        "caratteristica": "Carisma"
+    }
+]
