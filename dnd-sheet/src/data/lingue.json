@@ -1,0 +1,97 @@
+[
+    {
+        "id": "comune",
+        "nome": "Comune",
+        "categoria": "standard"
+    },
+    {
+        "id": "draconico",
+        "nome": "Draconico",
+        "categoria": "standard"
+    },
+    {
+        "id": "comune-gestuale",
+        "nome": "Lingua dei Segni Comune",
+        "categoria": "standard"
+    },
+    {
+        "id": "elfico",
+        "nome": "Elfico",
+        "categoria": "standard"
+    },
+    {
+        "id": "nanico",
+        "nome": "Nanico",
+        "categoria": "standard"
+    },
+    {
+        "id": "orchesco",
+        "nome": "Orchesco",
+        "categoria": "standard"
+    },
+    {
+        "id": "gigante",
+        "nome": "Gigante",
+        "categoria": "standard"
+    },
+    {
+        "id": "gnomesco",
+        "nome": "Gnomesco",
+        "categoria": "standard"
+    },
+    {
+        "id": "goblin",
+        "nome": "Goblin",
+        "categoria": "standard"
+    },
+    {
+        "id": "halfling",
+        "nome": "Halfling",
+        "categoria": "standard"
+    },
+    {
+        "id": "abissale",
+        "nome": "Abissale",
+        "categoria": "rara"
+    },
+    {
+        "id": "celestiale",
+        "nome": "Celestiale",
+        "categoria": "rara"
+    },
+    {
+        "id": "druidico",
+        "nome": "Druidico",
+        "categoria": "rara"
+    },
+    {
+        "id": "gerco.profondità",
+        "nome": "Gergo delle Profondità",
+        "categoria": "rara"
+    },
+    {
+        "id": "gergo-ladresco",
+        "nome": "Gergo Ladresco",
+        "categoria": "rara"
+    },
+    {
+        "id": "infernale",
+        "nome": "Infernale",
+        "categoria": "rara"
+    },
+    {
+        "id": "primordiale",
+        "nome": "Primordiale",
+        "categoria": "rara"
+    },
+    {
+        "id": "silvano",
+        "nome": "Silvano",
+        "categoria": "rara"
+    },
+    {
+        "id": "sottocomune",
+        "nome": "Sottocomune",
+        "categoria": "rara"
+    }
+]

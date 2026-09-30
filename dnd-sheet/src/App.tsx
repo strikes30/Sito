@@ -1,6 +1,7 @@
 import { useState } from "react";
 import classi from "./data/classi.json";
 import razze from "./data/razze.json";
+import lingue from "./data/lingue.json";
 
 const nomiCaratteristiche = [
   "Forza",
@@ -22,10 +23,13 @@ function App() {
   const [classe, setClasse] = useState("");  // Classe del personaggio
   const [razzaId, setRazzaId] = useState("");  // Razza del personaggio
   const [sottorazzaId, setSottorazzaId] = useState("");  // Sottorazza del personaggio
-  const [taglia, setTaglia] = useState("");
+  const [taglia, setTaglia] = useState(""); // Taglia del personaggio
   const [personaggioCreato, setPersonaggioCreato] = useState(false);   // Stato per verificare se il personaggio è stato creato
   const [livello, setLivello] = useState(1);  // Livello del personaggio
+  const [primaLinguaId, setPrimaLinguaId] = useState("");  // Prima lingua del personaggio
+  const [secondaLinguaId, setSecondaLinguaId] = useState("");  // Seconda lingua del personaggio
 
+  // Stato per le caratteristiche del personaggio, inizializzate a null
   const [caratteristiche, setCaratteristiche] = useState<
     Record<Caratteristica, number | null>
   >({
@@ -37,6 +41,7 @@ function App() {
     Carisma: null,
   });
 
+  // Funzione per cambiare il valore di una caratteristica
   function cambiaCaratteristica(
     caratteristica: Caratteristica,
     nuovoValore: number | null,
@@ -56,6 +61,8 @@ function App() {
     (sottorazza) => sottorazza.id === sottorazzaId,
   );
 
+
+  // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
     evento.preventDefault();
 
@@ -82,12 +89,29 @@ function App() {
       return;
     }
 
+    // Controlla se le lingue selezionate sono valide e diverse tra loro
+    if (
+      primaLinguaId === secondaLinguaId ||
+      !lingueIniziali.some((lingua) => lingua.id === primaLinguaId) ||
+      !lingueIniziali.some((lingua) => lingua.id === secondaLinguaId)
+    ) {
+      return;
+    }
+
     setPersonaggioCreato(true);
   }
 
+  // Funzione per calcolare il modificatore di una caratteristica
   function modificatore(punteggio: number) {
     return Math.floor((punteggio - 10) / 2);
   }
+
+  // Filtra le lingue iniziali, escludendo la lingua "comune" e ordinandole alfabeticamente
+  const lingueIniziali = lingue
+    .filter((lingua) =>
+      lingua.categoria === "standard" && lingua.id !== "comune"
+    )
+    .toSorted((a, b) => a.nome.localeCompare(b.nome, "it"));
 
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
   if (!personaggioCreato) {
@@ -208,6 +232,54 @@ function App() {
             </div>
           )}
 
+          {/* Gruppo per le lingue del personaggio */}
+          <h2>Lingue</h2>
+          <p>Conosci già: Comune. Scegli altre due lingue standard.</p>
+
+          <div>
+            <label htmlFor="prima-lingua">Prima lingua: </label>
+            <select
+              id="prima-lingua"
+              value={primaLinguaId}
+              onChange={(evento) => setPrimaLinguaId(evento.target.value)}
+              required
+            >
+              <option value="">Seleziona una lingua</option>
+
+              {lingueIniziali.map((lingua) => (
+                <option
+                  key={lingua.id}
+                  value={lingua.id}
+                  disabled={lingua.id === secondaLinguaId}
+                >
+                  {lingua.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="seconda-lingua">Seconda lingua: </label>
+            <select
+              id="seconda-lingua"
+              value={secondaLinguaId}
+              onChange={(evento) => setSecondaLinguaId(evento.target.value)}
+              required
+            >
+              <option value="">Seleziona una lingua</option>
+
+              {lingueIniziali.map((lingua) => (
+                <option
+                  key={lingua.id}
+                  value={lingua.id}
+                  disabled={lingua.id === primaLinguaId}
+                >
+                  {lingua.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Gruppo per le caratteristiche del personaggio */}
           <h2>Caratteristiche</h2>
 
@@ -273,6 +345,7 @@ function App() {
       <h2>{nome}</h2>
       <p>Classe: {classeSelezionata?.nome}</p>
 
+    {/* Gruppo per livello del personaggio */}
       <p>Livello: {livello}</p>
       <button
         onClick={() => setLivello(livello + 1)}
@@ -281,6 +354,7 @@ function App() {
         Sali di livello
       </button>
 
+    {/* Gruppo per la razza e sottorazza del personaggio */}
       <p>Razza: {razzaSelezionata?.nome}</p>
 
       {sottorazzaSelezionata && (
@@ -291,6 +365,15 @@ function App() {
       <p>Taglia: {taglia}</p>
       <p>Velocità: {razzaSelezionata?.velocita} piedi</p>
 
+      {/* Gruppo per le lingue del personaggio */}
+      <h2>Lingue conosciute</h2>
+      <ul>
+        <li>Comune</li>
+        <li>{lingue.find((lingua) => lingua.id === primaLinguaId)?.nome}</li>
+        <li>{lingue.find((lingua) => lingua.id === secondaLinguaId)?.nome}</li>
+      </ul>
+
+      {/* Gruppo per le caratteristiche del personaggio */}
       <h2>Caratteristiche</h2>
       <ul>
         {nomiCaratteristiche.map((caratteristica) => {
