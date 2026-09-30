@@ -2,91 +2,109 @@
     {
         "id": "atletica",
         "nome": "Atletica",
-        "caratteristica": "Forza"
+        "caratteristica": "Forza",
+        "descrizione":"Salta più lontano del normale, resta a galla in acque agitate o rompi qualcosa"
     },
     {
         "id": "acrobazia",
         "nome": "Acrobazia",
-        "caratteristica": "Destrezza"
+        "caratteristica": "Destrezza",
+        "descrizione":"Rimani in piedi in una situazione difficile o esegui un'acrobazia"
     },
     {
         "id": "furtività",
         "nome": "Furtività",
-        "caratteristica": "Destrezza"
+        "caratteristica": "Destrezza",
+        "descrizione":"Sfuggi all'attenzione altrui muovendoti silenziosamente e nascondendoti dietro le cose"
     },
     {
-        "id": "rapidita",
+        "id": "rapidità",
         "nome": "Rapidità di mano",
-        "caratteristica": "Destrezza"
+        "caratteristica": "Destrezza",
+        "descrizione":"Svuota le tasche, nascondi un oggetto tenuto in mano o esegui un gioco di prestigio"
     },
     {
         "id": "arcano",
         "nome": "Arcano",
-        "caratteristica": "Intelligenza"
+        "caratteristica": "Intelligenza",
+        "descrizione":"Richiama la conoscenza su incantesimi, oggetti magici e piani di esistenza"
     },
     {
         "id": "indagare",
         "nome": "Indagare",
-        "caratteristica": "Intelligenza"
+        "caratteristica": "Intelligenza",
+        "descrizione":"Trova informazioni sepolte nei libri o deduci il funzionamento degli oggetti più disparati"
     },
     {
         "id": "natura",
         "nome": "Natura",
-        "caratteristica": "Intelligenza"
+        "caratteristica": "Intelligenza",
+        "descrizione":"Richiama la conoscenza su terreno, piante, animali e tempo"
     },
     {
         "id": "religione",
         "nome": "Religione",
-        "caratteristica": "Intelligenza"
+        "caratteristica": "Intelligenza",
+        "descrizione":"Richiama la conoscenza su divinità, rituali religiosi e simboli sacri"
     },
     {
         "id": "storia",
         "nome": "Storia",
-        "caratteristica": "Intelligenza"
+        "caratteristica": "Intelligenza",
+        "descrizione":"Ricorda dati e leggende su eventi storici, persone, nazioni e culture"
     },
     {
         "id": "addestrare animali",
         "nome": "Addestrare animali",
-        "caratteristica": "Saggezza"
+        "caratteristica": "Saggezza",
+        "descrizione":"Calma o addestra un animale, o fallo comportare in una certa maniera"
     },
     {
         "id": "intuizione",
         "nome": "Intuizione",
-        "caratteristica": "Saggezza"
+        "caratteristica": "Saggezza",
+        "descrizione":"Discerni l'umore e le intenzioni di una persona"
     },
     {
         "id": "medicina",
         "nome": "Medicina",
-        "caratteristica": "Saggezza"
+        "caratteristica": "Saggezza",
+        "descrizione":"Diagnostica una malattia o determina cosa abbia recentemente ucciso qualcuno"
     },
     {
         "id": "percezione",
         "nome": "Percezione",
-        "caratteristica": "Saggezza"
+        "caratteristica": "Saggezza",
+        "descrizione":"Usando una combinazione di sensi, nota qualcosa che è facile trascurare"
     },
     {
         "id": "sopravvivenza",
         "nome": "Sopravvivenza",
-        "caratteristica": "Saggezza"
+        "caratteristica": "Saggezza",
+        "descrizione":"Segui le tracce, va' alla ricerca di cibo, trova una pista o evita i pericoli naturali"
     },
     {
         "id": "inganno",
         "nome": "Inganno",
-        "caratteristica": "Carisma"
+        "caratteristica": "Carisma",
+        "descrizione":"Racconta una bugia convincente o indossa un travestimento credibile"
     },
     {
         "id": "intimidire",
         "nome": "Intimidire",
-        "caratteristica": "Carisma"
+        "caratteristica": "Carisma",
+        "descrizione":"Impressiona o minaccia qualcuno facendogli fare quello che vuoi"
     },
     {
         "id": "intrattenere",
         "nome": "Intrattenere",
-        "caratteristica": "Carisma"
+        "caratteristica": "Carisma",
+        "descrizione":"Recita, narra una storia, suona o danza"
     },
     {
         "id": "persuasione",
         "nome": "Persuasione",
-        "caratteristica": "Carisma"
+        "caratteristica": "Carisma",
+        "descrizione":"Usando una combinazione di sensi, nota qualcosa che è facile trascurare"
     }
 ]

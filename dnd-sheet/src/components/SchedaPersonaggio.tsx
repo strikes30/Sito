@@ -118,7 +118,7 @@ function SchedaPersonaggio({
 
                                         return (
                                             <li key={abilitaSingola.id}>
-                                                <label>
+                                                <label title={abilitaSingola.descrizione}>
                                                     <input
                                                         type="checkbox"
                                                         checked={competente}
