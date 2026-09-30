@@ -41,6 +41,13 @@ function App() {
     Carisma: null,
   });
 
+  // Filtra le lingue iniziali, escludendo la lingua "comune" e ordinandole alfabeticamente
+  const lingueIniziali = lingue
+    .filter((lingua) =>
+      lingua.categoria === "standard" && lingua.id !== "comune"
+    )
+    .toSorted((a, b) => a.nome.localeCompare(b.nome, "it"));
+
   // Funzione per cambiare il valore di una caratteristica
   function cambiaCaratteristica(
     caratteristica: Caratteristica,
@@ -60,7 +67,6 @@ function App() {
   const sottorazzaSelezionata = razzaSelezionata?.sottorazze.find(
     (sottorazza) => sottorazza.id === sottorazzaId,
   );
-
 
   // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
@@ -105,13 +111,25 @@ function App() {
   function modificatore(punteggio: number) {
     return Math.floor((punteggio - 10) / 2);
   }
+  // Funzione per il calcolo della vita
+  function calcolaPuntiFerita(
+    dadoVita: number,
+    livello: number,
+    modificatoreCostituzione: number,
+  ): number {
+    const pfPrimoLivello = Math.max(
+      1,
+      dadoVita + modificatoreCostituzione,
+    );
 
-  // Filtra le lingue iniziali, escludendo la lingua "comune" e ordinandole alfabeticamente
-  const lingueIniziali = lingue
-    .filter((lingua) =>
-      lingua.categoria === "standard" && lingua.id !== "comune"
-    )
-    .toSorted((a, b) => a.nome.localeCompare(b.nome, "it"));
+    const valoreFisso = Math.floor(dadoVita / 2) + 1;
+    const pfLivelliSuccessivi = Math.max(
+      1,
+      valoreFisso + modificatoreCostituzione,
+    );
+
+    return pfPrimoLivello + (livello - 1) * pfLivelliSuccessivi;
+  }
 
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
   if (!personaggioCreato) {
@@ -323,7 +341,11 @@ function App() {
                   );
                 })}
               </select>
+
+
             </div>
+
+
           ))}
 
           <button type="submit">Crea personaggio</button>
@@ -337,15 +359,25 @@ function App() {
     (voce) => voce.id === classe
   );
 
+  // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
+  const costituzione = caratteristiche.Costituzione;
+
+  const puntiFeritaMassimi =
+    classeSelezionata && costituzione !== null
+      ? calcolaPuntiFerita(
+        classeSelezionata.dadoVita,
+        livello,
+        modificatore(costituzione),
+      )
+      : null;
+
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
     <main>
       <h1>Scheda del personaggio</h1>
-      <h2>{nome}</h2>
-      <p>Classe: {classeSelezionata?.nome}</p>
 
-    {/* Gruppo per livello del personaggio */}
+      {/* Gruppo per livello del personaggio */}
       <p>Livello: {livello}</p>
       <button
         onClick={() => setLivello(livello + 1)}
@@ -354,7 +386,14 @@ function App() {
         Sali di livello
       </button>
 
-    {/* Gruppo per la razza e sottorazza del personaggio */}
+      <h2>{nome}</h2>
+      <p>Classe: {classeSelezionata?.nome}</p>
+      <p>Dado vita: d{classeSelezionata?.dadoVita}</p>
+      <p>Punti ferita massimi: {puntiFeritaMassimi ?? "—"}</p>
+
+
+
+      {/* Gruppo per la razza e sottorazza del personaggio */}
       <p>Razza: {razzaSelezionata?.nome}</p>
 
       {sottorazzaSelezionata && (
