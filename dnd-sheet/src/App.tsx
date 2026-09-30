@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CreaPersonaggio from "./components/CreaPersonaggio";
+import SchedaPersonaggio from "./components/SchedaPersonaggio";
 
 import classi from "./data/classi.json";
 import razze from "./data/razze.json";
@@ -13,8 +14,6 @@ const nomiCaratteristiche = [
   "Saggezza",
   "Carisma",
 ] as const;
-
-const valoriStandard = [15, 14, 13, 12, 10, 8]; // Valori standard per le caratteristiche
 
 type Caratteristica = (typeof nomiCaratteristiche)[number];
 
@@ -184,65 +183,25 @@ function App() {
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
-    <main>
-      <h1>Scheda del personaggio</h1>
-
-      {/* Gruppo per livello del personaggio */}
-      <p>Livello: {livello}</p>
-      <button
-        onClick={() => setLivello(livello + 1)}
-        disabled={livello >= 20}
-      >
-        Sali di livello
-      </button>
-      <p>Livello: {livello}</p>
-      <p>Bonus di competenza: +{calcolaBonusCompetenza(livello)}</p>
-
-      <h2>{nome}</h2>
-      <p>Classe: {classeSelezionata?.nome}</p>
-      <p>Dado vita: d{classeSelezionata?.dadoVita}</p>
-      <p>Punti ferita massimi: {puntiFeritaMassimi ?? "—"}</p>
-
-
-
-      {/* Gruppo per la razza e sottorazza del personaggio */}
-      <p>Razza: {razzaSelezionata?.nome}</p>
-
-      {sottorazzaSelezionata && (
-        <p>Sottorazza: {sottorazzaSelezionata.nome}</p>
-      )}
-
-      <p>Tipo di creatura: {razzaSelezionata?.tipoCreatura}</p>
-      <p>Taglia: {taglia}</p>
-      <p>Velocità: {razzaSelezionata?.velocita} piedi</p>
-
-      {/* Gruppo per le lingue del personaggio */}
-      <h2>Lingue conosciute</h2>
-      <ul>
-        <li>Comune</li>
-        <li>{lingue.find((lingua) => lingua.id === primaLinguaId)?.nome}</li>
-        <li>{lingue.find((lingua) => lingua.id === secondaLinguaId)?.nome}</li>
-      </ul>
-
-      {/* Gruppo per le caratteristiche del personaggio */}
-      <h2>Caratteristiche</h2>
-      <ul>
-        {nomiCaratteristiche.map((caratteristica) => {
-          const punteggio = caratteristiche[caratteristica];
-          if (punteggio === null) return null;
-          const bonus = modificatore(punteggio);
-
-          return (
-            <li key={caratteristica}>
-              {caratteristica}: {punteggio} (
-              {bonus >= 0 ? "+" : ""}
-              {bonus})
-            </li>
-          );
-        })}
-      </ul>
-    </main>
-  );
+  <SchedaPersonaggio
+    nome={nome}
+    livello={livello}
+    onSaliDiLivello={() => setLivello((precedente) => precedente + 1)}
+    bonusCompetenza={calcolaBonusCompetenza(livello)}
+    nomeClasse={classeSelezionata?.nome}
+    dadoVita={classeSelezionata?.dadoVita}
+    puntiFeritaMassimi={puntiFeritaMassimi}
+    nomeRazza={razzaSelezionata?.nome}
+    nomeSottorazza={sottorazzaSelezionata?.nome}
+    tipoCreatura={razzaSelezionata?.tipoCreatura}
+    taglia={taglia}
+    velocita={razzaSelezionata?.velocita}
+    primaLinguaId={primaLinguaId}
+    secondaLinguaId={secondaLinguaId}
+    caratteristiche={caratteristiche}
+    modificatore={modificatore}
+  />
+);
 }
 
 export default App;
