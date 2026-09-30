@@ -3,6 +3,11 @@ import CreaPersonaggio from "./components/CreaPersonaggio";
 import SchedaPersonaggio from "./components/SchedaPersonaggio";
 
 import {
+  nomiCaratteristiche,
+  type Caratteristica,
+} from "./types/personaggio";
+
+import {
   modificatore,
   calcolaPuntiFerita,
   calcolaBonusCompetenza,
@@ -11,17 +16,6 @@ import {
 import classi from "./data/classi.json";
 import razze from "./data/razze.json";
 import lingue from "./data/lingue.json";
-
-const nomiCaratteristiche = [
-  "Forza",
-  "Destrezza",
-  "Costituzione",
-  "Intelligenza",
-  "Saggezza",
-  "Carisma",
-] as const;
-
-type Caratteristica = (typeof nomiCaratteristiche)[number];
 
 //////////////////CODICE SITO VISIBILE////////////////////
 
@@ -77,42 +71,39 @@ function App() {
 
   // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
-    evento.preventDefault();
+  evento.preventDefault();
 
-    // Controlla se il nome del personaggio è vuoto o contiene solo spazi
-    if (nome.trim() === "") return;
-    setNome(nome.trim());
+  const nomePulito = nome.trim();
+  if (nomePulito === "") return;
 
-    // Controlla se tutte le caratteristiche sono state selezionate
-    if (
-      nomiCaratteristiche.some(
-        (caratteristica) => caratteristiche[caratteristica] === null,
-      )
-    ) {
-      return;
-    }
-
-    // Controlla se la razza selezionata è valida e se la taglia è inclusa nelle taglie della razza
-    if (!razzaSelezionata) return;
-    if (!razzaSelezionata.taglie.includes(taglia)) return;
-    if (
-      razzaSelezionata.sottorazze.length > 0 &&
-      !sottorazzaSelezionata
-    ) {
-      return;
-    }
-
-    // Controlla se le lingue selezionate sono valide e diverse tra loro
-    if (
-      primaLinguaId === secondaLinguaId ||
-      !lingueIniziali.some((lingua) => lingua.id === primaLinguaId) ||
-      !lingueIniziali.some((lingua) => lingua.id === secondaLinguaId)
-    ) {
-      return;
-    }
-
-    setPersonaggioCreato(true);
+  if (
+    nomiCaratteristiche.some(
+      (caratteristica) => caratteristiche[caratteristica] === null,
+    )
+  ) {
+    return;
   }
+
+  if (!razzaSelezionata) return;
+  if (!razzaSelezionata.taglie.includes(taglia)) return;
+  if (
+    razzaSelezionata.sottorazze.length > 0 &&
+    !sottorazzaSelezionata
+  ) {
+    return;
+  }
+
+  if (
+    primaLinguaId === secondaLinguaId ||
+    !lingueIniziali.some((lingua) => lingua.id === primaLinguaId) ||
+    !lingueIniziali.some((lingua) => lingua.id === secondaLinguaId)
+  ) {
+    return;
+  }
+
+  setNome(nomePulito);
+  setPersonaggioCreato(true);
+}
 
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
   if (!personaggioCreato) {

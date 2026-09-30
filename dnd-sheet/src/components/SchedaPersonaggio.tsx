@@ -1,15 +1,9 @@
 import lingue from "../data/lingue.json";
 
-const nomiCaratteristiche = [
-  "Forza",
-  "Destrezza",
-  "Costituzione",
-  "Intelligenza",
-  "Saggezza",
-  "Carisma",
-] as const;
-
-type Caratteristica = (typeof nomiCaratteristiche)[number];
+import {
+  nomiCaratteristiche,
+  type Caratteristica,
+} from "../types/personaggio";
 
 type Props = {
   nome: string;
