@@ -111,6 +111,12 @@ function App() {
   function modificatore(punteggio: number) {
     return Math.floor((punteggio - 10) / 2);
   }
+
+  // Funzione per calcolare il bonus di competenza in base al livello del personaggio
+  function calcolaBonusCompetenza(livello: number): number {
+    return 2 + Math.floor((livello - 1) / 4);
+  }
+
   // Funzione per il calcolo della vita
   function calcolaPuntiFerita(
     dadoVita: number,
@@ -385,6 +391,8 @@ function App() {
       >
         Sali di livello
       </button>
+      <p>Livello: {livello}</p>
+      <p>Bonus di competenza: +{calcolaBonusCompetenza(livello)}</p>
 
       <h2>{nome}</h2>
       <p>Classe: {classeSelezionata?.nome}</p>
