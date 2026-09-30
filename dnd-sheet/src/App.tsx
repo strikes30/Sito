@@ -2,6 +2,12 @@ import { useState } from "react";
 import CreaPersonaggio from "./components/CreaPersonaggio";
 import SchedaPersonaggio from "./components/SchedaPersonaggio";
 
+import {
+  modificatore,
+  calcolaPuntiFerita,
+  calcolaBonusCompetenza,
+} from "./utils/calcoliPersonaggio";
+
 import classi from "./data/classi.json";
 import razze from "./data/razze.json";
 import lingue from "./data/lingue.json";
@@ -106,36 +112,6 @@ function App() {
     }
 
     setPersonaggioCreato(true);
-  }
-
-  // Funzione per calcolare il modificatore di una caratteristica
-  function modificatore(punteggio: number) {
-    return Math.floor((punteggio - 10) / 2);
-  }
-
-  // Funzione per calcolare il bonus di competenza in base al livello del personaggio
-  function calcolaBonusCompetenza(livello: number): number {
-    return 2 + Math.floor((livello - 1) / 4);
-  }
-
-  // Funzione per il calcolo della vita
-  function calcolaPuntiFerita(
-    dadoVita: number,
-    livello: number,
-    modificatoreCostituzione: number,
-  ): number {
-    const pfPrimoLivello = Math.max(
-      1,
-      dadoVita + modificatoreCostituzione,
-    );
-
-    const valoreFisso = Math.floor(dadoVita / 2) + 1;
-    const pfLivelliSuccessivi = Math.max(
-      1,
-      valoreFisso + modificatoreCostituzione,
-    );
-
-    return pfPrimoLivello + (livello - 1) * pfLivelliSuccessivi;
   }
 
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
