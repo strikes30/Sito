@@ -1,0 +1,181 @@
+[
+    {
+        "id": "aasimar",
+        "nome": "Aasimar",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media",
+            "Piccola"
+        ],
+        "velocita": 30,
+        "sottorazze": []
+    },
+    {
+        "id": "dragonide",
+        "nome": "Dragonide",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media"
+        ],
+        "velocita": 30,
+        "sottorazze": [
+            {
+                "id": "drago-nero",
+                "nome": "Drago Nero",
+                "tipoDanno": "Acido"
+            },
+            {
+                "id": "drago-blu",
+                "nome": "Drago Blu",
+                "tipoDanno": "Fulmine"
+            },
+            {
+                "id": "drago-ottone",
+                "nome": "Drago d'Ottone",
+                "tipoDanno": "Fuoco"
+            },
+            {
+                "id": "drago-bronzo",
+                "nome": "Drago di Bronzo",
+                "tipoDanno": "Fulmine"
+            },
+            {
+                "id": "drago-rame",
+                "nome": "Drago di Rame",
+                "tipoDanno": "Acido"
+            },
+            {
+                "id": "drago-oro",
+                "nome": "Drago d'Oro",
+                "tipoDanno": "Fuoco"
+            },
+            {
+                "id": "drago-verde",
+                "nome": "Drago Verde",
+                "tipoDanno": "Veleno"
+            },
+            {
+                "id": "drago-rosso",
+                "nome": "Drago Rosso",
+                "tipoDanno": "Fuoco"
+            },
+            {
+                "id": "drago-argento",
+                "nome": "Drago d'Argento",
+                "tipoDanno": "Freddo"
+            },
+            {
+                "id": "drago-bianco",
+                "nome": "Drago Bianco",
+                "tipoDanno": "Freddo"
+            }
+        ]
+    },
+    {
+        "id": "elfo",
+        "nome": "Elfo",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media"
+        ],
+        "velocita": 30,
+        "sottorazze": [
+            {
+                "id": "drow",
+                "nome": "Drow"
+            },
+            {
+                "id": "elfo-alto",
+                "nome": "Elfo Alto"
+            },
+            {
+                "id": "elfo-dei-boschi",
+                "nome": "Elfo dei Boschi",
+                "velocita": 35
+            }
+        ]
+    },
+    {
+        "id": "gnomo",
+        "nome": "Gnomo",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Piccola"
+        ],
+        "velocita": 30,
+        "sottorazze": []
+    },
+    {
+        "id": "goliath",
+        "nome": "Goliath",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media"
+        ],
+        "velocita": 35,
+        "sottorazze": []
+    },
+    {
+        "id": "halfling",
+        "nome": "Halfling",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Piccola"
+        ],
+        "velocita": 30,
+        "sottorazze": []
+    },
+    {
+        "id": "nano",
+        "nome": "Nano",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media"
+        ],
+        "velocita": 30,
+        "sottorazze": []
+    },
+        {
+        "id": "orco",
+        "nome": "Orco",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media"
+        ],
+        "velocita": 30,
+        "sottorazze": []
+    },
+        {
+        "id": "tiefling",
+        "nome": "Tiefling",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media",
+            "Piccola"
+        ],
+        "velocita": 30,
+        "sottorazze":[{
+                "id": "tiefling_abissale",
+                "nome": "Abissale"
+            },
+            {
+                "id": "tiefling_ctonio",
+                "nome": "Ctonio"
+            },
+            {
+                "id": "tiefling_infernale",
+                "nome": "Infernale"
+            }]
+    },
+    {
+        "id": "umano",
+        "nome": "Umano",
+        "tipoCreatura": "Umanoide",
+        "taglie": [
+            "Media",
+            "Piccola"
+        ],
+        "velocita": 30,
+        "sottorazze": []
+    }
+]

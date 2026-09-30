@@ -1,0 +1,14 @@
+[
+  { "id": "barbaro", "nome": "Barbaro" },
+  { "id": "bardo", "nome": "Bardo" },
+  { "id": "chierico", "nome": "Chierico" },
+  { "id": "druido", "nome": "Druido" },
+  { "id": "guerriero", "nome": "Guerriero" },
+  { "id": "ladro", "nome": "Ladro" },
+  { "id": "mago", "nome": "Mago" },
+  { "id": "monaco", "nome": "Monaco" },
+  { "id": "paladino", "nome": "Paladino" },
+  { "id": "ranger", "nome": "Ranger" },
+  { "id": "stregone", "nome": "Stregone" },
+  { "id": "warlock", "nome": "Warlock" }
+]
