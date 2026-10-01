@@ -41,6 +41,14 @@ type Props = {
     abilitaBackground: string[];
 
     slotMassimi: number[];
+
+    sottoclasseId: string;
+    onCambiaSottoclasse: (id: string) => void;
+    sottoclassiDisponibili: {
+        id: string;
+        nome: string;
+        classeId: string;
+    }[];
 };
 
 function SchedaPersonaggio({
@@ -49,6 +57,9 @@ function SchedaPersonaggio({
     onSaliDiLivello,
     bonusCompetenza,
     nomeClasse,
+    sottoclasseId,
+    onCambiaSottoclasse,
+    sottoclassiDisponibili,
     dadoVita,
     puntiFeritaMassimi,
     nomeRazza,
@@ -108,6 +119,28 @@ function SchedaPersonaggio({
 
             <h2>{nome}</h2>
             <p>Classe: {nomeClasse}</p>
+
+            {/* Sottoclasse */ }
+            {livello >= 3 && sottoclassiDisponibili.length > 0 && (
+                <div>
+                    <label htmlFor="sottoclasse">Sottoclasse</label>
+
+                    <select
+                        id="sottoclasse"
+                        value={sottoclasseId}
+                        onChange={(evento) => onCambiaSottoclasse(evento.target.value)}
+                    >
+                        <option value="">Seleziona una sottoclasse</option>
+
+                        {sottoclassiDisponibili.map((sottoclasse) => (
+                            <option key={sottoclasse.id} value={sottoclasse.id}>
+                                {sottoclasse.nome}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+            
             <p>Dado vita: {dadoVita === undefined ? "—" : `d${dadoVita}`}</p>
             <p>Punti ferita massimi: {puntiFeritaMassimi ?? "—"}</p>
             <p>Classe armatura: {classeArmatura ?? "—"}</p>

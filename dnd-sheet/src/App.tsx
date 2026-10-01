@@ -3,6 +3,7 @@ import CreaPersonaggio from "./components/CreaPersonaggio";
 import SchedaPersonaggio from "./components/SchedaPersonaggio";
 import backgrounds from "./data/background.json";
 import progressioneSlot from "./data/progressionSlot.json";
+import sottoclassi from "./data/sottoclassi.json";
 
 import {
   nomiCaratteristiche,
@@ -25,6 +26,7 @@ import lingue from "./data/lingue.json";
 function App() {
   const [nome, setNome] = useState("");  // Nome del personaggio
   const [classe, setClasse] = useState("");  // Classe del personaggio
+  const [sottoclasseId, setSottoclasseId] = useState("");  // Sottoclasse del personaggio
   const [razzaId, setRazzaId] = useState("");  // Razza del personaggio
   const [sottorazzaId, setSottorazzaId] = useState("");  // Sottorazza del personaggio
   const [taglia, setTaglia] = useState(""); // Taglia del personaggio
@@ -47,6 +49,15 @@ function App() {
 
   // Stato per il background del personaggio, inizializzato a una stringa vuota
   const [backgroundId, setBackgroundId] = useState("");
+
+  // Filtra le sottoclassi disponibili in base alla classe selezionata
+  const sottoclassiDisponibili = sottoclassi.filter(
+    (voce) => voce.classeId === classe
+  );
+
+  const sottoclasseSelezionata = sottoclassiDisponibili.find(
+    (voce) => voce.id === sottoclasseId
+  );
 
   // Stato per la distribuzione dei bonus di caratteristica del background
   const [distribuzioneBackground, setDistribuzioneBackground] =
@@ -280,6 +291,9 @@ function App() {
       descrizioneBackground={backgroundSelezionato?.descrizione}
       abilitaBackground={backgroundSelezionato?.abilita ?? []}
       slotMassimi={slotMassimi}
+      sottoclasseId={sottoclasseId}
+      onCambiaSottoclasse={setSottoclasseId}
+      sottoclassiDisponibili={sottoclassiDisponibili}
     />
   );
 }
