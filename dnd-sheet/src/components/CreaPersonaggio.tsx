@@ -47,6 +47,13 @@ type Props = {
     backgroundId: string;
     setBackgroundId: (valore: string) => void;
 
+    distribuzioneBackground: "" | "due" | "tre";
+    setDistribuzioneBackground: (valore: "" | "due" | "tre") => void;
+    caratteristicaPiuDue: string;
+    setCaratteristicaPiuDue: (valore: string) => void;
+    caratteristicaPiuUno: string;
+    setCaratteristicaPiuUno: (valore: string) => void;
+
     creaPersonaggio: (evento: React.SubmitEvent<HTMLFormElement>) => void;
 };
 
@@ -70,6 +77,12 @@ function CreaPersonaggio({
     backgroundId,
     setBackgroundId,
     creaPersonaggio,
+    distribuzioneBackground,
+    setDistribuzioneBackground,
+    caratteristicaPiuDue,
+    setCaratteristicaPiuDue,
+    caratteristicaPiuUno,
+    setCaratteristicaPiuUno,
 }: Props) {
 
     // Ottieni la razza selezionata in base all'ID della razza
@@ -218,7 +231,12 @@ function CreaPersonaggio({
                     <select
                         id="background"
                         value={backgroundId}
-                        onChange={(evento) => setBackgroundId(evento.target.value)}
+                        onChange={(evento) => {
+                            setBackgroundId(evento.target.value);
+                            setDistribuzioneBackground("");
+                            setCaratteristicaPiuDue("");
+                            setCaratteristicaPiuUno("");
+                        }}
                     >
                         <option value="">Seleziona un background</option>
 
@@ -231,6 +249,83 @@ function CreaPersonaggio({
 
                     {backgroundSelezionato && (
                         <p>{backgroundSelezionato.descrizione}</p>
+                    )}
+
+                    {backgroundSelezionato && (
+                        <fieldset>
+                            <legend>Aumenti delle caratteristiche del background</legend>
+
+                            <label htmlFor="distribuzione-background">Distribuzione:</label>
+                            <select
+                                id="distribuzione-background"
+                                value={distribuzioneBackground}
+                                onChange={(evento) => {
+                                    const valore = evento.target.value as "" | "due" | "tre";
+                                    setDistribuzioneBackground(valore);
+                                    setCaratteristicaPiuDue("");
+                                    setCaratteristicaPiuUno("");
+                                }}
+                                required
+                            >
+                                {/* Opzioni per la distribuzione dei bonus di caratteristica del background */}
+                                <option value="">Scegli come distribuire i punti</option>
+                                <option value="due">+2 a una caratteristica e +1 a un’altra</option>
+                                <option value="tre">+1 a tutte e tre le caratteristiche</option>
+                            </select>
+
+                            {distribuzioneBackground === "due" && (
+                                <>
+                                    <label htmlFor="background-piu-due">Caratteristica +2:</label>
+                                    <select
+                                        id="background-piu-due"
+                                        value={caratteristicaPiuDue}
+                                        onChange={(evento) =>
+                                            setCaratteristicaPiuDue(evento.target.value)
+                                        }
+                                        required
+                                    >
+                                        <option value="">Seleziona</option>
+                                        {backgroundSelezionato.caratteristicheDisponibili.map((voce) => (
+                                            <option
+                                                key={voce}
+                                                value={voce}
+                                                disabled={voce === caratteristicaPiuUno}
+                                            >
+                                                {voce}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    <label htmlFor="background-piu-uno">Caratteristica +1:</label>
+                                    <select
+                                        id="background-piu-uno"
+                                        value={caratteristicaPiuUno}
+                                        onChange={(evento) =>
+                                            setCaratteristicaPiuUno(evento.target.value)
+                                        }
+                                        required
+                                    >
+                                        <option value="">Seleziona</option>
+                                        {backgroundSelezionato.caratteristicheDisponibili.map((voce) => (
+                                            <option
+                                                key={voce}
+                                                value={voce}
+                                                disabled={voce === caratteristicaPiuDue}
+                                            >
+                                                {voce}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </>
+                            )}
+
+                            {distribuzioneBackground === "tre" && (
+                                <p>
+                                    +1 a{" "}
+                                    {backgroundSelezionato.caratteristicheDisponibili.join(", ")}
+                                </p>
+                            )}
+                        </fieldset>
                     )}
                 </div>
 
@@ -327,13 +422,7 @@ function CreaPersonaggio({
                                 );
                             })}
                         </select>
-
-
                     </div>
-
-
-
-
                 ))}
 
                 <button type="submit">Crea personaggio</button>

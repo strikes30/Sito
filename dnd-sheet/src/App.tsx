@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CreaPersonaggio from "./components/CreaPersonaggio";
 import SchedaPersonaggio from "./components/SchedaPersonaggio";
+import backgrounds from "./data/background.json";
 
 import {
   nomiCaratteristiche,
@@ -46,6 +47,12 @@ function App() {
   // Stato per il background del personaggio, inizializzato a una stringa vuota
   const [backgroundId, setBackgroundId] = useState("");
 
+  // Stato per la distribuzione dei bonus di caratteristica del background
+  const [distribuzioneBackground, setDistribuzioneBackground] =
+    useState<"" | "due" | "tre">("");
+  const [caratteristicaPiuDue, setCaratteristicaPiuDue] = useState("");
+  const [caratteristicaPiuUno, setCaratteristicaPiuUno] = useState("");
+
   // Filtra le lingue iniziali, escludendo la lingua "comune" e ordinandole alfabeticamente
   const lingueIniziali = lingue
     .filter((lingua) =>
@@ -69,9 +76,46 @@ function App() {
     (razza) => razza.id === razzaId,
   );
 
+  // Cerca nel JSON la sottorazza che ha l'ID scelto dall'utente
   const sottorazzaSelezionata = razzaSelezionata?.sottorazze.find(
     (sottorazza) => sottorazza.id === sottorazzaId,
   );
+
+  // Cerca nel JSON la classe che ha l'ID scelto dall'utente
+  const backgroundSelezionato = backgrounds.find(
+    (background) => background.id === backgroundId,
+  );
+
+  // Calcola le caratteristiche finali del personaggio, tenendo conto dei bonus del background
+  const caratteristicheFinali: Record<Caratteristica, number | null> =
+    { ...caratteristiche };
+
+  if (backgroundSelezionato) {
+    for (const caratteristica of nomiCaratteristiche) {
+      const punteggioIniziale = caratteristiche[caratteristica];
+
+      if (punteggioIniziale === null) continue;
+
+      const disponibile =
+        backgroundSelezionato.caratteristicheDisponibili.includes(
+          caratteristica,
+        );
+
+      if (!disponibile) continue;
+
+      let aumento = 0;
+
+      if (distribuzioneBackground === "tre") {
+        aumento = 1;
+      } else if (distribuzioneBackground === "due") {
+        if (caratteristica === caratteristicaPiuDue) aumento = 2;
+        if (caratteristica === caratteristicaPiuUno) aumento = 1;
+      }
+
+      caratteristicheFinali[caratteristica] =
+        punteggioIniziale + aumento;
+    }
+  }
 
   // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
@@ -145,6 +189,12 @@ function App() {
         backgroundId={backgroundId}
         setBackgroundId={setBackgroundId}
         creaPersonaggio={creaPersonaggio}
+        distribuzioneBackground={distribuzioneBackground}
+        setDistribuzioneBackground={setDistribuzioneBackground}
+        caratteristicaPiuDue={caratteristicaPiuDue}
+        setCaratteristicaPiuDue={setCaratteristicaPiuDue}
+        caratteristicaPiuUno={caratteristicaPiuUno}
+        setCaratteristicaPiuUno={setCaratteristicaPiuUno}
       />
     );
   }
@@ -155,7 +205,7 @@ function App() {
   );
 
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
-  const costituzione = caratteristiche.Costituzione;
+  const costituzione = caratteristicheFinali.Costituzione;
 
   const puntiFeritaMassimi =
     classeSelezionata && costituzione !== null
@@ -167,8 +217,8 @@ function App() {
       : null;
 
   const classeArmatura =
-    caratteristiche.Destrezza !== null
-      ? calcolaClasseArmatura(caratteristiche.Destrezza)
+    caratteristicheFinali.Destrezza !== null
+      ? calcolaClasseArmatura(caratteristicheFinali.Destrezza)
       : null;
 
 
@@ -189,12 +239,15 @@ function App() {
       velocita={razzaSelezionata?.velocita}
       primaLinguaId={primaLinguaId}
       secondaLinguaId={secondaLinguaId}
-      caratteristiche={caratteristiche}
+      caratteristiche={caratteristicheFinali}
       modificatore={modificatore}
       classeArmatura={classeArmatura}
       abilitaCompetenti={abilitaCompetenti}
       onCambiaCompetenzaAbilita={cambiaCompetenzaAbilita}
       tiriSalvezzaCompetenti={classeSelezionata?.tiriSalvezza ?? []}
+      nomeBackground={backgroundSelezionato?.nome}
+      descrizioneBackground={backgroundSelezionato?.descrizione}
+      abilitaBackground={backgroundSelezionato?.abilita ?? []}
     />
   );
 }

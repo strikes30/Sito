@@ -34,6 +34,10 @@ type Props = {
     onCambiaCompetenzaAbilita: (id: string) => void;
 
     tiriSalvezzaCompetenti: string[];
+
+    nomeBackground: string | undefined;
+    descrizioneBackground: string | undefined;
+    abilitaBackground: string[];
 };
 
 function SchedaPersonaggio({
@@ -57,6 +61,9 @@ function SchedaPersonaggio({
     abilitaCompetenti,
     onCambiaCompetenzaAbilita,
     tiriSalvezzaCompetenti,
+    nomeBackground,
+    descrizioneBackground,
+    abilitaBackground,
 }: Props) {
     return (
         <main>
@@ -83,10 +90,20 @@ function SchedaPersonaggio({
                 <p>Sottorazza: {nomeSottorazza}</p>
             )}
 
+            {/* Background */}
+            <p>
+                Background:{" "}
+                <span title={descrizioneBackground ?? ""}>
+                    {nomeBackground ?? "—"}
+                </span>
+            </p>
+            
+            {/* Razza */}
             <p>Tipo di creatura: {tipoCreatura}</p>
             <p>Taglia: {taglia}</p>
             <p>Velocità: {velocita === undefined ? "—" : `${velocita} piedi`}</p>
-
+            
+            {/* Lingue */}
             <h2>Lingue conosciute</h2>
             <ul>
                 <li>Comune</li>
@@ -94,6 +111,7 @@ function SchedaPersonaggio({
                 <li>{lingue.find((lingua) => lingua.id === secondaLinguaId)?.nome}</li>
             </ul>
 
+            {/* Caratteristiche */}
             <h2>Caratteristiche</h2>
             <ul>
                 {nomiCaratteristiche.map((caratteristica) => {
@@ -108,7 +126,7 @@ function SchedaPersonaggio({
                             {caratteristica}: {punteggio} (
                             {bonus >= 0 ? "+" : ""}
                             {bonus})
-                            
+
                             {/* Mostra le competenza tiri salvezza */}
                             {(() => {
                                 const competente = tiriSalvezzaCompetenti.includes(caratteristica);
@@ -133,11 +151,19 @@ function SchedaPersonaggio({
                             {/* Mostra abilità */}
                             <ul>
                                 {abilita
-                                    .filter((abilitaSingola) =>
-                                        abilitaSingola.caratteristica === caratteristica
+                                    .filter(
+                                        (abilitaSingola) =>
+                                            abilitaSingola.caratteristica === caratteristica,
                                     )
                                     .map((abilitaSingola) => {
-                                        const competente = abilitaCompetenti.includes(abilitaSingola.id);
+                                        const competenteDaBackground = abilitaBackground.includes(
+                                            abilitaSingola.id,
+                                        );
+
+                                        const competente =
+                                            competenteDaBackground ||
+                                            abilitaCompetenti.includes(abilitaSingola.id);
+
                                         const bonusAbilita =
                                             bonus + (competente ? bonusCompetenza : 0);
 
@@ -147,12 +173,15 @@ function SchedaPersonaggio({
                                                     <input
                                                         type="checkbox"
                                                         checked={competente}
+                                                        disabled={competenteDaBackground}
                                                         onChange={() =>
                                                             onCambiaCompetenzaAbilita(abilitaSingola.id)
                                                         }
                                                     />
-                                                    {abilitaSingola.nome}: {bonusAbilita >= 0 ? "+" : ""}
+                                                    {abilitaSingola.nome}:{" "}
+                                                    {bonusAbilita >= 0 ? "+" : ""}
                                                     {bonusAbilita}
+                                                    {competenteDaBackground && " (background)"}
                                                 </label>
                                             </li>
                                         );
