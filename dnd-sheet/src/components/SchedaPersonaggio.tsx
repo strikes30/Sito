@@ -7,6 +7,22 @@ import {
     type Caratteristica,
 } from "../types/personaggio";
 
+type Spell = {
+    id: string;
+    name: string;
+    level: number;
+    school: string;
+    actionType: string;
+    concentration: boolean;
+    ritual: boolean;
+    range: string;
+    components: string[];
+    material?: string;
+    duration: string;
+    description: string;
+    higherLevelSlot?: string;
+};
+
 type Props = {
     nome: string;
     livello: number;
@@ -52,7 +68,44 @@ type Props = {
 
     massimoTrucchetti: number;
     massimoIncantesimiPreparati: number;
+
+    spellDisponibili: Spell[];
+    trucchettiScelti: string[];
+    incantesimiScelti: string[];
+    onCambiaTrucchetto: (id: string) => void;
+    onCambiaIncantesimo: (id: string) => void;
 };
+
+// Vedi i dettagli della spell selezionata
+function DettagliSpell({ spell }: { spell: Spell }) {
+    return (
+        <details>
+            <summary>Dettagli</summary>
+
+            <p>Tempo di lancio: {spell.actionType}</p>
+            <p>Gittata: {spell.range}</p>
+            <p>Durata: {spell.duration}</p>
+            <p>Scuola: {spell.school}</p>
+            <p>Componenti: {spell.components.join(", ").toUpperCase()}</p>
+
+            {spell.material && (
+                <p>Materiale: {spell.material}</p>
+            )}
+
+            {spell.concentration && <p>Richiede concentrazione</p>}
+            {spell.ritual && <p>Rituale</p>}
+
+            <p>{spell.description}</p>
+
+            {spell.higherLevelSlot && (
+                <p>
+                    <strong>Slot di livello superiore:</strong>{" "}
+                    {spell.higherLevelSlot}
+                </p>
+            )}
+        </details>
+    );
+}
 
 function SchedaPersonaggio({
     nome,
@@ -83,7 +136,12 @@ function SchedaPersonaggio({
     abilitaBackground,
     slotMassimi,
     massimoTrucchetti,
-    massimoIncantesimiPreparati
+    massimoIncantesimiPreparati,
+    spellDisponibili,
+    trucchettiScelti,
+    incantesimiScelti,
+    onCambiaTrucchetto,
+    onCambiaIncantesimo,
 }: Props) {
 
     {/* Gestione dello stato degli slot consumati */ }
@@ -104,6 +162,32 @@ function SchedaPersonaggio({
             return aggiornati;
         });
     }
+
+    // Gestione dello stato per nascondere gli incantesimi e trucchetti non scelti
+    const [nascondiTrucchettiNonScelti, setNascondiTrucchettiNonScelti] =
+        useState(false);
+
+    const [nascondiIncantesimiNonScelti, setNascondiIncantesimiNonScelti] =
+        useState(false);
+
+    const trucchettiVisibili = spellDisponibili
+        .filter(
+            (spell) =>
+                spell.level === 0 &&
+                (!nascondiTrucchettiNonScelti || trucchettiScelti.includes(spell.id))
+        )
+        .sort((a, b) => a.name.localeCompare(b.name, "en"));
+
+    const incantesimiVisibili = spellDisponibili
+        .filter(
+            (spell) =>
+                spell.level > 0 &&
+                (!nascondiIncantesimiNonScelti || incantesimiScelti.includes(spell.id))
+        )
+        .sort(
+            (a, b) =>
+                a.level - b.level || a.name.localeCompare(b.name, "en")
+        );
 
     {/* Rendering della scheda del personaggio */ }
     return (
@@ -179,6 +263,72 @@ function SchedaPersonaggio({
             {/* Incantesimi */}
             <p>Trucchetti selezionabili: {massimoTrucchetti}</p>
             <p>Incantesimi preparabili: {massimoIncantesimiPreparati}</p>
+
+            {/* Lista degli incantesimi disponibili */}
+            {spellDisponibili.length > 0 && (
+                <section>
+                    <h2>Incantesimi</h2>
+
+                    <h3>Trucchetti ({trucchettiScelti.length}/{massimoTrucchetti})</h3>
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setNascondiTrucchettiNonScelti((precedente) => !precedente)
+                        }
+                    >
+                        {nascondiTrucchettiNonScelti
+                            ? "Mostra tutti i trucchetti"
+                            : "Nascondi trucchetti non conosciuti"}
+                    </button>
+
+                    {/* Lista dei trucchetti disponibili */}
+                    {trucchettiVisibili.map((spell) => (
+                        <div key={spell.id}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={trucchettiScelti.includes(spell.id)}
+                                    onChange={() => onCambiaTrucchetto(spell.id)}
+                                />
+                                {spell.name}
+                            </label>
+
+                            <DettagliSpell spell={spell} />
+                        </div>
+                    ))}
+                    {/* Lista degli incantesimi disponibili */}
+                    <h3>
+                        Incantesimi ({incantesimiScelti.length}/{massimoIncantesimiPreparati})
+                    </h3>
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setNascondiIncantesimiNonScelti((precedente) => !precedente)
+                        }
+                    >
+                        {nascondiIncantesimiNonScelti
+                            ? "Mostra tutti gli incantesimi"
+                            : "Nascondi incantesimi non conosciuti"}
+                    </button>
+
+                    {incantesimiVisibili.map((spell) => (
+                        <div key={spell.id}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={incantesimiScelti.includes(spell.id)}
+                                    onChange={() => onCambiaIncantesimo(spell.id)}
+                                />
+                                Livello {spell.level}: {spell.name}
+                            </label>
+
+                            <DettagliSpell spell={spell} />
+                        </div>
+                    ))}
+                </section>
+            )}
 
             {/* Slot incantesimo */}
             {slotMassimi.some((quantita) => quantita > 0) && (

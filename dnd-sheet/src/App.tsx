@@ -5,6 +5,7 @@ import backgrounds from "./data/background.json";
 import progressioneSlot from "./data/progressionSlot.json";
 import sottoclassi from "./data/sottoclassi.json";
 import progressioneIncantesimi from "./data/progressionSpell.json";
+import spells from "./data/spells.json";
 
 import {
   nomiCaratteristiche,
@@ -49,6 +50,8 @@ function App() {
   const [livello, setLivello] = useState(1);  // Livello del personaggio
   const [primaLinguaId, setPrimaLinguaId] = useState("");  // Prima lingua del personaggio
   const [secondaLinguaId, setSecondaLinguaId] = useState("");  // Seconda lingua del personaggio
+  const [trucchettiScelti, setTrucchettiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
+  const [incantesimiScelti, setIncantesimiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
 
   // Stato per le caratteristiche del personaggio, inizializzate a null
   const [caratteristiche, setCaratteristiche] = useState<
@@ -279,8 +282,54 @@ function App() {
   const massimoIncantesimiPreparati =
     regoleIncantesimi?.preparati[livello - 1] ?? 0;
 
+  // Determina la lista di incantesimi disponibili in base alla classe o sottoclasse selezionata
   const listaIncantesimi =
     regoleIncantesimi?.listaIncantesimi ?? classe;
+
+  const livelloMassimoSpell = slotMassimi.reduce(
+    (massimo, quantita, indice) =>
+      quantita > 0 ? indice + 1 : massimo,
+    0
+  );
+
+  const spellDisponibili = spells.filter(
+    (spell) =>
+      spell.classes.includes(listaIncantesimi) &&
+      (spell.level === 0
+        ? massimoTrucchetti > 0
+        : spell.level <= livelloMassimoSpell)
+  );
+
+  // Funzioni per cambiare gli incantesimi scelti, con controlli di validità
+  function cambiaTrucchetto(id: string) {
+    if (!spellDisponibili.some((spell) => spell.id === id && spell.level === 0)) {
+      return;
+    }
+
+    setTrucchettiScelti((precedenti) => {
+      if (precedenti.includes(id)) {
+        return precedenti.filter((precedente) => precedente !== id);
+      }
+
+      if (precedenti.length >= massimoTrucchetti) return precedenti;
+      return [...precedenti, id];
+    });
+  }
+
+  function cambiaIncantesimo(id: string) {
+    if (!spellDisponibili.some((spell) => spell.id === id && spell.level > 0)) {
+      return;
+    }
+
+    setIncantesimiScelti((precedenti) => {
+      if (precedenti.includes(id)) {
+        return precedenti.filter((precedente) => precedente !== id);
+      }
+
+      if (precedenti.length >= massimoIncantesimiPreparati) return precedenti;
+      return [...precedenti, id];
+    });
+  }
 
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
   const costituzione = caratteristicheFinali.Costituzione;
@@ -298,7 +347,6 @@ function App() {
     caratteristicheFinali.Destrezza !== null
       ? calcolaClasseArmatura(caratteristicheFinali.Destrezza)
       : null;
-
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
@@ -331,7 +379,12 @@ function App() {
       onCambiaSottoclasse={setSottoclasseId}
       sottoclassiDisponibili={sottoclassiDisponibili}
       massimoTrucchetti={massimoTrucchetti}
-massimoIncantesimiPreparati={massimoIncantesimiPreparati}
+      massimoIncantesimiPreparati={massimoIncantesimiPreparati}
+      spellDisponibili={spellDisponibili}
+      trucchettiScelti={trucchettiScelti}
+      incantesimiScelti={incantesimiScelti}
+      onCambiaTrucchetto={cambiaTrucchetto}
+      onCambiaIncantesimo={cambiaIncantesimo}
     />
   );
 }
