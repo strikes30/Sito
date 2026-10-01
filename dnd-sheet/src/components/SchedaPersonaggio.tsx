@@ -38,6 +38,8 @@ type Props = {
     nomeBackground: string | undefined;
     descrizioneBackground: string | undefined;
     abilitaBackground: string[];
+
+    slotMassimi: number[];
 };
 
 function SchedaPersonaggio({
@@ -64,6 +66,7 @@ function SchedaPersonaggio({
     nomeBackground,
     descrizioneBackground,
     abilitaBackground,
+    slotMassimi,
 }: Props) {
     return (
         <main>
@@ -97,12 +100,12 @@ function SchedaPersonaggio({
                     {nomeBackground ?? "—"}
                 </span>
             </p>
-            
+
             {/* Razza */}
             <p>Tipo di creatura: {tipoCreatura}</p>
             <p>Taglia: {taglia}</p>
             <p>Velocità: {velocita === undefined ? "—" : `${velocita} piedi`}</p>
-            
+
             {/* Lingue */}
             <h2>Lingue conosciute</h2>
             <ul>
@@ -110,6 +113,21 @@ function SchedaPersonaggio({
                 <li>{lingue.find((lingua) => lingua.id === primaLinguaId)?.nome}</li>
                 <li>{lingue.find((lingua) => lingua.id === secondaLinguaId)?.nome}</li>
             </ul>
+
+            {/* Slot incantesimo */}
+            {slotMassimi.some((quantita) => quantita > 0) && (
+                <section>
+                    <h2>Slot incantesimo</h2>
+
+                    {slotMassimi.map((quantita, indice) =>
+                        quantita > 0 ? (
+                            <div key={indice}>
+                                Livello {indice + 1}: {quantita} slot
+                            </div>
+                        ) : null
+                    )}
+                </section>
+            )}
 
             {/* Caratteristiche */}
             <h2>Caratteristiche</h2>

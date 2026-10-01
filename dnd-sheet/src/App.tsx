@@ -2,6 +2,7 @@ import { useState } from "react";
 import CreaPersonaggio from "./components/CreaPersonaggio";
 import SchedaPersonaggio from "./components/SchedaPersonaggio";
 import backgrounds from "./data/background.json";
+import progressioneSlot from "./data/progressionSlot.json";
 
 import {
   nomiCaratteristiche,
@@ -117,6 +118,8 @@ function App() {
     }
   }
 
+
+
   // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
     evento.preventDefault();
@@ -146,6 +149,25 @@ function App() {
       !lingueIniziali.some((lingua) => lingua.id === primaLinguaId) ||
       !lingueIniziali.some((lingua) => lingua.id === secondaLinguaId)
     ) {
+      return;
+    }
+
+    if (!backgroundSelezionato) return;
+
+    const caratteristicheDisponibili =
+      backgroundSelezionato.caratteristicheDisponibili;
+
+    if (distribuzioneBackground === "due") {
+      if (
+        !caratteristicheDisponibili.includes(caratteristicaPiuDue) ||
+        !caratteristicheDisponibili.includes(caratteristicaPiuUno) ||
+        caratteristicaPiuDue === caratteristicaPiuUno
+      ) {
+        return;
+      }
+    } else if (distribuzioneBackground === "tre") {
+      if (caratteristicheDisponibili.length !== 3) return;
+    } else {
       return;
     }
 
@@ -204,6 +226,15 @@ function App() {
     (voce) => voce.id === classe
   );
 
+  const tipoProgressione = classeSelezionata?.progressioneSlot;
+
+  const slotMassimi: number[] =
+    tipoProgressione === "completa" ||
+      tipoProgressione === "metà" ||
+      tipoProgressione === "terzo"
+      ? progressioneSlot[tipoProgressione][livello - 1] ?? []
+      : [];
+
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
   const costituzione = caratteristicheFinali.Costituzione;
 
@@ -248,6 +279,7 @@ function App() {
       nomeBackground={backgroundSelezionato?.nome}
       descrizioneBackground={backgroundSelezionato?.descrizione}
       abilitaBackground={backgroundSelezionato?.abilita ?? []}
+      slotMassimi={slotMassimi}
     />
   );
 }

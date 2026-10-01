@@ -3,25 +3,29 @@
     "id": "barbaro",
     "nome": "Barbaro",
     "dadoVita": 12,
-    "tiriSalvezza": ["Forza", "Costituzione"]
+    "tiriSalvezza": ["Forza", "Costituzione"],
+    "progressioneSlot": "nessuna"
   },
   {
     "id": "bardo",
     "nome": "Bardo",
     "dadoVita": 8,
-    "tiriSalvezza": ["Destrezza", "Carisma"]
+    "tiriSalvezza": ["Destrezza", "Carisma"],
+    "progressioneSlot": "completa"
   },
   {
     "id": "chierico",
     "nome": "Chierico",
     "dadoVita": 8,
-    "tiriSalvezza": ["Saggezza", "Carisma"]
+    "tiriSalvezza": ["Saggezza", "Carisma"],
+    "progressioneSlot": "completa"
   },
   {
     "id": "druido",
     "nome": "Druido",
     "dadoVita": 8,
-    "tiriSalvezza": ["Intelligenza", "Saggezza"]
+    "tiriSalvezza": ["Intelligenza", "Saggezza"],
+    "progressioneSlot": "completa"
   },
   {
     "id": "guerriero",
@@ -33,42 +37,49 @@
     "id": "ladro",
     "nome": "Ladro",
     "dadoVita": 8,
-    "tiriSalvezza": ["Destrezza", "Intelligenza"]
+    "tiriSalvezza": ["Destrezza", "Intelligenza"],
+    "progressioneSlot": "nessuna"
   },
   {
     "id": "mago",
     "nome": "Mago",
     "dadoVita": 6,
-    "tiriSalvezza": ["Intelligenza", "Saggezza"]
+    "tiriSalvezza": ["Intelligenza", "Saggezza"],
+    "progressioneSlot": "completa"
   },
   {
     "id": "monaco",
     "nome": "Monaco",
     "dadoVita": 8,
-    "tiriSalvezza": ["Forza", "Destrezza"]
+    "tiriSalvezza": ["Forza", "Destrezza"],
+    "progressioneSlot": "nessuna"
   },
   {
     "id": "paladino",
     "nome": "Paladino",
     "dadoVita": 10,
-    "tiriSalvezza": ["Saggezza", "Carisma"]
+    "tiriSalvezza": ["Saggezza", "Carisma"],
+    "progressioneSlot": "metà"
   },
   {
     "id": "ranger",
     "nome": "Ranger",
     "dadoVita": 10,
-    "tiriSalvezza": ["Forza", "Destrezza"]
+    "tiriSalvezza": ["Forza", "Destrezza"],
+    "progressioneSlot": "metà"
   },
   {
     "id": "stregone",
     "nome": "Stregone",
     "dadoVita": 6,
-    "tiriSalvezza": ["Costituzione", "Carisma"]
+    "tiriSalvezza": ["Costituzione", "Carisma"],
+    "progressioneSlot": "completa"
   },
   {
     "id": "warlock",
     "nome": "Warlock",
     "dadoVita": 8,
-    "tiriSalvezza": ["Saggezza", "Carisma"]
+    "tiriSalvezza": ["Saggezza", "Carisma"],
+    "progressioneSlot": "nessuna"
   }
 ]
