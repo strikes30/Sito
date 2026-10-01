@@ -1,0 +1,290 @@
+[
+  {
+    "id": "cammino-albero",
+    "nome": "Cammino dell'Albero del Mondo",
+    "classeId": "barbaro",
+    "progressioneSlot": null
+  },
+  {
+    "id": "cammino-berserker",
+    "nome": "Cammino del Berserker",
+    "classeId": "barbaro",
+    "progressioneSlot": null
+  },
+  {
+    "id": "cammino-cuore-selvaggio",
+    "nome": "Cammino del Cuore selvaggio",
+    "classeId": "barbaro",
+    "progressioneSlot": null
+  },
+  {
+    "id": "cammino-zelota",
+    "nome": "Cammino dello Zelota",
+    "classeId": "barbaro",
+    "progressioneSlot": null
+  },
+  {
+    "id": "collegio-danza",
+    "nome": "Collegio della Danza",
+    "classeId": "bardo",
+    "progressioneSlot": null
+  },
+    {
+    "id": "collegio-fascino",
+    "nome": "Collegio del Fascino",
+    "classeId": "bardo",
+    "progressioneSlot": null
+  },
+    {
+    "id": "collegio-sapienza",
+    "nome": "Collegio della Sapienza",
+    "classeId": "bardo",
+    "progressioneSlot": null
+  },
+    {
+    "id": "collegio-valore",
+    "nome": "Collegio del Valore",
+    "classeId": "bardo",
+    "progressioneSlot": null
+  },
+    {
+    "id": "dominio-guerra",
+    "nome": "Dominio della Guerra",
+    "classeId": "chierico",
+    "progressioneSlot": null
+  },
+      {
+    "id": "dominio-inganno",
+    "nome": "Dominio dell'Inganno",
+    "classeId": "chierico",
+    "progressioneSlot": null
+  },
+      {
+    "id": "dominio-luce",
+    "nome": "Dominio della Luce",
+    "classeId": "chierico",
+    "progressioneSlot": null
+  },
+      {
+    "id": "dominio-vita",
+    "nome": "Dominio della Vita",
+    "classeId": "chierico",
+    "progressioneSlot": null
+  },
+      {
+    "id": "circolo-luna",
+    "nome": "Circolo della Luna",
+    "classeId": "druido",
+    "progressioneSlot": null
+  },
+  {
+    "id": "circolo-mare",
+    "nome": "Circolo del Mare",
+    "classeId": "druido",
+    "progressioneSlot": null
+  },
+  {
+    "id": "circolo-stelle",
+    "nome": "Circolo delle Stelle",
+    "classeId": "druido",
+    "progressioneSlot": null
+  },
+  {
+    "id": "circolo-terra",
+    "nome": "Circolo della Terra",
+    "classeId": "druido",
+    "progressioneSlot": null
+  },
+  {
+    "id": "campione",
+    "nome": "Campione",
+    "classeId": "guerriero",
+    "progressioneSlot": null
+  },
+  {
+    "id": "cavaliere-arcano",
+    "nome": "Cavaliere Arcano",
+    "classeId": "guerriero",
+    "progressioneSlot": "terzo"
+  },
+  {
+    "id": "guerriero-psionico",
+    "nome": "Guerriero Psionico",
+    "classeId": "guerriero",
+    "progressioneSlot": null
+  },
+  {
+    "id": "maestro-battaglie",
+    "nome": "Maestro di Battaglia",
+    "classeId": "guerriero",
+    "progressioneSlot": null
+  },
+  {
+    "id": "assassino",
+    "nome": "Assassino",
+    "classeId": "ladro",
+    "progressioneSlot": null
+  },
+  {
+    "id": "furfante",
+    "nome": "Furfante",
+    "classeId": "ladro",
+    "progressioneSlot": null
+  },
+  {
+    "id": "lama-spiriturale",
+    "nome": "Lama Spiriturale",
+    "classeId": "ladro",
+    "progressioneSlot": null
+  },
+  {
+    "id": "mistificatore-arcano",
+    "nome": "Mistrificatore Arcano",
+    "classeId": "ladro",
+    "progressioneSlot": "terzo"
+  },
+  {
+    "id": "abiuatore",
+    "nome": "Abiuatore",
+    "classeId": "mago",
+    "progressioneSlot": null
+  },
+    {
+    "id": "divinatore",
+    "nome": "Divinatore",
+    "classeId": "mago",
+    "progressioneSlot": null
+  },
+    {
+    "id": "illusionista",
+    "nome": "Illusionista",
+    "classeId": "mago",
+    "progressioneSlot": null
+  },
+    {
+    "id": "invocatore",
+    "nome": "Invocatore",
+    "classeId": "mago",
+    "progressioneSlot": null
+  },
+    {
+    "id": "guerriero-elementi",
+    "nome": "Guerriero degli Elementi",
+    "classeId": "monaco",
+    "progressioneSlot": null
+  },
+      {
+    "id": "guerriero-mano-aperta",
+    "nome": "Guerriero della Mano Aperta",
+    "classeId": "monaco",
+    "progressioneSlot": null
+  },
+      {
+    "id": "guerriero-misericordia",
+    "nome": "Guerriero della Misericordia",
+    "classeId": "monaco",
+    "progressioneSlot": null
+  },
+      {
+    "id": "guerriero-ombra",
+    "nome": "Guerriero dell'Ombra",
+    "classeId": "monaco",
+    "progressioneSlot": null
+  },
+      {
+    "id": "giuramento-antichi",
+    "nome": "Giuramento degli Antichi",
+    "classeId": "paladino",
+    "progressioneSlot": null
+  },
+        {
+    "id": "giuramento-devozione",
+    "nome": "Giuramento di Devozione",
+    "classeId": "paladino",
+    "progressioneSlot": null
+  },
+        {
+    "id": "giuramento-gloria",
+    "nome": "Giuramento di Gloria",
+    "classeId": "paladino",
+    "progressioneSlot": null
+  },
+        {
+    "id": "giuramento-vendetta",
+    "nome": "Giuramento di Vendetta",
+    "classeId": "paladino",
+    "progressioneSlot": null
+  },
+        {
+    "id": "cacciatore",
+    "nome": "Cacciatore",
+    "classeId": "ranger",
+    "progressioneSlot": null
+  },
+          {
+    "id": "cacciatore-tenebre",
+    "nome": "Cacciatore delle Tenebre",
+    "classeId": "ranger",
+    "progressioneSlot": null
+  },
+          {
+    "id": "signore-bestie",
+    "nome": "Signore delle Bestie",
+    "classeId": "ranger",
+    "progressioneSlot": null
+  },
+          {
+    "id": "viandante-fatato",
+    "nome": "Viandante Fatato",
+    "classeId": "ranger",
+    "progressioneSlot": null
+  },
+          {
+    "id": "stregoneria-aberrante",
+    "nome": "Stregoneria Aberrante",
+    "classeId": "stregone",
+    "progressioneSlot": null
+  },
+   {
+    "id": "stregoneria-draconica",
+    "nome": "Stregoneria Draconica",
+    "classeId": "stregone",
+    "progressioneSlot": null
+  },
+   {
+    "id": "stregoneria-magia-selvaggia",
+    "nome": "Stregoneria della Magia Selvaggia",
+    "classeId": "stregone",
+    "progressioneSlot": null
+  },
+   {
+    "id": "stregoneria-meccanica",
+    "nome": "Stregoneria Meccanica",
+    "classeId": "stregone",
+    "progressioneSlot": null
+  },
+   {
+    "id": "patrono-celestiale",
+    "nome": "Patrono Celestiale",
+    "classeId": "warlock",
+    "progressioneSlot": null
+  },
+  {
+    "id": "patrono-grande-antico",
+    "nome": "Patrono Grande Antico",
+    "classeId": "warlock",
+    "progressioneSlot": null
+  },
+  {
+    "id": "patrono-immondo",
+    "nome": "Patrono Immondo",
+    "classeId": "warlock",
+    "progressioneSlot": null
+  },
+  {
+    "id": "patrono-signore-fatato",
+    "nome": "Patrono Signore Fatato",
+    "classeId": "warlock",
+    "progressioneSlot": null
+  }
+]

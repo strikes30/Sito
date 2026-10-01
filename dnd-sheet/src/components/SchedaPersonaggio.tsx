@@ -1,3 +1,4 @@
+import { useState } from "react";
 import lingue from "../data/lingue.json";
 import abilita from "../data/abilita.json";
 
@@ -68,8 +69,31 @@ function SchedaPersonaggio({
     abilitaBackground,
     slotMassimi,
 }: Props) {
+
+    {/* Gestione dello stato degli slot consumati */ }
+    const [slotConsumati, setSlotConsumati] = useState<Set<string>>(
+        () => new Set()
+    );
+
+    function cambiaSlot(id: string) {
+        setSlotConsumati((precedenti) => {
+            const aggiornati = new Set(precedenti);
+
+            if (aggiornati.has(id)) {
+                aggiornati.delete(id);
+            } else {
+                aggiornati.add(id);
+            }
+
+            return aggiornati;
+        });
+    }
+
+    {/* Rendering della scheda del personaggio */ }
     return (
         <main>
+
+
             <h1>Scheda del personaggio</h1>
 
             <p>Livello: {livello}</p>
@@ -122,7 +146,22 @@ function SchedaPersonaggio({
                     {slotMassimi.map((quantita, indice) =>
                         quantita > 0 ? (
                             <div key={indice}>
-                                Livello {indice + 1}: {quantita} slot
+                                <span>Livello {indice + 1}: </span>
+
+                                {Array.from({ length: quantita }, (_, indiceSlot) => {
+                                    const id = `${indice}-${indiceSlot}`;
+
+                                    return (
+                                        <label key={id}>
+                                            <input
+                                                type="checkbox"
+                                                checked={slotConsumati.has(id)}
+                                                onChange={() => cambiaSlot(id)}
+                                                aria-label={`Slot ${indiceSlot + 1} di livello ${indice + 1} consumato`}
+                                            />
+                                        </label>
+                                    );
+                                })}
                             </div>
                         ) : null
                     )}
