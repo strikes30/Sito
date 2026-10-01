@@ -1,6 +1,7 @@
 import classi from "../data/classi.json";
 import razze from "../data/razze.json";
 import lingue from "../data/lingue.json";
+import backgrounds from "../data/background.json";
 
 const nomiCaratteristiche = [
     "Forza",
@@ -43,6 +44,9 @@ type Props = {
         valore: number | null,
     ) => void;
 
+    backgroundId: string;
+    setBackgroundId: (valore: string) => void;
+
     creaPersonaggio: (evento: React.SubmitEvent<HTMLFormElement>) => void;
 };
 
@@ -63,13 +67,23 @@ function CreaPersonaggio({
     setSecondaLinguaId,
     caratteristiche,
     cambiaCaratteristica,
+    backgroundId,
+    setBackgroundId,
     creaPersonaggio,
 }: Props) {
+
+    // Ottieni la razza selezionata in base all'ID della razza
     const razzaSelezionata = razze.find(
         (razza) => razza.id === razzaId,
     );
 
+    // Ottieni le sottorazze disponibili per la razza selezionata
     const sottorazzeDisponibili = razzaSelezionata?.sottorazze ?? [];
+
+    // Ottieni il background selezionato in base all'ID del background
+    const backgroundSelezionato = backgrounds.find(
+        (background) => background.id === backgroundId,
+    );
 
     const lingueIniziali = lingue
         .filter(
@@ -196,6 +210,30 @@ function CreaPersonaggio({
                     </div>
                 )}
 
+                {/* Gruppo per il background del personaggio */}
+                <h2>Background</h2>
+                <p>Scegli un background per il tuo personaggio.</p>
+                <div>
+                    <label htmlFor="background">Background</label>
+                    <select
+                        id="background"
+                        value={backgroundId}
+                        onChange={(evento) => setBackgroundId(evento.target.value)}
+                    >
+                        <option value="">Seleziona un background</option>
+
+                        {backgrounds.map((background) => (
+                            <option key={background.id} value={background.id}>
+                                {background.nome}
+                            </option>
+                        ))}
+                    </select>
+
+                    {backgroundSelezionato && (
+                        <p>{backgroundSelezionato.descrizione}</p>
+                    )}
+                </div>
+
                 {/* Gruppo per le lingue del personaggio */}
                 <h2>Lingue</h2>
                 <p>Conosci già: Comune. Scegli altre due lingue standard.</p>
@@ -244,6 +282,8 @@ function CreaPersonaggio({
                     </select>
                 </div>
 
+
+
                 {/* Gruppo per le caratteristiche del personaggio */}
                 <h2>Caratteristiche</h2>
 
@@ -290,6 +330,8 @@ function CreaPersonaggio({
 
 
                     </div>
+
+
 
 
                 ))}

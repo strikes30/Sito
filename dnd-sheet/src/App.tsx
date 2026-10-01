@@ -43,6 +43,9 @@ function App() {
     Carisma: null,
   });
 
+  // Stato per il background del personaggio, inizializzato a una stringa vuota
+  const [backgroundId, setBackgroundId] = useState("");
+
   // Filtra le lingue iniziali, escludendo la lingua "comune" e ordinandole alfabeticamente
   const lingueIniziali = lingue
     .filter((lingua) =>
@@ -139,6 +142,8 @@ function App() {
         setSecondaLinguaId={setSecondaLinguaId}
         caratteristiche={caratteristiche}
         cambiaCaratteristica={cambiaCaratteristica}
+        backgroundId={backgroundId}
+        setBackgroundId={setBackgroundId}
         creaPersonaggio={creaPersonaggio}
       />
     );

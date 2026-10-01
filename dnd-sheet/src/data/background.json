@@ -1,0 +1,276 @@
+[
+    {
+        "id": "accolito",
+        "nome": "Accolito",
+        "descrizione": "Il personaggio ha trascorso la sua vita in un tempio situato in una zona appartata di una cittadina o nascosto in un bosco sacro. Lì celebrava dei riti in onore degli dèi o di un pantheon ed era al servizio di un sacerdote, mentre si dedicava allo studio delle religioni. Grazie a questo men tore e alla propria devozione, ha  come incana lare una certa quantità di potere divino per servire il suo luogo di culto e i fedeli.",
+        "caratteristicheDisponibili": [
+            "Intelligenza",
+            "Saggezza",
+            "Carisma"
+        ],
+        "abilità": [
+            "intuizione",
+            "religione"
+        ],
+        "competenzaStrumento": "Scorte da calligrafo",
+        "talentoOrigine": "Iniziato alla magia (Chierico)",
+        "equipaggiamento": []
+    },
+    {
+        "id": "artigiano",
+        "nome": "Artigiano",
+        "descrizione": "Appena ha acquisito la forza sufficiente per trasportare un secchio, il personaggio ha cominciato la sua carriera lavando i pavimenti e i banchi da lavoro nella bottega di un artigiano per poche monete di rame al giorno. Una volta diventato abbastanza grande da poter fare l 'apprendista, ha imparato a realizzare delle opere semplici per sé, ma anche a conquistare i clienti più esigenti. Grazie alla propria arte, il personaggio ha anche acquisito un certo occhio per i dettagli.",
+        "caratteristicheDisponibili": [
+            "Forza",
+            "Destrezza",
+            "Intelligenza"
+        ],
+        "abilita": [
+            "indagare",
+            "persuasione"
+        ],
+        "competenzaStrumento": "ID o nome dello strumento",
+        "talentoOrigine": "Lavoro manuale",
+        "equipaggiamento": []
+    },
+    {
+        "id": "ciarlatano",
+        "nome": "Ciarlatano",
+        "descrizione": "Una volta raggiunta l'età p e r poter bere alcolici, il personaggio ha subito ottenuto un posto di favore in ogni singola taverna nel raggio di 15 chilometri dalla propria città natale. Viaggiando da una bettola all 'altra, ha imparato come approfittare degli sfortunati in cerca di qualche bugia di conforto, come una pozione fasulla o dei registri anagrafici contraffatti.",
+        "caratteristicheDisponibili": [
+            "Carisma",
+            "Destrezza",
+            "Costituzione"
+        ],
+        "abilita": [
+            "inganno",
+            "rapidità"
+        ],
+        "competenzaStrumento": "Arnesi da falsario",
+        "talentoOrigine": "Abile",
+        "equipaggiamento": []
+    },
+    {
+        "id": "contadino",
+        "nome": "Contadino",
+        "descrizione": "Il personaggio è cresciuto a contatto con la terra. Grazie agli anni trascorsi prendendosi cura di animali e piante, ha appreso la virtù della pazienza e ora gode di ottima salute. È una persona che sa apprezzare molto i doni della natura, nutrendo al contempo un sano rispetto per i suoi momenti di furia.",
+        "caratteristicheDisponibili": [
+            "Forza",
+            "Saggezza",
+            "Costituzione"
+        ],
+        "abilita": [
+            "addestrare",
+            "natura"
+        ],
+        "competenzaStrumento": "Strumenti da falegname",
+        "talentoOrigine": "Robusto",
+        "equipaggiamento": []
+    },
+    {
+        "id": "criminale",
+        "nome": "Criminale",
+        "descrizione": "Il personaggio è riuscito a sopravvivere nei vicoli più bui borseggiando i passanti e rapinando i negozi. Magari faceva parte di una piccola banda di malviventi dalla mentalità affine, pervasa da un certo senso di fratellanza. Oppure era un lupo solitario impegnato a guardarsi le spalle dalla gilda dei ladri locale e da altri temibili manigoldi.",
+        "caratteristicheDisponibili": [
+            "Intelligenza",
+            "Destrezza",
+            "Costituzione"
+        ],
+        "abilita": [
+            "rapidità",
+            "furtività"
+        ],
+        "competenzaStrumento": "Arnesi da scasso",
+        "talentoOrigine": "Allerta",
+        "equipaggiamento": []
+    },
+    {
+        "id": "eremita",
+        "nome": "Eremita",
+        "descrizione": "Il personaggio ha trascorso i suoi primi anni rinchiuso in una capanna o un monastero molto distante da qualsiasi insediamento abitato. All 'epoca, i suoi unici compagni erano le creature della foresta e coloro che di tanto in tanto gli facevano visita per portargli notizie dal mondo esterno e provviste. La solitudine gli ha consentito di trascorrere svariate ore a riflettere sui misteri della creazione.",
+        "caratteristicheDisponibili": [
+            "Saggezza",
+            "Carisma",
+            "Costituzione"
+        ],
+        "abilita": [
+            "medicina",
+            "religione"
+        ],
+        "competenzaStrumento": "Borsa da erborista",
+        "talentoOrigine": "Guaritore",
+        "equipaggiamento": []
+    },
+    {
+        "id": "guardia",
+        "nome": "Guardia",
+        "descrizione": "Al personaggio basta pensare alle innumerevoli ore trascorse di guardia alla torre per sentire male ai piedi. È stato addestrato a guardare con un occhio fuori dalle mura, in cerca di predoni provenienti dalla foresta vicina,e con l 'altro all'interno dell'insediamento per scovare tagliaborse e altri furfanti.",
+        "caratteristicheDisponibili": [
+            "Forza",
+            "Intelligenza",
+            "Saggezza"
+        ],
+        "abilita": [
+            "atletica",
+            "percezione"
+        ],
+        "competenzaStrumento": "ID o nome dello strumento",
+        "talentoOrigine": "Allerta",
+        "equipaggiamento": []
+    },
+    {
+        "id": "guida",
+        "nome": "Guida",
+        "descrizione": "Il personaggio è cresciuto all'aperto, lontano da insediamenti abitati. La sua casa era ovunque decidesse di poggiare il giaciglio. Le terre selvagge sono ricche di meraviglie di ogni tipo, come strani mostri, foreste e corsi d'acqua incòntaminati, o rovine un tempo attraversate dai giganti ma ora reclamate dalla vegetazione. Il personaggio ha imparato a badare a se stesso mentre esplorava questi luoghi e, di tanto in tanto, ha fatto da guida a degli amichevoli sacerdoti al servizio della natura, che gli hanno insegnato le basi per incanalare il potere magico primordiale.",
+        "caratteristicheDisponibili": [
+            "Saggezza",
+            "Destrezza",
+            "Costituzione"
+        ],
+        "abilita": [
+            "furtività",
+            "sopravvivenza"
+        ],
+        "competenzaStrumento": "strumenti da cartografo",
+        "talentoOrigine": "Iniziato alla magia (Druido)",
+        "equipaggiamento": []
+    },
+    {
+        "id": "intrattenitore",
+        "nome": "Intrattenitore",
+        "descrizione": "Il personaggio ha trascorso la maggior parte della sua gioventù tra fiere e carnevali, svolgendo strambi incarichi per musicisti e acrobati in cambio di lezioni. Potrebbe aver imparato come fare il funambolo, suonare il flauto con uno stile tutto suo o recitare poesie con una dizione impeccabile. Ancora oggi si crogiola negli applausi e reclama il palcoscenico.",
+        "caratteristicheDisponibili": [
+            "Forza",
+            "Destrezza",
+            "Carisma"
+        ],
+        "abilita": [
+            "acrobazia",
+            "intrattenere"
+        ],
+        "competenzaStrumento": "ID o nome dello strumento",
+        "talentoOrigine": "Musicista",
+        "equipaggiamento": []
+    },
+    {
+        "id": "marinaio",
+        "nome": "Marinaio",
+        "descrizione": "Il personaggio ha vissuto la sua vita per mare, col vento in poppa e il pavimento che gli oscillava sotto i piedi. Nei suoi viaggi ha frequentato le taverne di ogni luogo immaginabile, affrontato terribili tempeste, raccontato le sue imprese e ascoltato quelle di altri marinai.",
+        "caratteristicheDisponibili": [
+            "Forza",
+            "Destrezza",
+            "Saggezza"
+        ],
+        "abilita": [
+            "percezione",
+            "acrobazia"
+        ],
+        "competenzaStrumento": "Strumenti da navigatore",
+        "talentoOrigine": "Lottatore da taverna",
+        "equipaggiamento": []
+    },
+    {
+        "id": "mercante",
+        "nome": "Mercante",
+        "descrizione": "Il personaggio ha cominciato il suo percorso come apprendista di un mercante, un carovaniere o un negoziante, grazie al quale ha appreso le basi del commercio. Ha viaggiato in lungo e in largo, guadagnandosi da vivere comprando e vendendo materie prime di cui hanno bisogno gli artigiani per praticare la propria arte, o prodotti finiti realizzati da questi ultimi. Magari trasportava la merce da un luogo all 'altro (via nave, carro o carovana), oppure l 'acquistava da mercanti itineranti per poi venderla nel proprio negozio.",
+        "caratteristicheDisponibili": [
+            "Carisma",
+            "Intelligenza",
+            "Costituzione"
+        ],
+        "abilita": [
+            "addestrare",
+            "persuasione"
+        ],
+        "competenzaStrumento": "Strumenti da navigatore",
+        "talentoOrigine": "Fortunato",
+        "equipaggiamento": []
+    },
+    {
+        "id": "nobile",
+        "nome": "Nobile",
+        "descrizione": "Il personaggio è cresciuto in un castello, circondato da ricchezze, poteri e privilegi immensi. La sua famiglia della bassa aristocrazia si è assicurata che ricevesse un'istruzione di prima classe, che da un lato apprezzava e dall'altro detestava. Il tempo trascorso nel castello e le svariate ore passate a osservare la sua famiglia a corte gli hanno insegnato molto su cosa significhi essere al comando.",
+        "caratteristicheDisponibili": [
+            "Forza",
+            "Intelligenza",
+            "Carisma"
+        ],
+        "abilita": [
+            "storia",
+            "persuasione"
+        ],
+        "competenzaStrumento": "ID o nome dello strumento",
+        "talentoOrigine": "Abile",
+        "equipaggiamento": []
+    },
+    {
+        "id": "sapiente",
+        "nome": "Sapiente",
+        "descrizione": "Il personaggio ha trascorso la sua gioventù tra ville e monasteri, svolgendo svariate stravaganti mansioni in cambio dell'accesso alle biblioteche di quei luoghi. Sono molte le notti che ha passato insonne studiando libri e pergamene col desiderio di scoprire di più sul multiverso e i rudimenti della magia, ma la sua mente non ne ha mai abbastanza.",
+        "caratteristicheDisponibili": [
+            "Intelligenza",
+            "Saggezza",
+            "Costituzione"
+        ],
+        "abilita": [
+            "arcano",
+            "storia"
+        ],
+        "competenzaStrumento": "Scorte da calligrafo",
+        "talentoOrigine": "Iniziato alla magia (Mago)",
+        "equipaggiamento": []
+    },
+    {
+        "id": "scriba",
+        "nome": "Scriba",
+        "descrizione": "Il personaggio ha trascorso i suoi anni di formazione in uno scriptorium, un monastero dedicato alla preservazione della conoscenza, oppure in un istituto governativo dove ha imparato l 'arte della calligrafia e realizzato una serie di raffinati scritti. Magari ha trascritto dei documenti governativi o copiato dei tomi letterari. Potrebbe essere abile come poeta, narratore o ricercatore, ma soprattutto ha una grande attenzione ai dettagli, che lo aiuta a evitare eventuali errori nei documenti che copia e crea.",
+        "caratteristicheDisponibili": [
+            "Intelligenza",
+            "Destrezza",
+            "Saggezza"
+        ],
+        "abilita": [
+            "indagare",
+            "percezione"
+        ],
+        "competenzaStrumento": "Scorte da calligrafo",
+        "talentoOrigine": "Abile",
+        "equipaggiamento": []
+    },
+    {
+        "id": "soldato",
+        "nome": "Soldato",
+        "descrizione": "Il personaggio ha iniziato il suo addestramento nell'arte della guerra non appena è diventato adulto e gli sono rimasti ben pochi ricordi preziosi del suo passato. Ha la battaglia nel sangue. A volte si ritrova a eseguire d' impulso gli esercizi di combattimento basilari che ha appreso tempo addietro. Prima o poi metterà quell'addestramento a buon uso sul campo di battaglia, proteggendo il regno dagli orrori della guerra.",
+        "caratteristicheDisponibili": [
+            "Forza",
+            "Destrezza",
+            "Costituzione"
+        ],
+        "abilita": [
+            "atletica",
+            "intimidire"
+        ],
+        "competenzaStrumento": "ID o nome dello strumento",
+        "talentoOrigine": "Aggressore selvaggio",
+        "equipaggiamento": []
+    },
+    {
+        "id": "viandante",
+        "nome": "Viandante",
+        "descrizione": "Il personaggio è cresciuto in strada circondato da altri emarginati con un fato altrettanto avverso. Alcuni di loro erano amici, altri rivali. Ha dormito dove capitava e svolto lavori di ogni tipo pur di mangiare. A volte, la fame era così insopportabile da costringerlo a ricorrere al furto. Tuttavia, non ha mai smarrito né l'orgoglio, né la speranza. Il suo destino deve ancora essere scritto.",
+        "caratteristicheDisponibili": [
+            "Saggezza",
+            "Destrezza",
+            "Carisma"
+        ],
+        "abilita": [
+            "intuizione",
+            "furtività"
+        ],
+        "competenzaStrumento": "Arnesi da scasso",
+        "talentoOrigine": "Fortunato",
+        "equipaggiamento": []
+    }
+
+
+]
