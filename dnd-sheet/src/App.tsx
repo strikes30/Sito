@@ -72,77 +72,77 @@ function App() {
 
   // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
-  evento.preventDefault();
+    evento.preventDefault();
 
-  const nomePulito = nome.trim();
-  if (nomePulito === "") return;
+    const nomePulito = nome.trim();
+    if (nomePulito === "") return;
 
-  if (
-    nomiCaratteristiche.some(
-      (caratteristica) => caratteristiche[caratteristica] === null,
-    )
-  ) {
-    return;
+    if (
+      nomiCaratteristiche.some(
+        (caratteristica) => caratteristiche[caratteristica] === null,
+      )
+    ) {
+      return;
+    }
+
+    if (!razzaSelezionata) return;
+    if (!razzaSelezionata.taglie.includes(taglia)) return;
+    if (
+      razzaSelezionata.sottorazze.length > 0 &&
+      !sottorazzaSelezionata
+    ) {
+      return;
+    }
+
+    if (
+      primaLinguaId === secondaLinguaId ||
+      !lingueIniziali.some((lingua) => lingua.id === primaLinguaId) ||
+      !lingueIniziali.some((lingua) => lingua.id === secondaLinguaId)
+    ) {
+      return;
+    }
+
+    setNome(nomePulito);
+    setPersonaggioCreato(true);
   }
 
-  if (!razzaSelezionata) return;
-  if (!razzaSelezionata.taglie.includes(taglia)) return;
-  if (
-    razzaSelezionata.sottorazze.length > 0 &&
-    !sottorazzaSelezionata
-  ) {
-    return;
+
+  // Stato per le abilità competenti del personaggio
+  const [abilitaCompetenti, setAbilitaCompetenti] = useState<string[]>([]);
+
+  // Funzione per cambiare lo stato di competenza di un'abilità
+  function cambiaCompetenzaAbilita(id: string) {
+    setAbilitaCompetenti((precedenti) =>
+      precedenti.includes(id)
+        ? precedenti.filter((abilitaId) => abilitaId !== id)
+        : [...precedenti, id],
+    );
   }
-
-  if (
-    primaLinguaId === secondaLinguaId ||
-    !lingueIniziali.some((lingua) => lingua.id === primaLinguaId) ||
-    !lingueIniziali.some((lingua) => lingua.id === secondaLinguaId)
-  ) {
-    return;
-  }
-
-  setNome(nomePulito);
-  setPersonaggioCreato(true);
-}
-
-
-// Stato per le abilità competenti del personaggio
-const [abilitaCompetenti, setAbilitaCompetenti] = useState<string[]>([]);
-
-// Funzione per cambiare lo stato di competenza di un'abilità
-function cambiaCompetenzaAbilita(id: string) {
-  setAbilitaCompetenti((precedenti) =>
-    precedenti.includes(id)
-      ? precedenti.filter((abilitaId) => abilitaId !== id)
-      : [...precedenti, id],
-  );
-}
 
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
   if (!personaggioCreato) {
-  return (
-    <CreaPersonaggio
-      nome={nome}
-      setNome={setNome}
-      classe={classe}
-      setClasse={setClasse}
-      razzaId={razzaId}
-      setRazzaId={setRazzaId}
-      sottorazzaId={sottorazzaId}
-      setSottorazzaId={setSottorazzaId}
-      taglia={taglia}
-      setTaglia={setTaglia}
-      primaLinguaId={primaLinguaId}
-      setPrimaLinguaId={setPrimaLinguaId}
-      secondaLinguaId={secondaLinguaId}
-      setSecondaLinguaId={setSecondaLinguaId}
-      caratteristiche={caratteristiche}
-      cambiaCaratteristica={cambiaCaratteristica}
-      creaPersonaggio={creaPersonaggio}
-    />
-  );
-}
+    return (
+      <CreaPersonaggio
+        nome={nome}
+        setNome={setNome}
+        classe={classe}
+        setClasse={setClasse}
+        razzaId={razzaId}
+        setRazzaId={setRazzaId}
+        sottorazzaId={sottorazzaId}
+        setSottorazzaId={setSottorazzaId}
+        taglia={taglia}
+        setTaglia={setTaglia}
+        primaLinguaId={primaLinguaId}
+        setPrimaLinguaId={setPrimaLinguaId}
+        secondaLinguaId={secondaLinguaId}
+        setSecondaLinguaId={setSecondaLinguaId}
+        caratteristiche={caratteristiche}
+        cambiaCaratteristica={cambiaCaratteristica}
+        creaPersonaggio={creaPersonaggio}
+      />
+    );
+  }
 
   // Cerca nel JSON la classe che ha l'ID scelto dall'utente
   const classeSelezionata = classi.find(
@@ -162,35 +162,36 @@ function cambiaCompetenzaAbilita(id: string) {
       : null;
 
   const classeArmatura =
-  caratteristiche.Destrezza !== null
-    ? calcolaClasseArmatura(caratteristiche.Destrezza)
-    : null;
+    caratteristiche.Destrezza !== null
+      ? calcolaClasseArmatura(caratteristiche.Destrezza)
+      : null;
 
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
-  <SchedaPersonaggio
-    nome={nome}
-    livello={livello}
-    onSaliDiLivello={() => setLivello((precedente) => precedente + 1)}
-    bonusCompetenza={calcolaBonusCompetenza(livello)}
-    nomeClasse={classeSelezionata?.nome}
-    dadoVita={classeSelezionata?.dadoVita}
-    puntiFeritaMassimi={puntiFeritaMassimi}
-    nomeRazza={razzaSelezionata?.nome}
-    nomeSottorazza={sottorazzaSelezionata?.nome}
-    tipoCreatura={razzaSelezionata?.tipoCreatura}
-    taglia={taglia}
-    velocita={razzaSelezionata?.velocita}
-    primaLinguaId={primaLinguaId}
-    secondaLinguaId={secondaLinguaId}
-    caratteristiche={caratteristiche}
-    modificatore={modificatore}
-    classeArmatura={classeArmatura}
-    abilitaCompetenti={abilitaCompetenti}
-onCambiaCompetenzaAbilita={cambiaCompetenzaAbilita}
-  />
-);
+    <SchedaPersonaggio
+      nome={nome}
+      livello={livello}
+      onSaliDiLivello={() => setLivello((precedente) => precedente + 1)}
+      bonusCompetenza={calcolaBonusCompetenza(livello)}
+      nomeClasse={classeSelezionata?.nome}
+      dadoVita={classeSelezionata?.dadoVita}
+      puntiFeritaMassimi={puntiFeritaMassimi}
+      nomeRazza={razzaSelezionata?.nome}
+      nomeSottorazza={sottorazzaSelezionata?.nome}
+      tipoCreatura={razzaSelezionata?.tipoCreatura}
+      taglia={taglia}
+      velocita={razzaSelezionata?.velocita}
+      primaLinguaId={primaLinguaId}
+      secondaLinguaId={secondaLinguaId}
+      caratteristiche={caratteristiche}
+      modificatore={modificatore}
+      classeArmatura={classeArmatura}
+      abilitaCompetenti={abilitaCompetenti}
+      onCambiaCompetenzaAbilita={cambiaCompetenzaAbilita}
+      tiriSalvezzaCompetenti={classeSelezionata?.tiriSalvezza ?? []}
+    />
+  );
 }
 
 export default App;

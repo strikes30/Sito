@@ -2,61 +2,73 @@
   {
     "id": "barbaro",
     "nome": "Barbaro",
-    "dadoVita": 12
+    "dadoVita": 12,
+    "tiriSalvezza": ["Forza", "Costituzione"]
   },
   {
     "id": "bardo",
     "nome": "Bardo",
-    "dadoVita": 8
+    "dadoVita": 8,
+    "tiriSalvezza": ["Destrezza", "Carisma"]
   },
   {
     "id": "chierico",
     "nome": "Chierico",
-    "dadoVita": 8
+    "dadoVita": 8,
+    "tiriSalvezza": ["Saggezza", "Carisma"]
   },
   {
     "id": "druido",
     "nome": "Druido",
-    "dadoVita": 8
+    "dadoVita": 8,
+    "tiriSalvezza": ["Intelligenza", "Saggezza"]
   },
   {
     "id": "guerriero",
     "nome": "Guerriero",
-    "dadoVita": 10
+    "dadoVita": 10,
+    "tiriSalvezza": ["Forza", "Costituzione"]
   },
   {
     "id": "ladro",
     "nome": "Ladro",
-    "dadoVita": 8
+    "dadoVita": 8,
+    "tiriSalvezza": ["Destrezza", "Intelligenza"]
   },
   {
     "id": "mago",
     "nome": "Mago",
-    "dadoVita": 6
+    "dadoVita": 6,
+    "tiriSalvezza": ["Intelligenza", "Saggezza"]
   },
   {
     "id": "monaco",
     "nome": "Monaco",
-    "dadoVita": 8
+    "dadoVita": 8,
+    "tiriSalvezza": ["Forza", "Destrezza"]
   },
   {
     "id": "paladino",
     "nome": "Paladino",
-    "dadoVita": 10
+    "dadoVita": 10,
+    "tiriSalvezza": ["Saggezza", "Carisma"]
   },
   {
     "id": "ranger",
     "nome": "Ranger",
-    "dadoVita": 10
+    "dadoVita": 10,
+    "tiriSalvezza": ["Forza", "Destrezza"]
   },
   {
     "id": "stregone",
     "nome": "Stregone",
-    "dadoVita": 6
+    "dadoVita": 6,
+    "tiriSalvezza": ["Costituzione", "Carisma"]
   },
   {
     "id": "warlock",
     "nome": "Warlock",
-    "dadoVita": 8
+    "dadoVita": 8,
+    "tiriSalvezza": ["Saggezza", "Carisma"]
   }
 ]

@@ -32,6 +32,8 @@ type Props = {
 
     abilitaCompetenti: string[];
     onCambiaCompetenzaAbilita: (id: string) => void;
+
+    tiriSalvezzaCompetenti: string[];
 };
 
 function SchedaPersonaggio({
@@ -54,6 +56,7 @@ function SchedaPersonaggio({
     classeArmatura,
     abilitaCompetenti,
     onCambiaCompetenzaAbilita,
+    tiriSalvezzaCompetenti,
 }: Props) {
     return (
         <main>
@@ -105,7 +108,29 @@ function SchedaPersonaggio({
                             {caratteristica}: {punteggio} (
                             {bonus >= 0 ? "+" : ""}
                             {bonus})
+                            
+                            {/* Mostra le competenza tiri salvezza */}
+                            {(() => {
+                                const competente = tiriSalvezzaCompetenti.includes(caratteristica);
+                                const bonusTiroSalvezza =
+                                    bonus + (competente ? bonusCompetenza : 0);
 
+                                return (
+                                    <p>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={competente}
+                                                readOnly
+                                            />
+                                            Tiro salvezza: {bonusTiroSalvezza >= 0 ? "+" : ""}
+                                            {bonusTiroSalvezza}
+                                        </label>
+                                    </p>
+                                );
+                            })()}
+
+                            {/* Mostra abilità */}
                             <ul>
                                 {abilita
                                     .filter((abilitaSingola) =>
