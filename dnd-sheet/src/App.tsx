@@ -58,7 +58,6 @@ function App() {
   const sottoclasseSelezionata = sottoclassiDisponibili.find(
     (voce) => voce.id === sottoclasseId
   );
-
   // Stato per la distribuzione dei bonus di caratteristica del background
   const [distribuzioneBackground, setDistribuzioneBackground] =
     useState<"" | "due" | "tre">("");
@@ -237,7 +236,11 @@ function App() {
     (voce) => voce.id === classe
   );
 
-  const tipoProgressione = classeSelezionata?.progressioneSlot;
+  // Determina il tipo di progressione degli slot in base alla classe selezionata
+  const tipoProgressione =
+    livello >= 3 && sottoclasseSelezionata?.progressioneSlot
+      ? sottoclasseSelezionata.progressioneSlot
+      : classeSelezionata?.progressioneSlot;
 
   const slotMassimi: number[] =
     tipoProgressione === "completa" ||
