@@ -4,6 +4,7 @@ import SchedaPersonaggio from "./components/SchedaPersonaggio";
 import backgrounds from "./data/background.json";
 import progressioneSlot from "./data/progressionSlot.json";
 import sottoclassi from "./data/sottoclassi.json";
+import progressioneIncantesimi from "./data/progressionSpell.json";
 
 import {
   nomiCaratteristiche,
@@ -20,6 +21,20 @@ import {
 import classi from "./data/classi.json";
 import razze from "./data/razze.json";
 import lingue from "./data/lingue.json";
+
+// Tipi per la progressione degli incantesimi
+type RegoleIncantesimi = {
+  sceltaDa: string;
+  listaIncantesimi?: string;
+  trucchetti: number[];
+  preparati: number[];
+};
+
+// Mappa delle progressioni degli incantesimi per classe
+const progressioniIncantesimi: Record<
+  string,
+  RegoleIncantesimi | undefined
+> = progressioneIncantesimi;
 
 //////////////////CODICE SITO VISIBILE////////////////////
 
@@ -127,7 +142,6 @@ function App() {
         punteggioIniziale + aumento;
     }
   }
-
 
 
   // Funzione per creare il personaggio, con controlli di validità
@@ -249,6 +263,25 @@ function App() {
       ? progressioneSlot[tipoProgressione][livello - 1] ?? []
       : [];
 
+  /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
+  const regoleClasse = progressioniIncantesimi[classe];
+
+  const regoleSottoclasse =
+    livello >= 3 && sottoclasseSelezionata
+      ? progressioniIncantesimi[sottoclasseSelezionata.id]
+      : undefined;
+
+  const regoleIncantesimi = regoleClasse ?? regoleSottoclasse;
+
+  const massimoTrucchetti =
+    regoleIncantesimi?.trucchetti[livello - 1] ?? 0;
+
+  const massimoIncantesimiPreparati =
+    regoleIncantesimi?.preparati[livello - 1] ?? 0;
+
+  const listaIncantesimi =
+    regoleIncantesimi?.listaIncantesimi ?? classe;
+
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
   const costituzione = caratteristicheFinali.Costituzione;
 
@@ -297,6 +330,8 @@ function App() {
       sottoclasseId={sottoclasseId}
       onCambiaSottoclasse={setSottoclasseId}
       sottoclassiDisponibili={sottoclassiDisponibili}
+      massimoTrucchetti={massimoTrucchetti}
+massimoIncantesimiPreparati={massimoIncantesimiPreparati}
     />
   );
 }

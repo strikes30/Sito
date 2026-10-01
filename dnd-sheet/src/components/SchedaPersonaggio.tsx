@@ -49,6 +49,9 @@ type Props = {
         nome: string;
         classeId: string;
     }[];
+
+    massimoTrucchetti: number;
+    massimoIncantesimiPreparati: number;
 };
 
 function SchedaPersonaggio({
@@ -79,6 +82,8 @@ function SchedaPersonaggio({
     descrizioneBackground,
     abilitaBackground,
     slotMassimi,
+    massimoTrucchetti,
+    massimoIncantesimiPreparati
 }: Props) {
 
     {/* Gestione dello stato degli slot consumati */ }
@@ -120,7 +125,7 @@ function SchedaPersonaggio({
             <h2>{nome}</h2>
             <p>Classe: {nomeClasse}</p>
 
-            {/* Sottoclasse */ }
+            {/* Sottoclasse */}
             {livello >= 3 && sottoclassiDisponibili.length > 0 && (
                 <div>
                     <label htmlFor="sottoclasse">Sottoclasse</label>
@@ -140,7 +145,7 @@ function SchedaPersonaggio({
                     </select>
                 </div>
             )}
-            
+
             <p>Dado vita: {dadoVita === undefined ? "—" : `d${dadoVita}`}</p>
             <p>Punti ferita massimi: {puntiFeritaMassimi ?? "—"}</p>
             <p>Classe armatura: {classeArmatura ?? "—"}</p>
@@ -170,6 +175,10 @@ function SchedaPersonaggio({
                 <li>{lingue.find((lingua) => lingua.id === primaLinguaId)?.nome}</li>
                 <li>{lingue.find((lingua) => lingua.id === secondaLinguaId)?.nome}</li>
             </ul>
+
+            {/* Incantesimi */}
+            <p>Trucchetti selezionabili: {massimoTrucchetti}</p>
+            <p>Incantesimi preparabili: {massimoIncantesimiPreparati}</p>
 
             {/* Slot incantesimo */}
             {slotMassimi.some((quantita) => quantita > 0) && (
