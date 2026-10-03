@@ -1,7 +1,11 @@
 import type { Caratteristica } from "./personaggio";
 import type { CompetenzaArmatura } from "./dnd";
 
-export type ProgressioneSlot = "completa" | "metà" | "terzo" | "";
+export type ProgressioneSlot = "completa" | "metà" | "terzo" | "patto" | "nessuna";
+
+export type TipoRecupero =
+  | "riposo-breve"
+  | "riposo-lungo";
 
 export type Classe = {
   id: string;
@@ -10,7 +14,9 @@ export type Classe = {
   progressioneSlot: ProgressioneSlot;
   tiriSalvezza: string[];
   risorsaClasse?: RisorsaClasse;
+  recupero: TipoRecupero[];
   competenzeArmatura: CompetenzaArmatura[];
+  competenzeArma: CompetenzeArma;
 };
 
 export type RisorsaClasse = {
@@ -63,4 +69,71 @@ export type Sottoclasse = {
   nome: string;
   classeId: string;
   progressioneSlot?: ProgressioneSlot;
+};
+
+export type TipoArma =
+  | "mischia"
+  | "distanza";
+
+
+export type CategoriaArma =
+  | "semplici"
+  | "marziali";
+
+
+export type TipoDanno =
+  | "tagliente"
+  | "perforante"
+  | "contundente";
+
+
+export type ProprietaArma =
+  | "accurata"
+  | "lancio"
+  | "leggera"
+  | "versatile"
+  | "due-mani";
+
+
+export type PadronanzaArma =
+  | "vessazione"
+  | "rovesciamento"
+  | "graffio"
+  | "lentezza"
+  | "prosciugamento"
+  | "spinta"
+  | "doppio-fendente"
+  | "colpo-di-striscio";
+
+
+export type RegolaCompetenzaArma = {
+  categoria: CategoriaArma;
+  proprieta: ProprietaArma[];
+};
+
+
+export type CompetenzeArma = {
+  categorie: CategoriaArma[];
+  categorieConProprieta: RegolaCompetenzaArma[];
+};
+
+
+export type Arma = {
+  id: string;
+  nome: string;
+  categoria: CategoriaArma;
+  tipo: TipoArma;
+  danno: string;
+  tipoDanno: TipoDanno;
+  proprieta: ProprietaArma[];
+  dannoVersatile?: string;
+  gittata?: {
+    normale: number;
+    lunga: number;
+  };
+  padronanza: PadronanzaArma;
+  peso: number;
+  unitaPeso: "kg";
+  costo: number;
+  unitaCosto: "mo" | "ma" | "mr";
 };

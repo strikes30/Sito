@@ -1,0 +1,495 @@
+[
+  {
+    "id": "ascia",
+    "nome": "Ascia",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d6",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "lancio",
+      "leggera"
+    ],
+    "gittata": {
+      "normale": 6,
+      "lunga": 18
+    },
+    "padronanza": "vessazione",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 5,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "bastone-ferrato",
+    "nome": "Bastone ferrato",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d6",
+    "tipoDanno": "contundente",
+    "proprieta": [
+      "versatile"
+    ],
+    "dannoVersatile": "1d8",
+    "padronanza": "rovesciamento",
+    "peso": 2,
+    "unitaPeso": "kg",
+    "costo": 2,
+    "unitaCosto": "ma"
+  },
+  {
+    "id": "falcetto",
+    "nome": "Falcetto",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d4",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "leggera"
+    ],
+    "padronanza": "graffio",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 1,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "giavellotto",
+    "nome": "Giavellotto",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d6",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "lancio"
+    ],
+    "gittata": {
+      "normale": 9,
+      "lunga": 36
+    },
+    "padronanza": "lentezza",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 5,
+    "unitaCosto": "ma"
+  },
+  {
+    "id": "lancia",
+    "nome": "Lancia",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d6",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "lancio",
+      "versatile"
+    ],
+    "gittata": {
+      "normale": 6,
+      "lunga": 18
+    },
+    "dannoVersatile": "1d8",
+    "padronanza": "prosciugamento",
+    "peso": 1.5,
+    "unitaPeso": "kg",
+    "costo": 1,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "martello-leggero",
+    "nome": "Martello leggero",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d4",
+    "tipoDanno": "contundente",
+    "proprieta": [
+      "lancio",
+      "leggera"
+    ],
+    "gittata": {
+      "normale": 6,
+      "lunga": 18
+    },
+    "padronanza": "graffio",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 2,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "mazza",
+    "nome": "Mazza",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d6",
+    "tipoDanno": "contundente",
+    "proprieta": [],
+    "padronanza": "prosciugamento",
+    "peso": 2,
+    "unitaPeso": "kg",
+    "costo": 5,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "pugnale",
+    "nome": "Pugnale",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d4",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "accurata",
+      "lancio",
+      "leggera"
+    ],
+    "gittata": {
+      "normale": 6,
+      "lunga": 18
+    },
+    "padronanza": "graffio",
+    "peso": 0.5,
+    "unitaPeso": "kg",
+    "costo": 2,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "randello-pesante",
+    "nome": "Randello pesante",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "contundente",
+    "proprieta": [
+      "due-mani"
+    ],
+    "padronanza": "spinta",
+    "peso": 5,
+    "unitaPeso": "kg",
+    "costo": 2,
+    "unitaCosto": "ma"
+  },
+  {
+    "id": "randello",
+    "nome": "Randello",
+    "categoria": "semplici",
+    "tipo": "mischia",
+    "danno": "1d4",
+    "tipoDanno": "contundente",
+    "proprieta": [
+      "leggera"
+    ],
+    "padronanza": "lentezza",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 1,
+    "unitaCosto": "ma"
+  },
+  {
+    "id": "alabarda",
+    "nome": "Alabarda",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d10",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "due-mani",
+      "pesante",
+      "portata"
+    ],
+    "padronanza": "doppio-fendente",
+    "peso": 3,
+    "unitaPeso": "kg",
+    "costo": 20,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "ascia-bipenne",
+    "nome": "Ascia bipenne",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d12",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "due-mani",
+      "pesante"
+    ],
+    "padronanza": "doppio-fendente",
+    "peso": 3.5,
+    "unitaPeso": "kg",
+    "costo": 30,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "ascia-da-battaglia",
+    "nome": "Ascia da battaglia",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "versatile"
+    ],
+    "dannoVersatile": "1d10",
+    "padronanza": "rovesciamento",
+    "peso": 2,
+    "unitaPeso": "kg",
+    "costo": 10,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "falcione",
+    "nome": "Falcione",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d10",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "due-mani",
+      "pesante",
+      "portata"
+    ],
+    "padronanza": "colpo-di-striscio",
+    "peso": 3,
+    "unitaPeso": "kg",
+    "costo": 20,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "frusta",
+    "nome": "Frusta",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d4",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "accurata",
+      "portata"
+    ],
+    "padronanza": "lentezza",
+    "peso": 1.5,
+    "unitaPeso": "kg",
+    "costo": 2,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "lancia-da-cavaliere",
+    "nome": "Lancia da cavaliere",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d10",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "due-mani",
+      "pesante",
+      "portata"
+    ],
+    "padronanza": "rovesciamento",
+    "peso": 3,
+    "unitaPeso": "kg",
+    "costo": 10,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "maglio",
+    "nome": "Maglio",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "2d6",
+    "tipoDanno": "contundente",
+    "proprieta": [
+      "due-mani",
+      "pesante"
+    ],
+    "padronanza": "rovesciamento",
+    "peso": 5,
+    "unitaPeso": "kg",
+    "costo": 10,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "martello-da-guerra",
+    "nome": "Martello da guerra",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "contundente",
+    "proprieta": [
+      "versatile"
+    ],
+    "dannoVersatile": "1d10",
+    "padronanza": "spinta",
+    "peso": 2.5,
+    "unitaPeso": "kg",
+    "costo": 15,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "mazza-chiodata",
+    "nome": "Mazza chiodata",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "perforante",
+    "proprieta": [],
+    "padronanza": "prosciugamento",
+    "peso": 2,
+    "unitaPeso": "kg",
+    "costo": 15,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "mazzafrusto",
+    "nome": "Mazzafrusto",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "contundente",
+    "proprieta": [],
+    "padronanza": "prosciugamento",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 10,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "picca",
+    "nome": "Picca",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d10",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "due-mani",
+      "pesante",
+      "portata"
+    ],
+    "padronanza": "spinta",
+    "peso": 9,
+    "unitaPeso": "kg",
+    "costo": 5,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "scimitarra",
+    "nome": "Scimitarra",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d6",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "accurata",
+      "leggera"
+    ],
+    "padronanza": "graffio",
+    "peso": 1.5,
+    "unitaPeso": "kg",
+    "costo": 25,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "spada-corta",
+    "nome": "Spada corta",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d6",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "accurata",
+      "leggera"
+    ],
+    "padronanza": "vessazione",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 10,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "spada-lunga",
+    "nome": "Spada lunga",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "versatile"
+    ],
+    "dannoVersatile": "1d10",
+    "padronanza": "prosciugamento",
+    "peso": 1.5,
+    "unitaPeso": "kg",
+    "costo": 15,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "spadone",
+    "nome": "Spadone",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "2d6",
+    "tipoDanno": "tagliente",
+    "proprieta": [
+      "due-mani",
+      "pesante"
+    ],
+    "padronanza": "colpo-di-striscio",
+    "peso": 3,
+    "unitaPeso": "kg",
+    "costo": 50,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "stocco",
+    "nome": "Stocco",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "accurata"
+    ],
+    "padronanza": "vessazione",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 25,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "tridente",
+    "nome": "Tridente",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "lancio",
+      "versatile"
+    ],
+    "gittata": {
+      "normale": 6,
+      "lunga": 18
+    },
+    "dannoVersatile": "1d10",
+    "padronanza": "rovesciamento",
+    "peso": 2,
+    "unitaPeso": "kg",
+    "costo": 5,
+    "unitaCosto": "mo"
+  },
+  {
+    "id": "piccone-da-guerra",
+    "nome": "Piccone da guerra",
+    "categoria": "marziali",
+    "tipo": "mischia",
+    "danno": "1d8",
+    "tipoDanno": "perforante",
+    "proprieta": [
+      "versatile"
+    ],
+    "dannoVersatile": "1d10",
+    "padronanza": "prosciugamento",
+    "peso": 1,
+    "unitaPeso": "kg",
+    "costo": 5,
+    "unitaCosto": "mo"
+  }
+]

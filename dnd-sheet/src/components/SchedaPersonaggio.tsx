@@ -6,6 +6,7 @@ import SezioneSlotIncantesimo from "./scheda/SezioneSlotIncantesimo";
 import SezioneCaratteristiche from "./scheda/SezioneCaratteristiche";
 import type { Caratteristica } from "../types/personaggio";
 import type { CompetenzaArmatura } from "../types/dnd";
+import type { Arma,CompetenzeArma } from "../types/datiGioco";
 
 
 import type { Spell } from "../types/spell";
@@ -20,6 +21,8 @@ type Props = {
     // Dati della classe e della sottoclasse
     nomeClasse: string | undefined;
     competenzeArmatura: CompetenzaArmatura[];
+    competenzeArma: CompetenzeArma;
+    armiCompetenti: Arma[];
     dadoVita: number | undefined;
     puntiFeritaMassimi: number | null;
 
@@ -92,6 +95,8 @@ function SchedaPersonaggio({
     bonusCompetenza,
     nomeClasse,
     competenzeArmatura,
+    competenzeArma,
+    armiCompetenti,
     sottoclasseId,
     onCambiaSottoclasse,
     sottoclassiDisponibili,
@@ -148,6 +153,8 @@ function SchedaPersonaggio({
                 bonusCompetenza={bonusCompetenza}
                 nomeClasse={nomeClasse}
                 competenzeArmatura={competenzeArmatura}
+                competenzeArma={competenzeArma}
+                armiCompetenti={armiCompetenti}
                 sottoclasseId={sottoclasseId}
                 onCambiaSottoclasse={onCambiaSottoclasse}
                 sottoclassiDisponibili={sottoclassiDisponibili}

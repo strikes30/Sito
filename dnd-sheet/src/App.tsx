@@ -62,7 +62,16 @@ import type {
   Lingua,
   Razza,
   Sottoclasse,
+  Arma,
 } from "./types/datiGioco";
+
+// Importa le armi
+import armiJson from "./data/armi.json";
+const armi = armiJson as Arma[];
+
+import {
+  personaggioÈCompetenteConArma,
+} from "./utils/competenzeArmi.ts";
 
 // Tipi per la gestione della vista corrente dell'applicazione
 type Vista =
@@ -211,7 +220,6 @@ function App() {
       bozza,
       caratteristicheFinali,
     );
-
 
     salvaPersonaggio(nuovoPersonaggio);
     setPersonaggio(nuovoPersonaggio);
@@ -447,38 +455,56 @@ function App() {
       return;
     }
 
+
     const idDisponibili = new Set(
       spellDisponibili.map((spell) => spell.id),
     );
+
 
     const trucchettiValidi = personaggio.trucchettiScelti.filter(
       (id) => idDisponibili.has(id),
     );
 
+
     const incantesimiValidi = personaggio.incantesimiScelti.filter(
       (id) => idDisponibili.has(id),
     );
 
+
     const trucchettiInvariati =
-      trucchettiValidi.length === personaggio.trucchettiScelti.length;
+      trucchettiValidi.length === personaggio.trucchettiScelti.length &&
+      trucchettiValidi.every(
+        (id, indice) => id === personaggio.trucchettiScelti[indice],
+      );
+
+
     const incantesimiInvariati =
-      incantesimiValidi.length === personaggio.incantesimiScelti.length;
+      incantesimiValidi.length === personaggio.incantesimiScelti.length &&
+      incantesimiValidi.every(
+        (id, indice) => id === personaggio.incantesimiScelti[indice],
+      );
+
 
     if (trucchettiInvariati && incantesimiInvariati) {
       return;
     }
 
-    setPersonaggio((precedente) =>
-      precedente
-        ? {
-          ...precedente,
-          trucchettiScelti: trucchettiValidi,
-          incantesimiScelti: incantesimiValidi,
-        }
-        : precedente,
-    );
+
+    setPersonaggio((precedente) => {
+      if (!precedente) {
+        return precedente;
+      }
+
+
+      return {
+        ...precedente,
+        trucchettiScelti: trucchettiValidi,
+        incantesimiScelti: incantesimiValidi,
+      };
+    });
   }, [
-    personaggio,
+    personaggio?.trucchettiScelti,
+    personaggio?.incantesimiScelti,
     listaIncantesimi,
     massimoTrucchetti,
     livelloMassimoSpell,
@@ -536,6 +562,16 @@ function App() {
     (classe) => classe.id === personaggio.classeId,
   );
 
+  // Filtra le armi in base alle competenze del personaggio e della classe selezionata
+  const armiCompetenti = classeScheda
+    ? armi.filter((arma) =>
+      personaggioÈCompetenteConArma(
+        arma,
+        classeScheda.competenzeArma,
+      ),
+    )
+    : [];
+
   const razzaScheda = razze.find(
     (razza) => razza.id === personaggio.razzaId,
   );
@@ -588,6 +624,13 @@ function App() {
       } bonusCompetenza={statistiche.bonusCompetenza}
       nomeClasse={classeScheda?.nome}
       competenzeArmatura={personaggio.competenzeArmatura}
+      competenzeArma={
+        classeScheda?.competenzeArma ?? {
+          categorie: [],
+          categorieConProprieta: [],
+        }
+      }
+      armiCompetenti={armiCompetenti}
       dadoVita={classeScheda?.dadoVita}
       puntiFeritaMassimi={puntiFeritaMassimi}
       nomeRazza={razzaScheda?.nome}

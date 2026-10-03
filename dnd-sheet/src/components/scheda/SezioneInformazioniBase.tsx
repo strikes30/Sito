@@ -1,5 +1,6 @@
 import lingue from "../../data/lingue.json";
 import type { CompetenzaArmatura } from "../../types/dnd";
+import type { Arma, CompetenzeArma } from "../../types/datiGioco";
 import { etichetteCompetenzeArmatura } from "../../utils/etichetteDnD";
 
 type SottoclasseDisponibile = {
@@ -16,6 +17,8 @@ type SezioneInformazioniBaseProps = {
 
   nomeClasse: string | undefined;
   competenzeArmatura: CompetenzaArmatura[];
+  competenzeArma: CompetenzeArma;
+  armiCompetenti: Arma[];
   sottoclasseId: string;
   onCambiaSottoclasse: (id: string) => void;
   sottoclassiDisponibili: SottoclasseDisponibile[];
@@ -44,6 +47,8 @@ export default function SezioneInformazioniBase({
   bonusCompetenza,
   nomeClasse,
   competenzeArmatura,
+  competenzeArma,
+  armiCompetenti,
   sottoclasseId,
   onCambiaSottoclasse,
   sottoclassiDisponibili,
@@ -99,6 +104,47 @@ export default function SezioneInformazioniBase({
         </div>
       )}
       <div>
+        {/* Competenza con le armi */}
+        <section>
+          <h2>Competenze nelle armi</h2>
+
+          <p>
+            Categorie:{" "}
+            {competenzeArma.categorie.length > 0
+              ? competenzeArma.categorie.join(", ")
+              : "nessuna"}
+          </p>
+
+          {competenzeArma.categorieConProprieta.length > 0 && (
+            <ul>
+              {competenzeArma.categorieConProprieta.map((regola) => (
+                <li key={regola.categoria}>
+                  Armi {regola.categoria} con proprietà:{" "}
+                  {regola.proprieta.join(", ")}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {/* Armi competenti */}
+        <section>
+          <h2>Armi utilizzabili</h2>
+
+          {armiCompetenti.length === 0 ? (
+            <p>Nessuna arma disponibile</p>
+          ) : (
+            <ul>
+              {armiCompetenti.map((arma) => (
+                <li key={arma.id}>
+                  {arma.nome} — {arma.danno} {arma.tipoDanno}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {/* Competenze armatura */}
         <h3>Competenze armatura</h3>
         {competenzeArmatura.length === 0 ? (
           <p>Nessuna competenza con armature</p>

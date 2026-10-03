@@ -3,3 +3,7 @@ export type CompetenzaArmatura =
   | "medie"
   | "pesanti"
   | "scudi";
+
+export type CompetenzaArma =
+  | "semplici"
+  | "marziali";
