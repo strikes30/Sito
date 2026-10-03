@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import { bozzaPersonaggioReducer } from "./engine/bozzaPersonaggioReducer";
 import { bozzaIniziale } from "./types/bozzaPersonaggio";
@@ -46,11 +45,16 @@ import { calcolaCaratteristicheFinali } from "./utils/calcolaCaratteristicheFina
 
 import { validaBozzaPersonaggio } from "./engine/validaBozzaPersonaggio";
 
+// Importa i dati di gioco dai file JSON
 import backgroundsJson from "./data/background.json";
 import classiJson from "./data/classi.json";
 import razzeJson from "./data/razze.json";
 import lingueJson from "./data/lingue.json";
 import sottoclassiJson from "./data/sottoclassi.json";
+
+// Importa i componenti e gli hook necessari per la gestione dei personaggi salvati
+import { ListaPersonaggiSalvati } from "./components/ListaPersonaggiSalvati";
+import { usePersonaggiSalvati } from "./hooks/usePersonaggiSalvati";
 
 import type {
   Background,
@@ -59,6 +63,12 @@ import type {
   Razza,
   Sottoclasse,
 } from "./types/datiGioco";
+
+// Tipi per la gestione della vista corrente dell'applicazione
+type Vista =
+  | { nome: "lista" }
+  | { nome: "creazione" }
+  | { nome: "scheda"; personaggioId: string };
 
 const backgrounds = backgroundsJson as Background[];
 const classi = classiJson as Classe[];
@@ -84,6 +94,15 @@ const progressioniIncantesimi: Record<
 
 function App() {
 
+  const [vista, setVista] = useState<Vista>({ nome: "lista" });
+
+  const {
+    personaggiSalvati,
+    salvaPersonaggio,
+    eliminaPersonaggio,
+    cercaPersonaggio,
+  } = usePersonaggiSalvati();
+
   // Stato per la bozza del personaggio in fase di creazione
   const [bozza, dispatchBozza] = useReducer(
     bozzaPersonaggioReducer,
@@ -93,6 +112,15 @@ function App() {
   // Stato per il personaggio creato, inizialmente nullo
   const [personaggio, setPersonaggio] =
     useState<Personaggio | null>(null);
+
+  // Effetto per salvare il personaggio creato nel localStorage quando cambia
+  useEffect(() => {
+    if (!personaggio || vista.nome !== "scheda") {
+      return;
+    }
+
+    salvaPersonaggio(personaggio);
+  }, [personaggio, salvaPersonaggio, vista.nome]);
 
   // Determina il livello corrente del personaggio, se esiste, altrimenti assume il livello 1
   const livelloCorrente = personaggio?.livello ?? 1;
@@ -177,7 +205,12 @@ function App() {
       caratteristicheFinali,
     );
 
+    salvaPersonaggio(nuovoPersonaggio);
     setPersonaggio(nuovoPersonaggio);
+    setVista({
+      nome: "scheda",
+      personaggioId: nuovoPersonaggio.id,
+    });
   }
 
   // Funzione per caricare un personaggio di prova, utile per testare l'applicazione
@@ -211,16 +244,60 @@ function App() {
     });
   }
 
-  // Stato per le abilità competenti del personaggio
+  // Funzione per aprire un personaggio salvato dalla lista
+  function apriPersonaggioSalvato(id: string) {
+    const personaggioSalvato = cercaPersonaggio(id);
+
+    if (!personaggioSalvato) {
+      return;
+    }
+
+    setPersonaggio(personaggioSalvato);
+    setVista({
+      nome: "scheda",
+      personaggioId: id,
+    });
+  }
+
+
+  function creaNuovoPersonaggio() {
+    dispatchBozza({ type: "RESET" });
+    setPersonaggio(null);
+    setErroriForm([]);
+    setAbilitaCompetenti([]);
+    setVista({ nome: "creazione" });
+  }
+
+
+  function tornaAllaLista() {
+    setPersonaggio(null);
+    setErroriForm([]);
+    setAbilitaCompetenti([]);
+    setVista({ nome: "lista" });
+  }
+
+  // Stato per le abilita competenti del personaggio
   const [abilitaCompetenti, setAbilitaCompetenti] = useState<string[]>([]);
 
-  // Funzione per cambiare lo stato di competenza di un'abilità
+  // Funzione per cambiare lo stato di competenza di un'abilita
   function cambiaCompetenzaAbilita(id: string) {
-    setAbilitaCompetenti((precedenti) =>
-      precedenti.includes(id)
-        ? precedenti.filter((abilitaId) => abilitaId !== id)
-        : [...precedenti, id],
-    );
+    setPersonaggio((precedente) => {
+      if (!precedente) {
+        return precedente;
+      }
+
+      const abilitaCompetentiAggiornate =
+        precedente.abilitaCompetenti.includes(id)
+          ? precedente.abilitaCompetenti.filter(
+            (abilitaId) => abilitaId !== id,
+          )
+          : [...precedente.abilitaCompetenti, id];
+
+      return {
+        ...precedente,
+        abilitaCompetenti: abilitaCompetentiAggiornate,
+      };
+    });
   }
 
   /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
@@ -311,8 +388,20 @@ function App() {
     cambiaPuntiRisorsaSpesi,
   } = useRisorseClasse();
 
+  // RENDERING DEL SITO, visualizzazione lista personaggi salvati
+  if (vista.nome === "lista") {
+    return (
+      <ListaPersonaggiSalvati
+        personaggi={personaggiSalvati}
+        onApri={apriPersonaggioSalvato}
+        onElimina={eliminaPersonaggio}
+        onNuovoPersonaggio={creaNuovoPersonaggio}
+      />
+    );
+  }
+
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
-  if (!personaggio) {
+  if (vista.nome === "creazione") {
     return (
       <CreaPersonaggio
         bozza={bozza}
@@ -321,6 +410,18 @@ function App() {
         creaPersonaggio={creaPersonaggio}
         caricaPersonaggioDiProva={caricaPersonaggioDiProva}
         erroriForm={erroriForm}
+      />
+    );
+  }
+
+  // RENDERING DEL SITO, visualizzazione personaggio creato
+  if (!personaggio) {
+    return (
+      <ListaPersonaggiSalvati
+        personaggi={personaggiSalvati}
+        onApri={apriPersonaggioSalvato}
+        onElimina={eliminaPersonaggio}
+        onNuovoPersonaggio={creaNuovoPersonaggio}
       />
     );
   }
@@ -362,11 +463,8 @@ function App() {
 
   // Funzione per resettare la bozza del personaggio e tornare alla fase di creazione
   function nuovoPersonaggio() {
-  dispatchBozza({ type: "RESET" });
-  setPersonaggio(null);
-  setErroriForm([]);
-  setAbilitaCompetenti([]);
-}
+    tornaAllaLista();
+  }
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
@@ -396,12 +494,12 @@ function App() {
       caratteristiche={personaggio.caratteristiche}
       modificatore={modificatore}
       classeArmatura={classeArmatura}
-      abilitaCompetenti={abilitaCompetenti}
+      abilitaCompetenti={personaggio.abilitaCompetenti}
       onCambiaCompetenzaAbilita={cambiaCompetenzaAbilita}
       tiriSalvezzaCompetenti={classeScheda?.tiriSalvezza ?? []}
       nomeBackground={backgroundScheda?.nome}
       descrizioneBackground={backgroundScheda?.descrizione}
-      abilitaBackground={backgroundScheda?.abilita ?? []} 
+      abilitaBackground={backgroundScheda?.abilita ?? []}
       slotMassimi={slotMassimi}
       slotConsumati={slotConsumati}
       onCambiaSlot={cambiaSlot}

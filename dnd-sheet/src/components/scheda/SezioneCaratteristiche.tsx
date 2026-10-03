@@ -106,6 +106,7 @@ export default function SezioneCaratteristiche({
                         {bonusAbilita >= 0 ? "+" : ""}
                         {bonusAbilita}
                         {competenteDaBackground && " (background)"}
+                        {abilitaCompetenti.includes(abilitaSingola.id) && " (scelta)"}
                       </label>
                     </li>
                   );

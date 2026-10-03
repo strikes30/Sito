@@ -51,7 +51,6 @@ export type Background = {
   descrizione: string;
   caratteristicheDisponibili: Caratteristica[];
   abilita: string[];
-  abilità?: string[];
   competenzaStrumento: string;
   talentoOrigine: string;
   equipaggiamento: unknown[];
