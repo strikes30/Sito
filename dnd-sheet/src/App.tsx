@@ -299,11 +299,14 @@ function App() {
   const listaIncantesimi =
     regoleIncantesimi?.listaIncantesimi ?? classe;
 
-  const livelloMassimoSpell = slotMassimi.reduce(
-    (massimo, quantita, indice) =>
-      quantita > 0 ? indice + 1 : massimo,
-    0
-  );
+  const livelloMassimoSpell =
+    classe === "warlock"
+      ? classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1] ?? 0
+      : slotMassimi.reduce(
+        (massimo, quantita, indice) =>
+          quantita > 0 ? indice + 1 : massimo,
+        0
+      );
 
   const spellDisponibili = spells.filter(
     (spell) =>
@@ -360,6 +363,25 @@ function App() {
     caratteristicheFinali.Destrezza !== null
       ? calcolaClasseArmatura(caratteristicheFinali.Destrezza)
       : null;
+
+
+  console.log("DEBUG WARLOCK", {
+    classe,
+    regoleClasse,
+    regoleSottoclasse,
+    regoleIncantesimi,
+    listaIncantesimi,
+    massimoTrucchetti,
+    massimoIncantesimiPreparati,
+    slotMassimi,
+    livelloMassimoSpell,
+    hexTrovato: spells.find((spell) => spell.id === "hex"),
+    hexPassaLista:
+      spells.find((spell) => spell.id === "hex")?.classes.includes(listaIncantesimi),
+    hexPassaLivello:
+      (spells.find((spell) => spell.id === "hex")?.level ?? 0) <= livelloMassimoSpell,
+    spellDisponibiliLivello1: spellDisponibili.filter((s) => s.level === 1),
+  });
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (

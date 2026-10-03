@@ -304,6 +304,8 @@ function SchedaPersonaggio({
                             : "Nascondi trucchetti non conosciuti"}
                     </button>
 
+                    
+
                     {/* Lista dei trucchetti disponibili */}
                     {trucchettiVisibili.map((spell) => (
                         <div key={spell.id}>
@@ -423,7 +425,7 @@ function SchedaPersonaggio({
                     </button>
                 </section>
             )}
-            
+
             {/* Caratteristiche */}
             <h2>Caratteristiche</h2>
             <ul>
