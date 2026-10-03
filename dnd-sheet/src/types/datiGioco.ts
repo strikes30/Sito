@@ -1,4 +1,5 @@
 import type { Caratteristica } from "./personaggio";
+import type { CompetenzaArmatura } from "./dnd";
 
 export type ProgressioneSlot = "completa" | "metà" | "terzo" | "";
 
@@ -9,6 +10,7 @@ export type Classe = {
   progressioneSlot: ProgressioneSlot;
   tiriSalvezza: string[];
   risorsaClasse?: RisorsaClasse;
+  competenzeArmatura: CompetenzaArmatura[];
 };
 
 export type RisorsaClasse = {

@@ -7,7 +7,8 @@
       "Forza",
       "Costituzione"
     ],
-    "progressioneSlot": "nessuna"
+    "progressioneSlot": "nessuna",
+    "competenzeArmatura": ["leggere", "medie", "scudi"]
   },
   {
     "id": "bardo",
@@ -17,7 +18,8 @@
       "Destrezza",
       "Carisma"
     ],
-    "progressioneSlot": "completa"
+    "progressioneSlot": "completa",
+    "competenzeArmatura": ["leggere"]
   },
   {
     "id": "chierico",
@@ -27,7 +29,8 @@
       "Saggezza",
       "Carisma"
     ],
-    "progressioneSlot": "completa"
+    "progressioneSlot": "completa",
+    "competenzeArmatura": ["leggere"]
   },
   {
     "id": "druido",
@@ -37,7 +40,8 @@
       "Intelligenza",
       "Saggezza"
     ],
-    "progressioneSlot": "completa"
+    "progressioneSlot": "completa",
+    "competenzeArmatura": ["leggere", "scudi"]
   },
   {
     "id": "guerriero",
@@ -46,7 +50,9 @@
     "tiriSalvezza": [
       "Forza",
       "Costituzione"
-    ]
+    ],
+    "progressioneSlot": "nessuna",
+    "competenzeArmatura": ["leggere", "medie", "pesanti", "scudi"]
   },
   {
     "id": "ladro",
@@ -56,7 +62,8 @@
       "Destrezza",
       "Intelligenza"
     ],
-    "progressioneSlot": "nessuna"
+    "progressioneSlot": "nessuna",
+    "competenzeArmatura": ["leggere"]
   },
   {
     "id": "mago",
@@ -66,7 +73,8 @@
       "Intelligenza",
       "Saggezza"
     ],
-    "progressioneSlot": "completa"
+    "progressioneSlot": "completa",
+    "competenzeArmatura": []
   },
   {
     "id": "monaco",
@@ -77,6 +85,7 @@
       "Destrezza"
     ],
     "progressioneSlot": "nessuna",
+    "competenzeArmatura": [],
     "risorsaClasse": {
       "id": "punti-focus",
       "nome": "Punti Focus",
@@ -117,7 +126,8 @@
       "Saggezza",
       "Carisma"
     ],
-    "progressioneSlot": "metà"
+    "progressioneSlot": "metà",
+    "competenzeArmatura": ["leggere", "medie", "pesanti", "scudi"]
   },
   {
     "id": "ranger",
@@ -127,7 +137,8 @@
       "Forza",
       "Destrezza"
     ],
-    "progressioneSlot": "metà"
+    "progressioneSlot": "metà",
+    "competenzeArmatura": ["leggere", "medie", "scudi"]
   },
   {
     "id": "stregone",
@@ -137,7 +148,8 @@
       "Costituzione",
       "Carisma"
     ],
-    "progressioneSlot": "completa"
+    "progressioneSlot": "completa",
+    "competenzeArmatura": []
   },
   {
     "id": "warlock",
@@ -148,6 +160,7 @@
       "Carisma"
     ],
     "progressioneSlot": "patto",
+    "competenzeArmatura": ["leggere"],
   "risorsaClasse": {
     "id": "magia-del-patto",
     "nome": "Magia del Patto",

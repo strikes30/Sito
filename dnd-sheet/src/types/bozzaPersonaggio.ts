@@ -1,4 +1,5 @@
 import type { Caratteristica } from "./personaggio";
+import type { CompetenzaArmatura } from "./dnd";
 
 export type { Caratteristica };
 
@@ -21,6 +22,7 @@ export type BozzaPersonaggio = {
   caratteristicaPiuDue: string;
   caratteristicaPiuUno: string;
   caratteristiche: CaratteristicheBozza;
+  competenzeArmatura: CompetenzaArmatura[];
 };
 
 // Azioni possibili per il reducer della bozza del personaggio
@@ -45,4 +47,5 @@ export const bozzaIniziale: BozzaPersonaggio = {
     Saggezza: null,
     Carisma: null,
   },
+  competenzeArmatura: [],
 };

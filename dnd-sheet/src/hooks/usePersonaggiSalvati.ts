@@ -1,23 +1,29 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Personaggio } from "../types/personaggio";
 
 
+
 const CHIAVE_ARCHIVIO = "dnd-sheet.personaggi.v1";
+
 
 
 function caricaPersonaggiSalvati(): Personaggio[] {
   try {
     const datiSalvati = localStorage.getItem(CHIAVE_ARCHIVIO);
 
+
     if (!datiSalvati) {
       return [];
     }
 
+
     const dati = JSON.parse(datiSalvati);
+
 
     if (!Array.isArray(dati)) {
       return [];
     }
+
 
     return dati as Personaggio[];
   } catch {
@@ -26,10 +32,12 @@ function caricaPersonaggiSalvati(): Personaggio[] {
 }
 
 
+
 export function usePersonaggiSalvati() {
   const [personaggiSalvati, setPersonaggiSalvati] = useState<Personaggio[]>(
     caricaPersonaggiSalvati,
   );
+
 
 
   useEffect(() => {
@@ -45,37 +53,48 @@ export function usePersonaggiSalvati() {
   }, [personaggiSalvati]);
 
 
-  function salvaPersonaggio(personaggio: Personaggio) {
-    setPersonaggiSalvati((precedenti) => {
-      const giaSalvato = precedenti.some(
-        (precedente) => precedente.id === personaggio.id,
-      );
 
-      if (giaSalvato) {
-        return precedenti.map((precedente) =>
-          precedente.id === personaggio.id
-            ? personaggio
-            : precedente,
+  const salvaPersonaggio = useCallback(
+    (personaggio: Personaggio) => {
+      setPersonaggiSalvati((precedenti) => {
+        const giaSalvato = precedenti.some(
+          (precedente) => precedente.id === personaggio.id,
         );
-      }
-
-      return [...precedenti, personaggio];
-    });
-  }
 
 
-  function eliminaPersonaggio(id: string) {
+        if (giaSalvato) {
+          return precedenti.map((precedente) =>
+            precedente.id === personaggio.id
+              ? personaggio
+              : precedente,
+          );
+        }
+
+
+        return [...precedenti, personaggio];
+      });
+    },
+    [],
+  );
+
+
+
+  const eliminaPersonaggio = useCallback((id: string) => {
     setPersonaggiSalvati((precedenti) =>
       precedenti.filter((personaggio) => personaggio.id !== id),
     );
-  }
+  }, []);
 
 
-  function cercaPersonaggio(id: string): Personaggio | undefined {
-    return personaggiSalvati.find(
-      (personaggio) => personaggio.id === id,
-    );
-  }
+
+  const cercaPersonaggio = useCallback(
+    (id: string) =>
+      personaggiSalvati.find(
+        (personaggio) => personaggio.id === id,
+      ),
+    [personaggiSalvati],
+  );
+
 
 
   return {

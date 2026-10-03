@@ -1,23 +1,29 @@
 import { bozzaIniziale } from "../types/bozzaPersonaggio";
+import classiJson from "../data/classi.json";
 import type {
   BozzaPersonaggio,
   Caratteristica,
   DistribuzioneBackground,
 } from "../types/bozzaPersonaggio";
+import type { Classe } from "../types/datiGioco";
+
+
+const classi = classiJson as Classe[];
+
 
 export type AzioneBozza =
- | {
-  type: "CAMBIA_CAMPO";
-  campo:
-    | "nome"
-    | "taglia"
-    | "sottorazzaId"
-    | "primaLinguaId"
-    | "secondaLinguaId"
-    | "caratteristicaPiuDue"
-    | "caratteristicaPiuUno";
-  valore: string;
-}
+  | {
+    type: "CAMBIA_CAMPO";
+    campo:
+      | "nome"
+      | "taglia"
+      | "sottorazzaId"
+      | "primaLinguaId"
+      | "secondaLinguaId"
+      | "caratteristicaPiuDue"
+      | "caratteristicaPiuUno";
+    valore: string;
+  }
   | { type: "CAMBIA_DISTRIBUZIONE"; valore: DistribuzioneBackground }
   | {
     type: "CAMBIA_CARATTERISTICA";
@@ -30,16 +36,21 @@ export type AzioneBozza =
   | { type: "CARICA_BOZZA"; bozza: BozzaPersonaggio }
   | { type: "RESET" };
 
+
 export function bozzaPersonaggioReducer(
   stato: BozzaPersonaggio,
   azione: AzioneBozza,
 ): BozzaPersonaggio {
+  console.log("AZIONE BOZZA:", azione.type);
+
+
   switch (azione.type) {
     case "CAMBIA_CAMPO":
       return {
         ...stato,
         [azione.campo]: azione.valore,
       };
+
 
     case "CAMBIA_DISTRIBUZIONE":
       return {
@@ -48,6 +59,7 @@ export function bozzaPersonaggioReducer(
         caratteristicaPiuDue: "",
         caratteristicaPiuUno: "",
       };
+
 
     case "CAMBIA_CARATTERISTICA":
       return {
@@ -58,6 +70,7 @@ export function bozzaPersonaggioReducer(
         },
       };
 
+
     case "SELEZIONA_RAZZA":
       return {
         ...stato,
@@ -66,12 +79,21 @@ export function bozzaPersonaggioReducer(
         taglia: "",
       };
 
-    case "SELEZIONA_CLASSE":
+
+    case "SELEZIONA_CLASSE": {
+      const classeSelezionata = classi.find(
+        (classe) => classe.id === azione.classeId,
+      );
+
       return {
         ...stato,
         classeId: azione.classeId,
         sottoclasseId: "",
+        competenzeArmatura:
+          classeSelezionata?.competenzeArmatura ?? [],
       };
+    }
+
 
     case "SELEZIONA_BACKGROUND":
       return {
@@ -82,14 +104,16 @@ export function bozzaPersonaggioReducer(
         caratteristicaPiuUno: "",
       };
 
+
     case "CARICA_BOZZA":
       return azione.bozza;
 
+
     case "RESET":
       return bozzaIniziale;
+
 
     default:
       return stato;
   }
 }
-

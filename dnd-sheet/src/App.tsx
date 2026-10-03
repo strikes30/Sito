@@ -212,6 +212,7 @@ function App() {
       caratteristicheFinali,
     );
 
+
     salvaPersonaggio(nuovoPersonaggio);
     setPersonaggio(nuovoPersonaggio);
     setVista({
@@ -230,6 +231,7 @@ function App() {
         ...bozzaIniziale,
         nome: "Personaggio",
         classeId: "warlock",
+        competenzeArmatura: ["leggere"],
         razzaId: razzaProva?.id ?? "",
         sottorazzaId: "",
         taglia: razzaProva?.taglie[0] ?? "",
@@ -585,6 +587,7 @@ function App() {
         )
       } bonusCompetenza={statistiche.bonusCompetenza}
       nomeClasse={classeScheda?.nome}
+      competenzeArmatura={personaggio.competenzeArmatura}
       dadoVita={classeScheda?.dadoVita}
       puntiFeritaMassimi={puntiFeritaMassimi}
       nomeRazza={razzaScheda?.nome}

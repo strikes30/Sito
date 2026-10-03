@@ -1,4 +1,6 @@
 import lingue from "../../data/lingue.json";
+import type { CompetenzaArmatura } from "../../types/dnd";
+import { etichetteCompetenzeArmatura } from "../../utils/etichetteDnD";
 
 type SottoclasseDisponibile = {
   id: string;
@@ -13,6 +15,7 @@ type SezioneInformazioniBaseProps = {
   bonusCompetenza: number;
 
   nomeClasse: string | undefined;
+  competenzeArmatura: CompetenzaArmatura[];
   sottoclasseId: string;
   onCambiaSottoclasse: (id: string) => void;
   sottoclassiDisponibili: SottoclasseDisponibile[];
@@ -40,6 +43,7 @@ export default function SezioneInformazioniBase({
   onSaliDiLivello,
   bonusCompetenza,
   nomeClasse,
+  competenzeArmatura,
   sottoclasseId,
   onCambiaSottoclasse,
   sottoclassiDisponibili,
@@ -94,7 +98,20 @@ export default function SezioneInformazioniBase({
           </select>
         </div>
       )}
-
+      <div>
+        <h3>Competenze armatura</h3>
+        {competenzeArmatura.length === 0 ? (
+          <p>Nessuna competenza con armature</p>
+        ) : (
+          <ul>
+            {competenzeArmatura.map((competenza) => (
+              <li key={competenza}>
+                {etichetteCompetenzeArmatura[competenza]}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <p>
         Dado vita: {dadoVita === undefined ? "—" : `d${dadoVita}`}
       </p>

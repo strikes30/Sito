@@ -1,4 +1,5 @@
 import type { BozzaPersonaggio } from "../types/bozzaPersonaggio";
+
 import type {
   Caratteristica,
   Personaggio,
@@ -48,6 +49,7 @@ export function costruisciPersonaggio(
 
     classeId: bozza.classeId,
     sottoclasseId: bozza.sottoclasseId,
+    competenzeArmatura: bozza.competenzeArmatura,
 
     razzaId: bozza.razzaId,
     sottorazzaId: bozza.sottorazzaId,

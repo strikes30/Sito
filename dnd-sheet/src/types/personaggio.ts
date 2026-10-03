@@ -1,3 +1,5 @@
+import type { CompetenzaArmatura } from "./dnd";
+
 export const nomiCaratteristiche = [
   "Forza",
   "Destrezza",
@@ -37,4 +39,6 @@ export type Personaggio = {
 
   slotConsumati: string[];
   puntiRisorsaSpesi: number;
+
+  competenzeArmatura: CompetenzaArmatura[];
 };
