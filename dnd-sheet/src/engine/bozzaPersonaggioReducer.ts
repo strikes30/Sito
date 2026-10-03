@@ -6,17 +6,18 @@ import type {
 } from "../types/bozzaPersonaggio";
 
 export type AzioneBozza =
-  | {
-    type: "CAMBIA_CAMPO";
-    campo:
+ | {
+  type: "CAMBIA_CAMPO";
+  campo:
     | "nome"
     | "taglia"
-    | "primаLinguaId"
+    | "sottorazzaId"
+    | "primaLinguaId"
     | "secondaLinguaId"
     | "caratteristicaPiuDue"
     | "caratteristicaPiuUno";
-    valore: string;
-  }
+  valore: string;
+}
   | { type: "CAMBIA_DISTRIBUZIONE"; valore: DistribuzioneBackground }
   | {
     type: "CAMBIA_CARATTERISTICA";
