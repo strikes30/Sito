@@ -300,6 +300,30 @@ function App() {
     });
   }
 
+  // Funzioni per cambiare i trucchetti e gli incantesimi scelti del personaggio
+  function cambiaTrucchettiPersonaggio(nuoviTrucchetti: string[]) {
+    setPersonaggio((precedente) =>
+      precedente
+        ? {
+          ...precedente,
+          trucchettiScelti: nuoviTrucchetti,
+        }
+        : precedente,
+    );
+  }
+
+  // Funzioni per cambiare i trucchetti e gli incantesimi scelti del personaggio
+  function cambiaIncantesimiPersonaggio(nuoviIncantesimi: string[]) {
+    setPersonaggio((precedente) =>
+      precedente
+        ? {
+          ...precedente,
+          incantesimiScelti: nuoviIncantesimi,
+        }
+        : precedente,
+    );
+  }
+
   /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
 
   // Hook personalizzato per gestire gli slot degli incantesimi
@@ -380,6 +404,10 @@ function App() {
     spellDisponibili,
     massimoTrucchetti,
     massimoIncantesimiPreparati,
+    trucchettiScelti: personaggio?.trucchettiScelti ?? [],
+    incantesimiScelti: personaggio?.incantesimiScelti ?? [],
+    onCambiaTrucchetti: cambiaTrucchettiPersonaggio,
+    onCambiaIncantesimi: cambiaIncantesimiPersonaggio,
   });
 
   // Hook personalizzato per gestire i punti risorsa della classe

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import type { Spell } from "../types/spell";
 
 
@@ -6,86 +5,67 @@ type UseIncantesimiParametri = {
   spellDisponibili: Spell[];
   massimoTrucchetti: number;
   massimoIncantesimiPreparati: number;
+  trucchettiScelti: string[];
+  incantesimiScelti: string[];
+  onCambiaTrucchetti: (nuoviTrucchetti: string[]) => void;
+  onCambiaIncantesimi: (nuoviIncantesimi: string[]) => void;
 };
 
-// Hook personalizzato per gestire la selezione di trucchetti e incantesimi
+
 export function useIncantesimi({
   spellDisponibili,
   massimoTrucchetti,
   massimoIncantesimiPreparati,
+  trucchettiScelti,
+  incantesimiScelti,
+  onCambiaTrucchetti,
+  onCambiaIncantesimi,
 }: UseIncantesimiParametri) {
-  const [trucchettiScelti, setTrucchettiScelti] = useState<string[]>([]);
-  const [incantesimiScelti, setIncantesimiScelti] = useState<string[]>([]);
-
-// Aggiorna gli incantesimi scelti quando cambiano gli incantesimi disponibili
-  useEffect(() => {
-    const idDisponibili = new Set(
-      spellDisponibili.map((spell) => spell.id),
-    );
-
-
-    setTrucchettiScelti((precedenti) =>
-      precedenti.filter((id) => idDisponibili.has(id)),
-    );
-
-
-    setIncantesimiScelti((precedenti) =>
-      precedenti.filter((id) => idDisponibili.has(id)),
-    );
-  }, [spellDisponibili]);
-
-// Funzione per cambiare lo stato di un trucchetto scelto
   function cambiaTrucchetto(id: string) {
     const trucchettoValido = spellDisponibili.some(
-      (spell) => spell.id === id && spell.level === 0
+      (spell) => spell.id === id && spell.level === 0,
     );
-
 
     if (!trucchettoValido) {
       return;
     }
 
+    if (trucchettiScelti.includes(id)) {
+      onCambiaTrucchetti(
+        trucchettiScelti.filter((trucchettoId) => trucchettoId !== id),
+      );
+      return;
+    }
 
-    setTrucchettiScelti((precedenti) => {
-      if (precedenti.includes(id)) {
-        return precedenti.filter((precedente) => precedente !== id);
-      }
+    if (trucchettiScelti.length >= massimoTrucchetti) {
+      return;
+    }
 
-
-      if (precedenti.length >= massimoTrucchetti) {
-        return precedenti;
-      }
-
-
-      return [...precedenti, id];
-    });
+    onCambiaTrucchetti([...trucchettiScelti, id]);
   }
 
-// Funzione per cambiare lo stato di un incantesimo scelto
+
   function cambiaIncantesimo(id: string) {
     const incantesimoValido = spellDisponibili.some(
-      (spell) => spell.id === id && spell.level > 0
+      (spell) => spell.id === id && spell.level > 0,
     );
-
 
     if (!incantesimoValido) {
       return;
     }
 
+    if (incantesimiScelti.includes(id)) {
+      onCambiaIncantesimi(
+        incantesimiScelti.filter((incantesimoId) => incantesimoId !== id),
+      );
+      return;
+    }
 
-    setIncantesimiScelti((precedenti) => {
-      if (precedenti.includes(id)) {
-        return precedenti.filter((precedente) => precedente !== id);
-      }
+    if (incantesimiScelti.length >= massimoIncantesimiPreparati) {
+      return;
+    }
 
-
-      if (precedenti.length >= massimoIncantesimiPreparati) {
-        return precedenti;
-      }
-
-
-      return [...precedenti, id];
-    });
+    onCambiaIncantesimi([...incantesimiScelti, id]);
   }
 
 
