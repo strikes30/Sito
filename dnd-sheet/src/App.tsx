@@ -6,7 +6,14 @@ import progressioneSlot from "./data/progressionSlot.json";
 import sottoclassi from "./data/sottoclassi.json";
 import progressioneIncantesimi from "./data/progressionSpell.json";
 import spells from "./data/spells.json";
-import { calcolaLivelloMassimoIncantesimo } from "./utils/calcoliIncantesimi";
+
+import {
+  calcolaLivelloMassimoIncantesimo,
+  filtraSpellDisponibili,
+} from "./utils/calcoliIncantesimi";
+
+import { useIncantesimi } from "./hooks/useIncantesimi";
+
 import {
   calcolaLivelloSlotRisorsa,
   calcolaPuntiRisorsaMassimi,
@@ -56,8 +63,8 @@ function App() {
   const [livello, setLivello] = useState(1);  // Livello del personaggio
   const [primaLinguaId, setPrimaLinguaId] = useState("");  // Prima lingua del personaggio
   const [secondaLinguaId, setSecondaLinguaId] = useState("");  // Seconda lingua del personaggio
-  const [trucchettiScelti, setTrucchettiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
-  const [incantesimiScelti, setIncantesimiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
+  // const [trucchettiScelti, setTrucchettiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
+  // const [incantesimiScelti, setIncantesimiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
 
   // Stato per le caratteristiche del personaggio, inizializzate a null
   const [caratteristiche, setCaratteristiche] = useState<
@@ -280,14 +287,14 @@ function App() {
   const risorsaClasse = classeSelezionata?.risorsaClasse;
 
   const puntiRisorsaMassimi = calcolaPuntiRisorsaMassimi(
-  risorsaClasse,
-  livello
-);
+    risorsaClasse,
+    livello
+  );
 
-const livelloSlotRisorsa = calcolaLivelloSlotRisorsa(
-  risorsaClasse,
-  livello
-);
+  const livelloSlotRisorsa = calcolaLivelloSlotRisorsa(
+    risorsaClasse,
+    livello
+  );
   /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
   const regoleClasse = progressioniIncantesimi[classe];
 
@@ -309,49 +316,58 @@ const livelloSlotRisorsa = calcolaLivelloSlotRisorsa(
     regoleIncantesimi?.listaIncantesimi ?? classe;
 
   const livelloMassimoSpell = calcolaLivelloMassimoIncantesimo(
-  classe,
-  slotMassimi,
-  classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1]
-);
-
-  const spellDisponibili = spells.filter(
-    (spell) =>
-      spell.classes.includes(listaIncantesimi) &&
-      (spell.level === 0
-        ? massimoTrucchetti > 0
-        : spell.level <= livelloMassimoSpell)
+    classe,
+    slotMassimi,
+    classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1]
   );
 
+  const spellDisponibili = filtraSpellDisponibili(
+    spells,
+    listaIncantesimi,
+    massimoTrucchetti,
+    livelloMassimoSpell
+  );
+  const {
+    trucchettiScelti,
+    incantesimiScelti,
+    cambiaTrucchetto,
+    cambiaIncantesimo,
+  } = useIncantesimi({
+    spellDisponibili,
+    massimoTrucchetti,
+    massimoIncantesimiPreparati,
+  });
+
   // Funzioni per cambiare gli incantesimi scelti, con controlli di validità
-  function cambiaTrucchetto(id: string) {
-    if (!spellDisponibili.some((spell) => spell.id === id && spell.level === 0)) {
-      return;
-    }
+  // function cambiaTrucchetto(id: string) {
+  //   if (!spellDisponibili.some((spell) => spell.id === id && spell.level === 0)) {
+  //     return;
+  //   }
 
-    setTrucchettiScelti((precedenti) => {
-      if (precedenti.includes(id)) {
-        return precedenti.filter((precedente) => precedente !== id);
-      }
+  //   setTrucchettiScelti((precedenti) => {
+  //     if (precedenti.includes(id)) {
+  //       return precedenti.filter((precedente) => precedente !== id);
+  //     }
 
-      if (precedenti.length >= massimoTrucchetti) return precedenti;
-      return [...precedenti, id];
-    });
-  }
+  //     if (precedenti.length >= massimoTrucchetti) return precedenti;
+  //     return [...precedenti, id];
+  //   });
+  // }
 
-  function cambiaIncantesimo(id: string) {
-    if (!spellDisponibili.some((spell) => spell.id === id && spell.level > 0)) {
-      return;
-    }
+  // function cambiaIncantesimo(id: string) {
+  //   if (!spellDisponibili.some((spell) => spell.id === id && spell.level > 0)) {
+  //     return;
+  //   }
 
-    setIncantesimiScelti((precedenti) => {
-      if (precedenti.includes(id)) {
-        return precedenti.filter((precedente) => precedente !== id);
-      }
+  //   setIncantesimiScelti((precedenti) => {
+  //     if (precedenti.includes(id)) {
+  //       return precedenti.filter((precedente) => precedente !== id);
+  //     }
 
-      if (precedenti.length >= massimoIncantesimiPreparati) return precedenti;
-      return [...precedenti, id];
-    });
-  }
+  //     if (precedenti.length >= massimoIncantesimiPreparati) return precedenti;
+  //     return [...precedenti, id];
+  //   });
+  // }
 
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
   const costituzione = caratteristicheFinali.Costituzione;
