@@ -6,9 +6,7 @@ import { bozzaIniziale } from "./types/bozzaPersonaggio";
 
 import CreaPersonaggio from "./components/CreaPersonaggio";
 import SchedaPersonaggio from "./components/SchedaPersonaggio";
-import backgrounds from "./data/background.json";
 import progressioneSlot from "./data/progressionSlot.json";
-import sottoclassi from "./data/sottoclassi.json";
 import progressioneIncantesimi from "./data/progressionSpell.json";
 import spells from "./data/spells.json";
 
@@ -30,7 +28,6 @@ import {
 
 
 import {
-  // nomiCaratteristiche,
   type Caratteristica,
   type Personaggio,
 } from "./types/personaggio";
@@ -49,9 +46,25 @@ import { calcolaCaratteristicheFinali } from "./utils/calcolaCaratteristicheFina
 
 import { validaBozzaPersonaggio } from "./engine/validaBozzaPersonaggio";
 
-import classi from "./data/classi.json";
-import razze from "./data/razze.json";
-import lingue from "./data/lingue.json";
+import backgroundsJson from "./data/background.json";
+import classiJson from "./data/classi.json";
+import razzeJson from "./data/razze.json";
+import lingueJson from "./data/lingue.json";
+import sottoclassiJson from "./data/sottoclassi.json";
+
+import type {
+  Background,
+  Classe,
+  Lingua,
+  Razza,
+  Sottoclasse,
+} from "./types/datiGioco";
+
+const backgrounds = backgroundsJson as Background[];
+const classi = classiJson as Classe[];
+const razze = razzeJson as Razza[];
+const lingue = lingueJson as Lingua[];
+const sottoclassi = sottoclassiJson as Sottoclasse[];
 
 // Tipi per la progressione degli incantesimi
 type RegoleIncantesimi = {
@@ -124,7 +137,7 @@ function App() {
     (sottorazza) => sottorazza.id === bozza.sottorazzaId,
   );
 
-  // Cerca nel JSON la classe che ha l'ID scelto dall'utente
+  // Cerca nel JSON il background che ha l'ID scelto dall'utente
   const backgroundSelezionato = backgrounds.find(
     (background) => background.id === bozza.backgroundId,
   );
@@ -347,6 +360,14 @@ function App() {
   const puntiFeritaMassimi = statistiche.puntiFeritaMassimi;
   const classeArmatura = statistiche.classeArmatura;
 
+  // Funzione per resettare la bozza del personaggio e tornare alla fase di creazione
+  function nuovoPersonaggio() {
+  dispatchBozza({ type: "RESET" });
+  setPersonaggio(null);
+  setErroriForm([]);
+  setAbilitaCompetenti([]);
+}
+
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
     <SchedaPersonaggio
@@ -362,14 +383,14 @@ function App() {
             : precedente,
         )
       } bonusCompetenza={statistiche.bonusCompetenza}
-      nomeClasse={classeSelezionata?.nome}
-      dadoVita={classeSelezionata?.dadoVita}
+      nomeClasse={classeScheda?.nome}
+      dadoVita={classeScheda?.dadoVita}
       puntiFeritaMassimi={puntiFeritaMassimi}
-      nomeRazza={razzaSelezionata?.nome}
-      nomeSottorazza={sottorazzaSelezionata?.nome}
-      tipoCreatura={razzaSelezionata?.tipoCreatura}
+      nomeRazza={razzaScheda?.nome}
+      nomeSottorazza={sottorazzaScheda?.nome}
+      tipoCreatura={razzaScheda?.tipoCreatura}
+      velocita={razzaScheda?.velocita}
       taglia={personaggio.taglia}
-      velocita={razzaSelezionata?.velocita}
       primaLinguaId={personaggio.lingue[1]}
       secondaLinguaId={personaggio.lingue[2]}
       caratteristiche={personaggio.caratteristiche}
@@ -377,10 +398,10 @@ function App() {
       classeArmatura={classeArmatura}
       abilitaCompetenti={abilitaCompetenti}
       onCambiaCompetenzaAbilita={cambiaCompetenzaAbilita}
-      tiriSalvezzaCompetenti={classeSelezionata?.tiriSalvezza ?? []}
-      nomeBackground={backgroundSelezionato?.nome}
-      descrizioneBackground={backgroundSelezionato?.descrizione}
-      abilitaBackground={backgroundSelezionato?.abilita ?? []}
+      tiriSalvezzaCompetenti={classeScheda?.tiriSalvezza ?? []}
+      nomeBackground={backgroundScheda?.nome}
+      descrizioneBackground={backgroundScheda?.descrizione}
+      abilitaBackground={backgroundScheda?.abilita ?? []} 
       slotMassimi={slotMassimi}
       slotConsumati={slotConsumati}
       onCambiaSlot={cambiaSlot}
@@ -395,7 +416,7 @@ function App() {
             : precedente,
         )
       }
-      sottoclassiDisponibili={sottoclassiDisponibili}
+      sottoclassiDisponibili={sottoclassiScheda}
       massimoTrucchetti={massimoTrucchetti}
       massimoIncantesimiPreparati={massimoIncantesimiPreparati}
       spellDisponibili={spellDisponibili}
@@ -409,6 +430,7 @@ function App() {
       puntiRisorsaSpesi={puntiRisorsaSpesi}
       onCambiaPuntiRisorsaSpesi={cambiaPuntiRisorsaSpesi}
       livelloSlotRisorsa={livelloSlotRisorsa}
+      onNuovoPersonaggio={nuovoPersonaggio}
     />
   );
 }

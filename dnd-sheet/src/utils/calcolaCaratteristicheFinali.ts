@@ -7,17 +7,15 @@ import type {
 
 type CaratteristicheBase = Record<Caratteristica, number | null>;
 
-type BackgroundConBonus = {
-  caratteristicheDisponibili: string[];
-};
+import type { Background } from "../types/datiGioco";
 
 export function calcolaCaratteristicheFinali(
-  caratteristicheBase: CaratteristicheBase,
-  background: BackgroundConBonus | undefined,
+  caratteristicheBase: Record<Caratteristica, number | null>,
+  background: Background | undefined,
   distribuzione: DistribuzioneBackground,
   caratteristicaPiuDue: string,
   caratteristicaPiuUno: string,
-): CaratteristicheBase {
+): Record<Caratteristica, number | null> {
   const caratteristicheFinali: CaratteristicheBase = {
     ...caratteristicheBase,
   };

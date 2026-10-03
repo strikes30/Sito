@@ -1,8 +1,1 @@
-export type RisorsaClasse = {
-  id: string;
-  nome: string;
-  livelloSblocco: number;
-  massimoPerLivello: number[];
-  livelloSlotPerLivello?: number[];
-  recupero: string[];
-};
+export type { RisorsaClasse } from "./datiGioco"; // Per evitare errori di importazione circolare, esportiamo RisorsaClasse da qui invece che da classe.ts

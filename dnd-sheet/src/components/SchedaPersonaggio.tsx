@@ -72,11 +72,15 @@ type Props = {
     massimoTrucchetti: number;
     massimoIncantesimiPreparati: number;
 
+    // Lista di tutti gli incantesimi disponibili per la classe del personaggio
     spellDisponibili: Spell[];
     trucchettiScelti: string[];
     incantesimiScelti: string[];
     onCambiaTrucchetto: (id: string) => void;
     onCambiaIncantesimo: (id: string) => void;
+
+    // Funzione per creare un nuovo personaggio, resettando la scheda
+    onNuovoPersonaggio: () => void;
 };
 
 // Da qui inizia il componente principale della scheda del personaggio
@@ -123,11 +127,16 @@ function SchedaPersonaggio({
     livelloSlotRisorsa,
     slotConsumati,
     onCambiaSlot,
+    onNuovoPersonaggio,
 }: Props) {
 
     {/* Rendering della scheda del personaggio */ }
     return (
         <main>
+            
+            <button type="button" onClick={onNuovoPersonaggio}>
+                Crea un nuovo personaggio
+            </button>
 
             <SezioneInformazioniBase
                 nome={nome}
