@@ -1,11 +1,4 @@
-export type RisorsaClasse = {
-  id: string;
-  nome: string;
-  livelloSblocco: number;
-  massimoPerLivello: number[];
-  livelloSlotPerLivello?: number[];
-  recupero: string[];
-};
+import type { RisorsaClasse } from "../types/classe";
 
 export function calcolaPuntiRisorsaMassimi(
   risorsa: RisorsaClasse | undefined,
