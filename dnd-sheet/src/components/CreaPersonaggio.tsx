@@ -1,3 +1,5 @@
+import type { BozzaPersonaggio } from "../types/bozzaPersonaggio";
+import type { AzioneBozza } from "../engine/bozzaPersonaggioReducer";
 import classi from "../data/classi.json";
 import razze from "../data/razze.json";
 import lingue from "../data/lingue.json";
@@ -17,80 +19,27 @@ type Caratteristica = (typeof nomiCaratteristiche)[number];
 const valoriStandard = [15, 14, 13, 12, 10, 8];
 
 type Props = {
-    nome: string;
-    setNome: (valore: string) => void;
-
-    classe: string;
-    setClasse: (valore: string) => void;
-
-    razzaId: string;
-    setRazzaId: (valore: string) => void;
-
-    sottorazzaId: string;
-    setSottorazzaId: (valore: string) => void;
-
-    taglia: string;
-    setTaglia: (valore: string) => void;
-
-    primaLinguaId: string;
-    setPrimaLinguaId: (valore: string) => void;
-
-    secondaLinguaId: string;
-    setSecondaLinguaId: (valore: string) => void;
-
-    caratteristiche: Record<Caratteristica, number | null>;
+    bozza: BozzaPersonaggio;
+    dispatchBozza: React.Dispatch<AzioneBozza>;
     cambiaCaratteristica: (
         caratteristica: Caratteristica,
-        valore: number | null,
+        nuovoValore: number | null,
     ) => void;
-
-    backgroundId: string;
-    setBackgroundId: (valore: string) => void;
-
-    distribuzioneBackground: "" | "due" | "tre";
-    setDistribuzioneBackground: (valore: "" | "due" | "tre") => void;
-    caratteristicaPiuDue: string;
-    setCaratteristicaPiuDue: (valore: string) => void;
-    caratteristicaPiuUno: string;
-    setCaratteristicaPiuUno: (valore: string) => void;
-
     creaPersonaggio: (evento: React.SubmitEvent<HTMLFormElement>) => void;
-
     caricaPersonaggioDiProva: () => void;
 };
 
-function CreaPersonaggio({
-    nome,
-    setNome,
-    classe,
-    setClasse,
-    razzaId,
-    setRazzaId,
-    sottorazzaId,
-    setSottorazzaId,
-    taglia,
-    setTaglia,
-    primaLinguaId,
-    setPrimaLinguaId,
-    secondaLinguaId,
-    setSecondaLinguaId,
-    caratteristiche,
+export function CreaPersonaggio({
+    bozza,
+    dispatchBozza,
     cambiaCaratteristica,
-    backgroundId,
-    setBackgroundId,
     creaPersonaggio,
-    distribuzioneBackground,
-    setDistribuzioneBackground,
-    caratteristicaPiuDue,
-    setCaratteristicaPiuDue,
-    caratteristicaPiuUno,
-    setCaratteristicaPiuUno,
     caricaPersonaggioDiProva,
 }: Props) {
 
     // Ottieni la razza selezionata in base all'ID della razza
     const razzaSelezionata = razze.find(
-        (razza) => razza.id === razzaId,
+        (razza) => razza.id === bozza.razzaId,
     );
 
     // Ottieni le sottorazze disponibili per la razza selezionata
@@ -98,7 +47,7 @@ function CreaPersonaggio({
 
     // Ottieni il background selezionato in base all'ID del background
     const backgroundSelezionato = backgrounds.find(
-        (background) => background.id === backgroundId,
+        (background) => background.id === bozza.backgroundId,
     );
 
     const lingueIniziali = lingue
@@ -127,8 +76,14 @@ function CreaPersonaggio({
                     <input
                         id="nome"
                         type="text"
-                        value={nome}
-                        onChange={(evento) => setNome(evento.target.value)}
+                        value={bozza.nome}
+                        onChange={(evento) =>
+                            dispatchBozza({
+                                type: "CAMBIA_CAMPO",
+                                campo: "nome",
+                                valore: evento.target.value,
+                            })
+                        }
                     />
                 </div>
 
@@ -137,8 +92,13 @@ function CreaPersonaggio({
                     <label htmlFor="classe">Classe: </label>
                     <select
                         id="classe"
-                        value={classe}
-                        onChange={(evento) => setClasse(evento.target.value)}
+                        value={bozza.classeId}
+                        onChange={(evento) =>
+                            dispatchBozza({
+                                type: "SELEZIONA_CLASSE",
+                                classeId: evento.target.value,
+                            })
+                        }
                         required
                     >
                         <option value="">Seleziona una classe</option>
@@ -159,21 +119,13 @@ function CreaPersonaggio({
 
                     <select
                         id="razza"
-                        value={razzaId}
-                        onChange={(evento) => {
-                            const nuovoId = evento.target.value;
-                            const nuovaRazza = razze.find((razza) => razza.id === nuovoId);
-
-                            setRazzaId(nuovoId);
-                            setSottorazzaId("");
-
-                            setTaglia(
-                                nuovaRazza?.taglie.length === 1
-                                    ? nuovaRazza.taglie[0]
-                                    : "",
-                            );
-                        }}
-                        required
+                        value={bozza.razzaId}
+                        onChange={(evento) =>
+                            dispatchBozza({
+                                type: "SELEZIONA_RAZZA",
+                                razzaId: evento.target.value,
+                            })
+                        }
                     >
                         <option value="">Seleziona una razza</option>
 
@@ -193,9 +145,14 @@ function CreaPersonaggio({
 
                         <select
                             id="sottorazza"
-                            value={sottorazzaId}
-                            onChange={(evento) => setSottorazzaId(evento.target.value)}
-                            required
+                            value={bozza.sottorazzaId}
+                            onChange={(evento) =>
+                                dispatchBozza({
+                                    type: "CAMBIA_CAMPO",
+                                    campo: "sottorazzaId",
+                                    valore: evento.target.value,
+                                })
+                            }
                         >
                             <option value="">Seleziona una sottorazza</option>
 
@@ -217,9 +174,14 @@ function CreaPersonaggio({
                         ) : (
                             <select
                                 id="taglia"
-                                value={taglia}
-                                onChange={(evento) => setTaglia(evento.target.value)}
-                                required
+                                value={bozza.taglia}
+                                onChange={(evento) =>
+                                    dispatchBozza({
+                                        type: "CAMBIA_CAMPO",
+                                        campo: "taglia",
+                                        valore: evento.target.value,
+                                    })
+                                }
                             >
                                 <option value="">Seleziona una taglia</option>
 
@@ -240,13 +202,13 @@ function CreaPersonaggio({
                     <label htmlFor="background">Background</label>
                     <select
                         id="background"
-                        value={backgroundId}
-                        onChange={(evento) => {
-                            setBackgroundId(evento.target.value);
-                            setDistribuzioneBackground("");
-                            setCaratteristicaPiuDue("");
-                            setCaratteristicaPiuUno("");
-                        }}
+                        value={bozza.backgroundId}
+                        onChange={(evento) =>
+                            dispatchBozza({
+                                type: "SELEZIONA_BACKGROUND",
+                                backgroundId: evento.target.value,
+                            })
+                        }
                     >
                         <option value="">Seleziona un background</option>
 
@@ -266,31 +228,34 @@ function CreaPersonaggio({
                             <legend>Aumenti delle caratteristiche del background</legend>
 
                             <label htmlFor="distribuzione-background">Distribuzione:</label>
+
                             <select
                                 id="distribuzione-background"
-                                value={distribuzioneBackground}
-                                onChange={(evento) => {
-                                    const valore = evento.target.value as "" | "due" | "tre";
-                                    setDistribuzioneBackground(valore);
-                                    setCaratteristicaPiuDue("");
-                                    setCaratteristicaPiuUno("");
-                                }}
-                                required
+                                value={bozza.distribuzioneBackground}
+                                onChange={(evento) =>
+                                    dispatchBozza({
+                                        type: "CAMBIA_DISTRIBUZIONE",
+                                        valore: evento.target.value as "due" | "tre",
+                                    })
+                                }
                             >
-                                {/* Opzioni per la distribuzione dei bonus di caratteristica del background */}
                                 <option value="">Scegli come distribuire i punti</option>
                                 <option value="due">+2 a una caratteristica e +1 a un’altra</option>
                                 <option value="tre">+1 a tutte e tre le caratteristiche</option>
                             </select>
 
-                            {distribuzioneBackground === "due" && (
+                            {bozza.distribuzioneBackground === "due" && (
                                 <>
                                     <label htmlFor="background-piu-due">Caratteristica +2:</label>
                                     <select
                                         id="background-piu-due"
-                                        value={caratteristicaPiuDue}
+                                        value={bozza.caratteristicaPiuDue}
                                         onChange={(evento) =>
-                                            setCaratteristicaPiuDue(evento.target.value)
+                                            dispatchBozza({
+                                                type: "CAMBIA_CAMPO",
+                                                campo: "caratteristicaPiuDue",
+                                                valore: evento.target.value,
+                                            })
                                         }
                                         required
                                     >
@@ -299,7 +264,7 @@ function CreaPersonaggio({
                                             <option
                                                 key={voce}
                                                 value={voce}
-                                                disabled={voce === caratteristicaPiuUno}
+                                                disabled={voce === bozza.caratteristicaPiuUno}
                                             >
                                                 {voce}
                                             </option>
@@ -309,9 +274,13 @@ function CreaPersonaggio({
                                     <label htmlFor="background-piu-uno">Caratteristica +1:</label>
                                     <select
                                         id="background-piu-uno"
-                                        value={caratteristicaPiuUno}
+                                        value={bozza.caratteristicaPiuUno}
                                         onChange={(evento) =>
-                                            setCaratteristicaPiuUno(evento.target.value)
+                                            dispatchBozza({
+                                                type: "CAMBIA_CAMPO",
+                                                campo: "caratteristicaPiuUno",
+                                                valore: evento.target.value,
+                                            })
                                         }
                                         required
                                     >
@@ -320,7 +289,7 @@ function CreaPersonaggio({
                                             <option
                                                 key={voce}
                                                 value={voce}
-                                                disabled={voce === caratteristicaPiuDue}
+                                                disabled={voce === bozza.caratteristicaPiuDue}
                                             >
                                                 {voce}
                                             </option>
@@ -329,7 +298,7 @@ function CreaPersonaggio({
                                 </>
                             )}
 
-                            {distribuzioneBackground === "tre" && (
+                            {bozza.distribuzioneBackground === "tre" && (
                                 <p>
                                     +1 a{" "}
                                     {backgroundSelezionato.caratteristicheDisponibili.join(", ")}
@@ -346,10 +315,15 @@ function CreaPersonaggio({
                 <div>
                     <label htmlFor="prima-lingua">Prima lingua: </label>
                     <select
-                        id="prima-lingua"
-                        value={primaLinguaId}
-                        onChange={(evento) => setPrimaLinguaId(evento.target.value)}
-                        required
+                        id="primaLingua"
+                        value={bozza.primaLinguaId}
+                        onChange={(evento) =>
+                            dispatchBozza({
+                                type: "CAMBIA_CAMPO",
+                                campo: "primaLinguaId",
+                                valore: evento.target.value,
+                            })
+                        }
                     >
                         <option value="">Seleziona una lingua</option>
 
@@ -357,7 +331,7 @@ function CreaPersonaggio({
                             <option
                                 key={lingua.id}
                                 value={lingua.id}
-                                disabled={lingua.id === secondaLinguaId}
+                                disabled={lingua.id === bozza.secondaLinguaId}
                             >
                                 {lingua.nome}
                             </option>
@@ -368,10 +342,15 @@ function CreaPersonaggio({
                 <div>
                     <label htmlFor="seconda-lingua">Seconda lingua: </label>
                     <select
-                        id="seconda-lingua"
-                        value={secondaLinguaId}
-                        onChange={(evento) => setSecondaLinguaId(evento.target.value)}
-                        required
+                        id="secondaLingua"
+                        value={bozza.secondaLinguaId}
+                        onChange={(evento) =>
+                            dispatchBozza({
+                                type: "CAMBIA_CAMPO",
+                                campo: "secondaLinguaId",
+                                valore: evento.target.value,
+                            })
+                        }
                     >
                         <option value="">Seleziona una lingua</option>
 
@@ -379,7 +358,7 @@ function CreaPersonaggio({
                             <option
                                 key={lingua.id}
                                 value={lingua.id}
-                                disabled={lingua.id === primaLinguaId}
+                                disabled={lingua.id === bozza.primaLinguaId}
                             >
                                 {lingua.nome}
                             </option>
@@ -400,7 +379,7 @@ function CreaPersonaggio({
 
                         <select
                             id={caratteristica}
-                            value={caratteristiche[caratteristica] ?? ""}
+                            value={bozza.caratteristiche[caratteristica] ?? ""}
                             onChange={(evento) =>
                                 cambiaCaratteristica(
                                     caratteristica,
@@ -418,7 +397,7 @@ function CreaPersonaggio({
                                     nomiCaratteristiche.some(
                                         (altra) =>
                                             altra !== caratteristica &&
-                                            caratteristiche[altra] === valore,
+                                            bozza.caratteristiche[altra] === valore,
                                     );
 
                                 return (

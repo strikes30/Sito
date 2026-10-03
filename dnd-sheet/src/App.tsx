@@ -1,4 +1,9 @@
 import { useState } from "react";
+import { useReducer } from "react";
+
+import { bozzaPersonaggioReducer } from "./engine/bozzaPersonaggioReducer";
+import { bozzaIniziale } from "./types/bozzaPersonaggio";
+
 import CreaPersonaggio from "./components/CreaPersonaggio";
 import SchedaPersonaggio from "./components/SchedaPersonaggio";
 import backgrounds from "./data/background.json";
@@ -31,10 +36,11 @@ import {
 
 import {
   modificatore,
-  calcolaPuntiFerita,
-  calcolaBonusCompetenza,
-  calcolaClasseArmatura,
 } from "./utils/calcoliPersonaggio";
+
+import { calcolaStatisticheDerivate } from "./utils/calcolaStatisticheDerivate";
+
+import { calcolaCaratteristicheFinali } from "./utils/calcolaCaratteristicheFinali";
 
 import classi from "./data/classi.json";
 import razze from "./data/razze.json";
@@ -57,45 +63,24 @@ const progressioniIncantesimi: Record<
 //////////////////CODICE SITO VISIBILE////////////////////
 
 function App() {
-  const [nome, setNome] = useState("");  // Nome del personaggio
-  const [classe, setClasse] = useState("");  // Classe del personaggio
-  const [sottoclasseId, setSottoclasseId] = useState("");  // Sottoclasse del personaggio
-  const [razzaId, setRazzaId] = useState("");  // Razza del personaggio
-  const [sottorazzaId, setSottorazzaId] = useState("");  // Sottorazza del personaggio
-  const [taglia, setTaglia] = useState(""); // Taglia del personaggio
+
+  // Stato per la bozza del personaggio in fase di creazione
+  const [bozza, dispatchBozza] = useReducer(
+    bozzaPersonaggioReducer,
+    bozzaIniziale,
+  );
+
   const [personaggioCreato, setPersonaggioCreato] = useState(false);   // Stato per verificare se il personaggio è stato creato
   const [livello, setLivello] = useState(1);  // Livello del personaggio
-  const [primaLinguaId, setPrimaLinguaId] = useState("");  // Prima lingua del personaggio
-  const [secondaLinguaId, setSecondaLinguaId] = useState("");  // Seconda lingua del personaggio
-
-  // Stato per le caratteristiche del personaggio, inizializzate a null
-  const [caratteristiche, setCaratteristiche] = useState<
-    Record<Caratteristica, number | null>
-  >({
-    Forza: null,
-    Destrezza: null,
-    Costituzione: null,
-    Intelligenza: null,
-    Saggezza: null,
-    Carisma: null,
-  });
-
-  // Stato per il background del personaggio, inizializzato a una stringa vuota
-  const [backgroundId, setBackgroundId] = useState("");
 
   // Filtra le sottoclassi disponibili in base alla classe selezionata
   const sottoclassiDisponibili = sottoclassi.filter(
-    (voce) => voce.classeId === classe
+    (voce) => voce.classeId === bozza.classeId
   );
 
   const sottoclasseSelezionata = sottoclassiDisponibili.find(
-    (voce) => voce.id === sottoclasseId
+    (voce) => voce.id === bozza.sottoclasseId
   );
-  // Stato per la distribuzione dei bonus di caratteristica del background
-  const [distribuzioneBackground, setDistribuzioneBackground] =
-    useState<"" | "due" | "tre">("");
-  const [caratteristicaPiuDue, setCaratteristicaPiuDue] = useState("");
-  const [caratteristicaPiuUno, setCaratteristicaPiuUno] = useState("");
 
   // Filtra le lingue iniziali, escludendo la lingua "comune" e ordinandole alfabeticamente
   const lingueIniziali = lingue
@@ -109,75 +94,60 @@ function App() {
     caratteristica: Caratteristica,
     nuovoValore: number | null,
   ) {
-    setCaratteristiche((precedenti) => ({
-      ...precedenti,
-      [caratteristica]: nuovoValore,
-    }));
+    dispatchBozza({
+      type: "CAMBIA_CARATTERISTICA",
+      caratteristica,
+      valore: nuovoValore,
+    });
   }
 
   // Cerca nel JSON la razza che ha l'ID scelto dall'utente
   const razzaSelezionata = razze.find(
-    (razza) => razza.id === razzaId,
+    (razza) => razza.id === bozza.razzaId,
   );
 
   // Cerca nel JSON la sottorazza che ha l'ID scelto dall'utente
   const sottorazzaSelezionata = razzaSelezionata?.sottorazze.find(
-    (sottorazza) => sottorazza.id === sottorazzaId,
+    (sottorazza) => sottorazza.id === bozza.sottorazzaId,
   );
 
   // Cerca nel JSON la classe che ha l'ID scelto dall'utente
   const backgroundSelezionato = backgrounds.find(
-    (background) => background.id === backgroundId,
+    (background) => background.id === bozza.backgroundId,
   );
 
   // Calcola le caratteristiche finali del personaggio, tenendo conto dei bonus del background
-  const caratteristicheFinali: Record<Caratteristica, number | null> =
-    { ...caratteristiche };
-
-  if (backgroundSelezionato) {
-    for (const caratteristica of nomiCaratteristiche) {
-      const punteggioIniziale = caratteristiche[caratteristica];
-
-      if (punteggioIniziale === null) continue;
-
-      const disponibile =
-        backgroundSelezionato.caratteristicheDisponibili.includes(
-          caratteristica,
-        );
-
-      if (!disponibile) continue;
-
-      let aumento = 0;
-
-      if (distribuzioneBackground === "tre") {
-        aumento = 1;
-      } else if (distribuzioneBackground === "due") {
-        if (caratteristica === caratteristicaPiuDue) aumento = 2;
-        if (caratteristica === caratteristicaPiuUno) aumento = 1;
-      }
-
-      caratteristicheFinali[caratteristica] =
-        punteggioIniziale + aumento;
-    }
-  }
+const caratteristicheFinali = calcolaCaratteristicheFinali(
+  bozza.caratteristiche,
+  backgroundSelezionato,
+  bozza.distribuzioneBackground,
+  bozza.caratteristicaPiuDue,
+  bozza.caratteristicaPiuUno,
+);
 
   // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
     evento.preventDefault();
 
-    const nomePulito = nome.trim();
+    const nomePulito = bozza.nome.trim();
+
     if (nomePulito === "") return;
 
     if (
       nomiCaratteristiche.some(
-        (caratteristica) => caratteristiche[caratteristica] === null,
+        (caratteristica) =>
+          bozza.caratteristiche[caratteristica] === null,
       )
     ) {
       return;
     }
 
     if (!razzaSelezionata) return;
-    if (!razzaSelezionata.taglie.includes(taglia)) return;
+
+    if (!razzaSelezionata.taglie.includes(bozza.taglia)) {
+      return;
+    }
+
     if (
       razzaSelezionata.sottorazze.length > 0 &&
       !sottorazzaSelezionata
@@ -186,9 +156,13 @@ function App() {
     }
 
     if (
-      primaLinguaId === secondaLinguaId ||
-      !lingueIniziali.some((lingua) => lingua.id === primaLinguaId) ||
-      !lingueIniziali.some((lingua) => lingua.id === secondaLinguaId)
+      bozza.primaLinguaId === bozza.secondaLinguaId ||
+      !lingueIniziali.some(
+        (lingua) => lingua.id === bozza.primaLinguaId,
+      ) ||
+      !lingueIniziali.some(
+        (lingua) => lingua.id === bozza.secondaLinguaId,
+      )
     ) {
       return;
     }
@@ -198,52 +172,62 @@ function App() {
     const caratteristicheDisponibili =
       backgroundSelezionato.caratteristicheDisponibili;
 
-    if (distribuzioneBackground === "due") {
+    if (bozza.distribuzioneBackground === "due") {
       if (
-        !caratteristicheDisponibili.includes(caratteristicaPiuDue) ||
-        !caratteristicheDisponibili.includes(caratteristicaPiuUno) ||
-        caratteristicaPiuDue === caratteristicaPiuUno
+        !caratteristicheDisponibili.includes(
+          bozza.caratteristicaPiuDue,
+        ) ||
+        !caratteristicheDisponibili.includes(
+          bozza.caratteristicaPiuUno,
+        ) ||
+        bozza.caratteristicaPiuDue === bozza.caratteristicaPiuUno
       ) {
         return;
       }
-    } else if (distribuzioneBackground === "tre") {
+    } else if (bozza.distribuzioneBackground === "tre") {
       if (caratteristicheDisponibili.length !== 3) return;
     } else {
       return;
     }
 
-    setNome(nomePulito);
+    dispatchBozza({
+      type: "CAMBIA_CAMPO",
+      campo: "nome",
+      valore: nomePulito,
+    });
+
     setPersonaggioCreato(true);
   }
 
   // Funzione per caricare un personaggio di prova, utile per testare l'applicazione
   function caricaPersonaggioDiProva() {
-    setNome("Personaggio");
-    setClasse("warlock");
-    setRazzaId("umano");
+    const razzaProva = razze.find((razza) => razza.id === "umano");
 
-    setTaglia("Media");
-
-    // Sostituisci questi id con quelli presenti davvero in lingue.json.
-    setPrimaLinguaId("elfico");
-    setSecondaLinguaId("nanico");
-
-    // Sostituisci con un id esistente in background.json.
-    setBackgroundId("accolito");
-
-    setDistribuzioneBackground("tre");
-
-    setCaratteristiche({
-      Forza: 10,
-      Destrezza: 15,
-      Costituzione: 14,
-      Intelligenza: 13,
-      Saggezza: 12,
-      Carisma: 8,
+    dispatchBozza({
+      type: "CARICA_BOZZA",
+      bozza: {
+        ...bozzaIniziale,
+        nome: "Personaggio",
+        classeId: "warlock",
+        razzaId: razzaProva?.id ?? "",
+        sottorazzaId: "",
+        taglia: razzaProva?.taglie[0] ?? "",
+        primaLinguaId: "elfico",
+        secondaLinguaId: "nanico",
+        backgroundId: "accolito",
+        distribuzioneBackground: "tre",
+        caratteristicaPiuDue: "",
+        caratteristicaPiuUno: "",
+        caratteristiche: {
+          Forza: 10,
+          Destrezza: 15,
+          Costituzione: 14,
+          Intelligenza: 13,
+          Saggezza: 12,
+          Carisma: 8,
+        },
+      },
     });
-
-    // IMPORTANTE:
-    // Non mettere setPersonaggioCreato(true) qui.
   }
 
   // Stato per le abilità competenti del personaggio
@@ -265,7 +249,7 @@ function App() {
 
   // Cerca nel JSON la classe che ha l'ID scelto dall'utente
   const classeSelezionata = classi.find(
-    (voce) => voce.id === classe
+    (voce) => voce.id === bozza.classeId
   );
 
   // Determina il tipo di progressione degli slot in base alla classe selezionata
@@ -295,7 +279,7 @@ function App() {
   );
 
   // Determina le regole degli incantesimi in base alla classe o sottoclasse selezionata
-  const regoleClasse = progressioniIncantesimi[classe];
+  const regoleClasse = progressioniIncantesimi[bozza.classeId];
 
   // Determina le regole degli incantesimi in base alla sottoclasse selezionata, se il livello è almeno 3
   const regoleSottoclasse =
@@ -314,10 +298,10 @@ function App() {
 
   // Determina la lista di incantesimi disponibili in base alla classe o sottoclasse selezionata
   const listaIncantesimi =
-    regoleIncantesimi?.listaIncantesimi ?? classe;
+    regoleIncantesimi?.listaIncantesimi ?? bozza.classeId;
 
   const livelloMassimoSpell = calcolaLivelloMassimoIncantesimo(
-    classe,
+    bozza.classeId,
     slotMassimi,
     classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1]
   );
@@ -350,70 +334,42 @@ function App() {
   if (!personaggioCreato) {
     return (
       <CreaPersonaggio
-        nome={nome}
-        setNome={setNome}
-        classe={classe}
-        setClasse={setClasse}
-        razzaId={razzaId}
-        setRazzaId={setRazzaId}
-        sottorazzaId={sottorazzaId}
-        setSottorazzaId={setSottorazzaId}
-        taglia={taglia}
-        setTaglia={setTaglia}
-        primaLinguaId={primaLinguaId}
-        setPrimaLinguaId={setPrimaLinguaId}
-        secondaLinguaId={secondaLinguaId}
-        setSecondaLinguaId={setSecondaLinguaId}
-        caratteristiche={caratteristiche}
+        bozza={bozza}
+        dispatchBozza={dispatchBozza}
         cambiaCaratteristica={cambiaCaratteristica}
-        backgroundId={backgroundId}
-        setBackgroundId={setBackgroundId}
         creaPersonaggio={creaPersonaggio}
-        distribuzioneBackground={distribuzioneBackground}
-        setDistribuzioneBackground={setDistribuzioneBackground}
-        caratteristicaPiuDue={caratteristicaPiuDue}
-        setCaratteristicaPiuDue={setCaratteristicaPiuDue}
-        caratteristicaPiuUno={caratteristicaPiuUno}
-        setCaratteristicaPiuUno={setCaratteristicaPiuUno}
         caricaPersonaggioDiProva={caricaPersonaggioDiProva}
       />
     );
   }
 
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
-  const costituzione = caratteristicheFinali.Costituzione;
+  const statistiche = calcolaStatisticheDerivate({
+    caratteristicheFinali,
+    classe: classeSelezionata,
+    livello,
+  });
 
-  const puntiFeritaMassimi =
-    classeSelezionata && costituzione !== null
-      ? calcolaPuntiFerita(
-        classeSelezionata.dadoVita,
-        livello,
-        modificatore(costituzione),
-      )
-      : null;
-
-  const classeArmatura =
-    caratteristicheFinali.Destrezza !== null
-      ? calcolaClasseArmatura(caratteristicheFinali.Destrezza)
-      : null;
+  const puntiFeritaMassimi = statistiche.puntiFeritaMassimi;
+  const classeArmatura = statistiche.classeArmatura;
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
     <SchedaPersonaggio
-      nome={nome}
+      nome={bozza.nome}
       livello={livello}
       onSaliDiLivello={() => setLivello((precedente) => precedente + 1)}
-      bonusCompetenza={calcolaBonusCompetenza(livello)}
+      bonusCompetenza={statistiche.bonusCompetenza}
       nomeClasse={classeSelezionata?.nome}
       dadoVita={classeSelezionata?.dadoVita}
       puntiFeritaMassimi={puntiFeritaMassimi}
       nomeRazza={razzaSelezionata?.nome}
       nomeSottorazza={sottorazzaSelezionata?.nome}
       tipoCreatura={razzaSelezionata?.tipoCreatura}
-      taglia={taglia}
+      taglia={bozza.taglia}
       velocita={razzaSelezionata?.velocita}
-      primaLinguaId={primaLinguaId}
-      secondaLinguaId={secondaLinguaId}
+      primaLinguaId={bozza.primaLinguaId}
+      secondaLinguaId={bozza.secondaLinguaId}
       caratteristiche={caratteristicheFinali}
       modificatore={modificatore}
       classeArmatura={classeArmatura}
@@ -426,8 +382,14 @@ function App() {
       slotMassimi={slotMassimi}
       slotConsumati={slotConsumati}
       onCambiaSlot={cambiaSlot}
-      sottoclasseId={sottoclasseId}
-      onCambiaSottoclasse={setSottoclasseId}
+      sottoclasseId={bozza.sottoclasseId}
+      onCambiaSottoclasse={(nuovaSottoclasseId) =>
+        dispatchBozza({
+          type: "CAMBIA_CAMPO",
+          campo: "sottoclasseId",
+          valore: nuovaSottoclasseId,
+        })
+      }
       sottoclassiDisponibili={sottoclassiDisponibili}
       massimoTrucchetti={massimoTrucchetti}
       massimoIncantesimiPreparati={massimoIncantesimiPreparati}
