@@ -266,6 +266,13 @@ function App() {
       ? progressioneSlot[tipoProgressione][livello - 1] ?? []
       : [];
 
+
+  // Determina la risorsa della classe selezionata, se presente (tipo il Monk ha i punti Ki, il Warlock ha i punti Patto, ecc.)
+  const risorsaClasse = classeSelezionata?.risorsaClasse;
+
+  const puntiRisorsaMassimi =
+    risorsaClasse?.massimoPerLivello[livello - 1] ?? 0;
+
   /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
   const regoleClasse = progressioniIncantesimi[classe];
 
@@ -385,6 +392,8 @@ function App() {
       incantesimiScelti={incantesimiScelti}
       onCambiaTrucchetto={cambiaTrucchetto}
       onCambiaIncantesimo={cambiaIncantesimo}
+      risorsaClasseNome={risorsaClasse?.nome}
+      puntiRisorsaMassimi={puntiRisorsaMassimi}
     />
   );
 }

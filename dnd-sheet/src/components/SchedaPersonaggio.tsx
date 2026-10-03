@@ -24,24 +24,37 @@ type Spell = {
 };
 
 type Props = {
+    // Dati generali del personaggio
     nome: string;
     livello: number;
     onSaliDiLivello: () => void;
     bonusCompetenza: number;
 
+    // Dati della classe e della sottoclasse
     nomeClasse: string | undefined;
     dadoVita: number | undefined;
     puntiFeritaMassimi: number | null;
 
+    sottoclasseId: string;
+    onCambiaSottoclasse: (id: string) => void;
+    sottoclassiDisponibili: {
+        id: string;
+        nome: string;
+        classeId: string;
+    }[];
+
+    // Dati della razza
     nomeRazza: string | undefined;
     nomeSottorazza: string | undefined;
     tipoCreatura: string | undefined;
     taglia: string;
     velocita: number | undefined;
 
+    // Lingue conosciute
     primaLinguaId: string;
     secondaLinguaId: string;
 
+    // Caratteristiche e modificatori
     caratteristiche: Record<Caratteristica, number | null>;
     modificatore: (punteggio: number) => number;
 
@@ -52,20 +65,17 @@ type Props = {
 
     tiriSalvezzaCompetenti: string[];
 
+    // Background
     nomeBackground: string | undefined;
     descrizioneBackground: string | undefined;
     abilitaBackground: string[];
 
+    // Slot incantesimo o altre risorse della classe (come punti Ki del Monk o punti Patto del Warlock)
     slotMassimi: number[];
+    risorsaClasseNome?: string;
+    puntiRisorsaMassimi: number;
 
-    sottoclasseId: string;
-    onCambiaSottoclasse: (id: string) => void;
-    sottoclassiDisponibili: {
-        id: string;
-        nome: string;
-        classeId: string;
-    }[];
-
+    // Incantesimi e trucchetti
     massimoTrucchetti: number;
     massimoIncantesimiPreparati: number;
 
@@ -107,6 +117,8 @@ function DettagliSpell({ spell }: { spell: Spell }) {
     );
 }
 
+
+// Da qui inizia il componente principale della scheda del personaggio
 function SchedaPersonaggio({
     nome,
     livello,
@@ -142,6 +154,8 @@ function SchedaPersonaggio({
     incantesimiScelti,
     onCambiaTrucchetto,
     onCambiaIncantesimo,
+    risorsaClasseNome,
+    puntiRisorsaMassimi,
 }: Props) {
 
     {/* Gestione dello stato degli slot consumati */ }
@@ -357,6 +371,18 @@ function SchedaPersonaggio({
                             </div>
                         ) : null
                     )}
+                </section>
+            )}
+
+            {risorsaClasseNome && puntiRisorsaMassimi > 0 && (
+                <section>
+                    <h2>{risorsaClasseNome}</h2>
+
+                    {Array.from({ length: puntiRisorsaMassimi }, (_, indice) => (
+                        <label key={indice}>
+                            <input type="checkbox" />
+                        </label>
+                    ))}
                 </section>
             )}
 
