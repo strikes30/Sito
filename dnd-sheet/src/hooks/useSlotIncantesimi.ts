@@ -1,36 +1,35 @@
-import { useState } from "react";
+type UseSlotIncantesimiParametri = {
+  slotConsumati: string[];
+  onCambiaSlotConsumati: (nuoviSlotConsumati: string[]) => void;
+};
 
 
-export function useSlotIncantesimi() {
-  const [slotConsumati, setSlotConsumati] = useState<Set<string>>(
-    () => new Set()
-  );
+export function useSlotIncantesimi({
+  slotConsumati,
+  onCambiaSlotConsumati,
+}: UseSlotIncantesimiParametri) {
+  const slotConsumatiSet = new Set(slotConsumati);
 
 
   function cambiaSlot(id: string) {
-    setSlotConsumati((precedenti) => {
-      const aggiornati = new Set(precedenti);
+    if (slotConsumatiSet.has(id)) {
+      onCambiaSlotConsumati(
+        slotConsumati.filter((slotId) => slotId !== id),
+      );
+      return;
+    }
 
-
-      if (aggiornati.has(id)) {
-        aggiornati.delete(id);
-      } else {
-        aggiornati.add(id);
-      }
-
-
-      return aggiornati;
-    });
+    onCambiaSlotConsumati([...slotConsumati, id]);
   }
 
 
   function resetSlotConsumati() {
-    setSlotConsumati(new Set());
+    onCambiaSlotConsumati([]);
   }
 
 
   return {
-    slotConsumati,
+    slotConsumati: slotConsumatiSet,
     cambiaSlot,
     resetSlotConsumati,
   };

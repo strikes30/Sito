@@ -35,6 +35,6 @@ export type Personaggio = {
   trucchettiScelti: string[];
   incantesimiScelti: string[];
 
-  slotConsumati: number[];
+  slotConsumati: string[];
   puntiRisorsaSpesi: number;
 };

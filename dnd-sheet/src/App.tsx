@@ -127,13 +127,20 @@ function App() {
 
   const [erroriForm, setErroriForm] = useState<string[]>([]); // Stato per gli errori di validazione del form
 
+  // Determina l'ID della classe corrente, prendendo in considerazione sia il personaggio che la bozza
+  const classeCorrenteId =
+    personaggio?.classeId ?? bozza.classeId;
+
+  const sottoclasseCorrenteId =
+    personaggio?.sottoclasseId ?? bozza.sottoclasseId;
+
   // Filtra le sottoclassi disponibili in base alla classe selezionata
   const sottoclassiDisponibili = sottoclassi.filter(
-    (voce) => voce.classeId === bozza.classeId
+    (voce) => voce.classeId === classeCorrenteId
   );
 
   const sottoclasseSelezionata = sottoclassiDisponibili.find(
-    (voce) => voce.id === bozza.sottoclasseId
+    (voce) => voce.id === sottoclasseCorrenteId
   );
 
   // Filtra le lingue iniziali, escludendo la lingua "comune" e ordinandole alfabeticamente
@@ -318,14 +325,43 @@ function App() {
     );
   }
 
+  // Funzione per cambiare gli slot consumati del personaggio
+  function cambiaSlotConsumatiPersonaggio(
+    nuoviSlotConsumati: string[],
+  ) {
+    setPersonaggio((precedente) =>
+      precedente
+        ? {
+          ...precedente,
+          slotConsumati: nuoviSlotConsumati,
+        }
+        : precedente,
+    );
+  }
+
+  // Funzione per cambiare i punti risorsa spesi del personaggio
+  function cambiaPuntiRisorsaSpesiPersonaggio(nuovoValore: number) {
+    setPersonaggio((precedente) =>
+      precedente
+        ? {
+          ...precedente,
+          puntiRisorsaSpesi: nuovoValore,
+        }
+        : precedente,
+    );
+  }
+
   /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
 
   // Hook personalizzato per gestire gli slot degli incantesimi
-  const { slotConsumati, cambiaSlot } = useSlotIncantesimi();
+  const { slotConsumati, cambiaSlot } = useSlotIncantesimi({
+    slotConsumati: personaggio?.slotConsumati ?? [],
+    onCambiaSlotConsumati: cambiaSlotConsumatiPersonaggio,
+  });
 
   // Cerca nel JSON la classe che ha l'ID scelto dall'utente
   const classeSelezionata = classi.find(
-    (voce) => voce.id === bozza.classeId
+    (voce) => voce.id === classeCorrenteId
   );
 
   // Determina il tipo di progressione degli slot in base alla classe selezionata
@@ -355,7 +391,7 @@ function App() {
   );
 
   // Determina le regole degli incantesimi in base alla classe o sottoclasse selezionata
-  const regoleClasse = progressioniIncantesimi[bozza.classeId];
+  const regoleClasse = progressioniIncantesimi[classeCorrenteId];
 
   // Determina le regole degli incantesimi in base alla sottoclasse selezionata, se il livello è almeno 3
   const regoleSottoclasse =
@@ -374,10 +410,10 @@ function App() {
 
   // Determina la lista di incantesimi disponibili in base alla classe o sottoclasse selezionata
   const listaIncantesimi =
-    regoleIncantesimi?.listaIncantesimi ?? bozza.classeId;
+    regoleIncantesimi?.listaIncantesimi ?? classeCorrenteId;
 
   const livelloMassimoSpell = calcolaLivelloMassimoIncantesimo(
-    bozza.classeId,
+    classeCorrenteId,
     slotMassimi,
     classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livelloCorrente - 1]
   );
@@ -450,7 +486,10 @@ function App() {
   const {
     puntiRisorsaSpesi,
     cambiaPuntiRisorsaSpesi,
-  } = useRisorseClasse();
+  } = useRisorseClasse({
+    puntiRisorsaSpesi: personaggio?.puntiRisorsaSpesi ?? 0,
+    onCambiaPuntiRisorsaSpesi: cambiaPuntiRisorsaSpesiPersonaggio,
+  });
 
   // RENDERING DEL SITO, visualizzazione lista personaggi salvati
   if (vista.nome === "lista") {

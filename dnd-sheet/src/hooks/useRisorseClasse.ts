@@ -1,15 +1,22 @@
-import { useState } from "react";
+type UseRisorseClasseParametri = {
+  puntiRisorsaSpesi: number;
+  onCambiaPuntiRisorsaSpesi: (nuovoValore: number) => void;
+};
 
-export function useRisorseClasse() {
-  const [puntiRisorsaSpesi, setPuntiRisorsaSpesi] = useState(0);
 
+export function useRisorseClasse({
+  puntiRisorsaSpesi,
+  onCambiaPuntiRisorsaSpesi,
+}: UseRisorseClasseParametri) {
   function cambiaPuntiRisorsaSpesi(nuovoValore: number) {
-    setPuntiRisorsaSpesi(Math.max(0, nuovoValore));
+    onCambiaPuntiRisorsaSpesi(Math.max(0, nuovoValore));
   }
+
 
   function recuperaTutteLeRisorse() {
-    setPuntiRisorsaSpesi(0);
+    onCambiaPuntiRisorsaSpesi(0);
   }
+
 
   return {
     puntiRisorsaSpesi,
