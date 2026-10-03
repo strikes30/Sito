@@ -264,20 +264,14 @@ function App() {
     dispatchBozza({ type: "RESET" });
     setPersonaggio(null);
     setErroriForm([]);
-    setAbilitaCompetenti([]);
     setVista({ nome: "creazione" });
   }
-
 
   function tornaAllaLista() {
     setPersonaggio(null);
     setErroriForm([]);
-    setAbilitaCompetenti([]);
     setVista({ nome: "lista" });
   }
-
-  // Stato per le abilita competenti del personaggio
-  const [abilitaCompetenti, setAbilitaCompetenti] = useState<string[]>([]);
 
   // Funzione per cambiare lo stato di competenza di un'abilita
   function cambiaCompetenzaAbilita(id: string) {
@@ -409,6 +403,48 @@ function App() {
     onCambiaTrucchetti: cambiaTrucchettiPersonaggio,
     onCambiaIncantesimi: cambiaIncantesimiPersonaggio,
   });
+
+  useEffect(() => {
+    if (!personaggio) {
+      return;
+    }
+
+    const idDisponibili = new Set(
+      spellDisponibili.map((spell) => spell.id),
+    );
+
+    const trucchettiValidi = personaggio.trucchettiScelti.filter(
+      (id) => idDisponibili.has(id),
+    );
+
+    const incantesimiValidi = personaggio.incantesimiScelti.filter(
+      (id) => idDisponibili.has(id),
+    );
+
+    const trucchettiInvariati =
+      trucchettiValidi.length === personaggio.trucchettiScelti.length;
+    const incantesimiInvariati =
+      incantesimiValidi.length === personaggio.incantesimiScelti.length;
+
+    if (trucchettiInvariati && incantesimiInvariati) {
+      return;
+    }
+
+    setPersonaggio((precedente) =>
+      precedente
+        ? {
+          ...precedente,
+          trucchettiScelti: trucchettiValidi,
+          incantesimiScelti: incantesimiValidi,
+        }
+        : precedente,
+    );
+  }, [
+    personaggio,
+    listaIncantesimi,
+    massimoTrucchetti,
+    livelloMassimoSpell,
+  ]);
 
   // Hook personalizzato per gestire i punti risorsa della classe
   const {
