@@ -1,12 +1,13 @@
 // import { useState } from "react";
 import SezioneInformazioniBase from "./scheda/SezioneInformazioniBase";
+import { SezioneArmaEquipaggiata } from "./scheda/SezioneArmaEquipaggiata";
 import SezioneRisorseClasse from "./scheda/SezioneRisorseClasse";
 import SezioneIncantesimi from "./scheda/SezioneIncantesimi";
 import SezioneSlotIncantesimo from "./scheda/SezioneSlotIncantesimo";
 import SezioneCaratteristiche from "./scheda/SezioneCaratteristiche";
 import type { Caratteristica } from "../types/personaggio";
 import type { CompetenzaArmatura } from "../types/dnd";
-import type { Arma,CompetenzeArma } from "../types/datiGioco";
+import type { Arma, CompetenzeArma } from "../types/datiGioco";
 
 
 import type { Spell } from "../types/spell";
@@ -50,6 +51,9 @@ type Props = {
     modificatore: (punteggio: number) => number;
 
     classeArmatura: number | null;
+    armi: Arma[];
+    armaEquipaggiataId: string | null;
+    onScegliArma: (armaId: string) => void;
 
     abilitaCompetenti: string[];
     onCambiaCompetenzaAbilita: (id: string) => void;
@@ -97,6 +101,9 @@ function SchedaPersonaggio({
     competenzeArmatura,
     competenzeArma,
     armiCompetenti,
+    armi,
+    armaEquipaggiataId,
+    onScegliArma,
     sottoclasseId,
     onCambiaSottoclasse,
     sottoclassiDisponibili,
@@ -135,13 +142,13 @@ function SchedaPersonaggio({
     slotConsumati,
     onCambiaSlot,
     onNuovoPersonaggio,
-    
+
 }: Props) {
 
     {/* Rendering della scheda del personaggio */ }
     return (
         <main>
-            
+
             <button type="button" onClick={onNuovoPersonaggio}>
                 Crea un nuovo personaggio
             </button>
@@ -170,6 +177,13 @@ function SchedaPersonaggio({
                 classeArmatura={classeArmatura}
                 nomeBackground={nomeBackground}
                 descrizioneBackground={descrizioneBackground}
+            />
+
+            {/* Sezione dell'arma equipaggiata */ }
+            <SezioneArmaEquipaggiata
+                armi={armi}
+                armaEquipaggiataId={armaEquipaggiataId}
+                onScegliArma={onScegliArma}
             />
 
             {/* Slot incantesimo */}

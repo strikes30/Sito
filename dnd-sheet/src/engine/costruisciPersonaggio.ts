@@ -74,5 +74,7 @@ export function costruisciPersonaggio(
 
     slotConsumati: [],
     puntiRisorsaSpesi: 0,
+
+    armaEquipaggiataId: null,
   };
 }

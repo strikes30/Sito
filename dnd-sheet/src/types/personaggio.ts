@@ -41,4 +41,6 @@ export type Personaggio = {
   puntiRisorsaSpesi: number;
 
   competenzeArmatura: CompetenzaArmatura[];
+
+  armaEquipaggiataId: string | null;
 };

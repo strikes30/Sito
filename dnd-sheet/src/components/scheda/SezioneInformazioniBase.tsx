@@ -104,6 +104,7 @@ export default function SezioneInformazioniBase({
         </div>
       )}
       <div>
+        
         {/* Competenza con le armi */}
         <section>
           <h2>Competenze nelle armi</h2>

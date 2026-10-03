@@ -316,6 +316,18 @@ function App() {
         : precedente,
     );
   }
+  
+  // Funzione per cambiare l'arma equipaggiata del personaggio
+  function cambiaArmaEquipaggiata(armaId: string) {
+  setPersonaggio((precedente) =>
+    precedente
+      ? {
+          ...precedente,
+          armaEquipaggiataId: armaId,
+        }
+      : precedente,
+  );
+}
 
   // Funzioni per cambiare i trucchetti e gli incantesimi scelti del personaggio
   function cambiaIncantesimiPersonaggio(nuoviIncantesimi: string[]) {
@@ -607,6 +619,11 @@ function App() {
         }
       }
       armiCompetenti={armiCompetenti}
+      armi={armiCompetenti}
+      armaEquipaggiataId={
+        personaggio.armaEquipaggiataId
+      }
+      onScegliArma={cambiaArmaEquipaggiata}
       dadoVita={classeScheda?.dadoVita}
       puntiFeritaMassimi={puntiFeritaMassimi}
       nomeRazza={razzaScheda?.nome}
