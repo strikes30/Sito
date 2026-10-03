@@ -147,6 +147,24 @@
       "Saggezza",
       "Carisma"
     ],
-    "progressioneSlot": "nessuna"
+    "progressioneSlot": "patto",
+  "risorsaClasse": {
+    "id": "magia-del-patto",
+    "nome": "Magia del Patto",
+    "livelloSblocco": 1,
+    "massimoPerLivello": [
+      1, 2, 2, 2, 2,
+      2, 2, 2, 2, 2,
+      3, 3, 3, 3, 3,
+      3, 4, 4, 4, 4
+    ],
+    "livelloSlotPerLivello": [
+      1, 1, 2, 2, 3,
+      3, 4, 4, 5, 5,
+      5, 5, 5, 5, 5,
+      5, 5, 5, 5, 5
+    ],
+    "recupero": ["riposo-breve", "riposo-lungo"]
   }
+}
 ]

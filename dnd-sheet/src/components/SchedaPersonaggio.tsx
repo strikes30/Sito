@@ -73,8 +73,10 @@ type Props = {
     // Slot incantesimo o altre risorse della classe (come punti Ki del Monk o punti Patto del Warlock)
     slotMassimi: number[];
     risorsaClasseNome?: string;
+    risorsaClasseId?: string;
     puntiRisorsaMassimi: number;
     puntiRisorsaSpesi: number;
+    livelloSlotRisorsa: number;
     onCambiaPuntiRisorsaSpesi: (nuovoValore: number) => void;
 
     // Incantesimi e trucchetti
@@ -157,9 +159,11 @@ function SchedaPersonaggio({
     onCambiaTrucchetto,
     onCambiaIncantesimo,
     risorsaClasseNome,
+    risorsaClasseId,
     puntiRisorsaMassimi,
     puntiRisorsaSpesi,
-    onCambiaPuntiRisorsaSpesi
+    onCambiaPuntiRisorsaSpesi,
+    livelloSlotRisorsa,
 }: Props) {
 
     {/* Gestione dello stato degli slot consumati */ }
@@ -315,6 +319,7 @@ function SchedaPersonaggio({
                             <DettagliSpell spell={spell} />
                         </div>
                     ))}
+
                     {/* Lista degli incantesimi disponibili */}
                     <h3>
                         Incantesimi ({incantesimiScelti.length}/{massimoIncantesimiPreparati})
@@ -379,11 +384,15 @@ function SchedaPersonaggio({
             )}
 
             {/* Risorse della classe (come punti Ki del Monk o punti Patto del Warlock) */}
+            {/* Risorse della classe (Punti Focus del Monaco, Slot di Magia del Patto del Warlock, ecc.) */}
             {risorsaClasseNome && puntiRisorsaMassimi > 0 && (
                 <section>
                     <h2>{risorsaClasseNome}</h2>
 
                     <p>
+                        {risorsaClasseId === "magia-del-patto"
+                            ? `Slot di livello ${livelloSlotRisorsa}: `
+                            : ""}
                         {puntiRisorsaMassimi - puntiRisorsaSpesi} / {puntiRisorsaMassimi}
                     </p>
 
@@ -397,6 +406,11 @@ function SchedaPersonaggio({
                                         indice < puntiRisorsaSpesi ? indice : indice + 1
                                     )
                                 }
+                                aria-label={
+                                    risorsaClasseId === "magia-del-patto"
+                                        ? `Slot di Magia del Patto ${indice + 1} speso`
+                                        : `${risorsaClasseNome} ${indice + 1} speso`
+                                }
                             />
                         </label>
                     ))}
@@ -409,7 +423,7 @@ function SchedaPersonaggio({
                     </button>
                 </section>
             )}
-
+            
             {/* Caratteristiche */}
             <h2>Caratteristiche</h2>
             <ul>

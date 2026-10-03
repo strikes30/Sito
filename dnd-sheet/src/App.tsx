@@ -276,6 +276,9 @@ function App() {
   const puntiRisorsaMassimi =
     risorsaClasse?.massimoPerLivello[livello - 1] ?? 0;
 
+  const livelloSlotRisorsa =
+    risorsaClasse?.livelloSlotPerLivello?.[livello - 1] ?? 0;
+
   /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
   const regoleClasse = progressioniIncantesimi[classe];
 
@@ -396,9 +399,11 @@ function App() {
       onCambiaTrucchetto={cambiaTrucchetto}
       onCambiaIncantesimo={cambiaIncantesimo}
       risorsaClasseNome={risorsaClasse?.nome}
+      risorsaClasseId={risorsaClasse?.id}
       puntiRisorsaMassimi={puntiRisorsaMassimi}
       puntiRisorsaSpesi={puntiRisorsaSpesi}
       onCambiaPuntiRisorsaSpesi={setPuntiRisorsaSpesi}
+      livelloSlotRisorsa={livelloSlotRisorsa}
     />
   );
 }
