@@ -6,6 +6,12 @@ import progressioneSlot from "./data/progressionSlot.json";
 import sottoclassi from "./data/sottoclassi.json";
 import progressioneIncantesimi from "./data/progressionSpell.json";
 import spells from "./data/spells.json";
+import { calcolaLivelloMassimoIncantesimo } from "./utils/calcoliIncantesimi";
+import {
+  calcolaLivelloSlotRisorsa,
+  calcolaPuntiRisorsaMassimi,
+} from "./utils/calcoliRisorse";
+
 
 import {
   nomiCaratteristiche,
@@ -273,12 +279,15 @@ function App() {
   // Determina la risorsa della classe selezionata, se presente (tipo il Monk ha i punti Ki, il Warlock ha i punti Patto, ecc.)
   const risorsaClasse = classeSelezionata?.risorsaClasse;
 
-  const puntiRisorsaMassimi =
-    risorsaClasse?.massimoPerLivello[livello - 1] ?? 0;
+  const puntiRisorsaMassimi = calcolaPuntiRisorsaMassimi(
+  risorsaClasse,
+  livello
+);
 
-  const livelloSlotRisorsa =
-    risorsaClasse?.livelloSlotPerLivello?.[livello - 1] ?? 0;
-
+const livelloSlotRisorsa = calcolaLivelloSlotRisorsa(
+  risorsaClasse,
+  livello
+);
   /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
   const regoleClasse = progressioniIncantesimi[classe];
 
@@ -299,14 +308,11 @@ function App() {
   const listaIncantesimi =
     regoleIncantesimi?.listaIncantesimi ?? classe;
 
-  const livelloMassimoSpell =
-    classe === "warlock"
-      ? classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1] ?? 0
-      : slotMassimi.reduce(
-        (massimo, quantita, indice) =>
-          quantita > 0 ? indice + 1 : massimo,
-        0
-      );
+  const livelloMassimoSpell = calcolaLivelloMassimoIncantesimo(
+  classe,
+  slotMassimi,
+  classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1]
+);
 
   const spellDisponibili = spells.filter(
     (spell) =>
@@ -363,25 +369,6 @@ function App() {
     caratteristicheFinali.Destrezza !== null
       ? calcolaClasseArmatura(caratteristicheFinali.Destrezza)
       : null;
-
-
-  console.log("DEBUG WARLOCK", {
-    classe,
-    regoleClasse,
-    regoleSottoclasse,
-    regoleIncantesimi,
-    listaIncantesimi,
-    massimoTrucchetti,
-    massimoIncantesimiPreparati,
-    slotMassimi,
-    livelloMassimoSpell,
-    hexTrovato: spells.find((spell) => spell.id === "hex"),
-    hexPassaLista:
-      spells.find((spell) => spell.id === "hex")?.classes.includes(listaIncantesimi),
-    hexPassaLivello:
-      (spells.find((spell) => spell.id === "hex")?.level ?? 0) <= livelloMassimoSpell,
-    spellDisponibiliLivello1: spellDisponibili.filter((s) => s.level === 1),
-  });
 
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (

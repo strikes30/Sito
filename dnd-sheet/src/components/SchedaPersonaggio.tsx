@@ -1,6 +1,7 @@
 import { useState } from "react";
 import lingue from "../data/lingue.json";
 import abilita from "../data/abilita.json";
+import SezioneRisorseClasse from "./scheda/SezioneRisorseClasse";
 
 import {
     nomiCaratteristiche,
@@ -304,7 +305,7 @@ function SchedaPersonaggio({
                             : "Nascondi trucchetti non conosciuti"}
                     </button>
 
-                    
+
 
                     {/* Lista dei trucchetti disponibili */}
                     {trucchettiVisibili.map((spell) => (
@@ -386,45 +387,14 @@ function SchedaPersonaggio({
             )}
 
             {/* Risorse della classe (come punti Ki del Monk o punti Patto del Warlock) */}
-            {/* Risorse della classe (Punti Focus del Monaco, Slot di Magia del Patto del Warlock, ecc.) */}
-            {risorsaClasseNome && puntiRisorsaMassimi > 0 && (
-                <section>
-                    <h2>{risorsaClasseNome}</h2>
-
-                    <p>
-                        {risorsaClasseId === "magia-del-patto"
-                            ? `Slot di livello ${livelloSlotRisorsa}: `
-                            : ""}
-                        {puntiRisorsaMassimi - puntiRisorsaSpesi} / {puntiRisorsaMassimi}
-                    </p>
-
-                    {Array.from({ length: puntiRisorsaMassimi }, (_, indice) => (
-                        <label key={indice}>
-                            <input
-                                type="checkbox"
-                                checked={indice < puntiRisorsaSpesi}
-                                onChange={() =>
-                                    onCambiaPuntiRisorsaSpesi(
-                                        indice < puntiRisorsaSpesi ? indice : indice + 1
-                                    )
-                                }
-                                aria-label={
-                                    risorsaClasseId === "magia-del-patto"
-                                        ? `Slot di Magia del Patto ${indice + 1} speso`
-                                        : `${risorsaClasseNome} ${indice + 1} speso`
-                                }
-                            />
-                        </label>
-                    ))}
-
-                    <button
-                        type="button"
-                        onClick={() => onCambiaPuntiRisorsaSpesi(0)}
-                    >
-                        Recupera tutti
-                    </button>
-                </section>
-            )}
+            <SezioneRisorseClasse
+                id={risorsaClasseId}
+                nome={risorsaClasseNome}
+                massimi={puntiRisorsaMassimi}
+                spesi={puntiRisorsaSpesi}
+                livelloSlot={livelloSlotRisorsa}
+                onCambiaSpesi={onCambiaPuntiRisorsaSpesi}
+            />
 
             {/* Caratteristiche */}
             <h2>Caratteristiche</h2>
