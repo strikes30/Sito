@@ -25,7 +25,6 @@ import {
   calcolaPuntiRisorsaMassimi,
 } from "./utils/calcoliRisorse";
 
-
 import {
   type Caratteristica,
   type Personaggio,
@@ -39,11 +38,11 @@ import {
   modificatore,
 } from "./utils/calcoliPersonaggio";
 
-import { calcolaStatisticheDerivate } from "./utils/calcolaStatisticheDerivate";
-
 import { calcolaCaratteristicheFinali } from "./utils/calcolaCaratteristicheFinali";
 
 import { validaBozzaPersonaggio } from "./engine/validaBozzaPersonaggio";
+
+import { useDatiPersonaggio } from "./hooks/useDatiPersonaggi";
 
 // Importa i dati di gioco dai file JSON
 import backgroundsJson from "./data/background.json";
@@ -68,10 +67,6 @@ import type {
 // Importa le armi
 import armiJson from "./data/armi.json";
 const armi = armiJson as Arma[];
-
-import {
-  personaggioÈCompetenteConArma,
-} from "./utils/competenzeArmi.ts";
 
 // Tipi per la gestione della vista corrente dell'applicazione
 type Vista =
@@ -221,7 +216,6 @@ function App() {
       caratteristicheFinali,
     );
 
-    salvaPersonaggio(nuovoPersonaggio);
     setPersonaggio(nuovoPersonaggio);
     setVista({
       nome: "scheda",
@@ -450,34 +444,35 @@ function App() {
     onCambiaIncantesimi: cambiaIncantesimiPersonaggio,
   });
 
+  // Effetto per aggiornare i trucchetti e gli incantesimi scelti del personaggio quando cambiano le scelte valide
   useEffect(() => {
     if (!personaggio) {
       return;
     }
 
-
+    // Crea un set di ID degli incantesimi disponibili per una ricerca più veloce
     const idDisponibili = new Set(
       spellDisponibili.map((spell) => spell.id),
     );
 
-
+    // Filtra i trucchetti scelti dal personaggio per mantenere solo quelli validi
     const trucchettiValidi = personaggio.trucchettiScelti.filter(
       (id) => idDisponibili.has(id),
     );
 
-
+    // Filtra gli incantesimi scelti dal personaggio per mantenere solo quelli validi
     const incantesimiValidi = personaggio.incantesimiScelti.filter(
       (id) => idDisponibili.has(id),
     );
 
-
+    // Controlla se i trucchetti e gli incantesimi scelti sono invariati rispetto a quelli validi
     const trucchettiInvariati =
       trucchettiValidi.length === personaggio.trucchettiScelti.length &&
       trucchettiValidi.every(
         (id, indice) => id === personaggio.trucchettiScelti[indice],
       );
 
-
+    // Controlla se gli incantesimi scelti sono invariati rispetto a quelli validi
     const incantesimiInvariati =
       incantesimiValidi.length === personaggio.incantesimiScelti.length &&
       incantesimiValidi.every(
@@ -519,6 +514,25 @@ function App() {
     onCambiaPuntiRisorsaSpesi: cambiaPuntiRisorsaSpesiPersonaggio,
   });
 
+  // Hook personalizzato per ottenere i dati del personaggio, come classe, razza, sottorazza, background, sottoclassi disponibili, sottoclasse selezionata, armi competenti e statistiche derivate
+  const {
+    classe: classeScheda,
+    razza: razzaScheda,
+    sottorazza: sottorazzaScheda,
+    background: backgroundScheda,
+    sottoclassiDisponibili: sottoclassiScheda,
+    sottoclasse: sottoclasseScheda,
+    armiCompetenti,
+    statistiche,
+  } = useDatiPersonaggio({
+    personaggio,
+    classi,
+    razze,
+    backgrounds,
+    sottoclassi,
+    armi,
+  });
+
   // RENDERING DEL SITO, visualizzazione lista personaggi salvati
   if (vista.nome === "lista") {
     return (
@@ -557,50 +571,11 @@ function App() {
     );
   }
 
-  // I dati ufficiali del personaggio creato
-  const classeScheda = classi.find(
-    (classe) => classe.id === personaggio.classeId,
-  );
+  const puntiFeritaMassimi =
+    statistiche?.puntiFeritaMassimi ?? 0;
 
-  // Filtra le armi in base alle competenze del personaggio e della classe selezionata
-  const armiCompetenti = classeScheda
-    ? armi.filter((arma) =>
-      personaggioÈCompetenteConArma(
-        arma,
-        classeScheda.competenzeArma,
-      ),
-    )
-    : [];
-
-  const razzaScheda = razze.find(
-    (razza) => razza.id === personaggio.razzaId,
-  );
-
-  const sottorazzaScheda = razzaScheda?.sottorazze.find(
-    (sottorazza) => sottorazza.id === personaggio.sottorazzaId,
-  );
-
-  const backgroundScheda = backgrounds.find(
-    (background) => background.id === personaggio.backgroundId,
-  );
-
-  const sottoclassiScheda = sottoclassi.filter(
-    (sottoclasse) => sottoclasse.classeId === personaggio.classeId,
-  );
-
-  const sottoclasseScheda = sottoclassiScheda.find(
-    (sottoclasse) => sottoclasse.id === personaggio.sottoclasseId,
-  );
-
-  // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
-  const statistiche = calcolaStatisticheDerivate({
-    caratteristicheFinali: personaggio.caratteristiche,
-    classe: classeScheda,
-    livello: personaggio.livello,
-  });
-
-  const puntiFeritaMassimi = statistiche.puntiFeritaMassimi;
-  const classeArmatura = statistiche.classeArmatura;
+  const classeArmatura =
+    statistiche?.classeArmatura ?? 10;
 
   // Funzione per resettare la bozza del personaggio e tornare alla fase di creazione
   function nuovoPersonaggio() {
@@ -621,7 +596,8 @@ function App() {
             }
             : precedente,
         )
-      } bonusCompetenza={statistiche.bonusCompetenza}
+      }
+      bonusCompetenza={statistiche?.bonusCompetenza ?? 0}
       nomeClasse={classeScheda?.nome}
       competenzeArmatura={personaggio.competenzeArmatura}
       competenzeArma={
