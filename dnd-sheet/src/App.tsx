@@ -14,6 +14,8 @@ import {
 
 import { useIncantesimi } from "./hooks/useIncantesimi";
 
+import { useSlotIncantesimi } from "./hooks/useSlotIncantesimi";
+
 import {
   calcolaLivelloSlotRisorsa,
   calcolaPuntiRisorsaMassimi,
@@ -231,38 +233,10 @@ function App() {
     );
   }
 
-  /////// RENDERING DEL SITO, Creazione personaggi qua ///////
-  if (!personaggioCreato) {
-    return (
-      <CreaPersonaggio
-        nome={nome}
-        setNome={setNome}
-        classe={classe}
-        setClasse={setClasse}
-        razzaId={razzaId}
-        setRazzaId={setRazzaId}
-        sottorazzaId={sottorazzaId}
-        setSottorazzaId={setSottorazzaId}
-        taglia={taglia}
-        setTaglia={setTaglia}
-        primaLinguaId={primaLinguaId}
-        setPrimaLinguaId={setPrimaLinguaId}
-        secondaLinguaId={secondaLinguaId}
-        setSecondaLinguaId={setSecondaLinguaId}
-        caratteristiche={caratteristiche}
-        cambiaCaratteristica={cambiaCaratteristica}
-        backgroundId={backgroundId}
-        setBackgroundId={setBackgroundId}
-        creaPersonaggio={creaPersonaggio}
-        distribuzioneBackground={distribuzioneBackground}
-        setDistribuzioneBackground={setDistribuzioneBackground}
-        caratteristicaPiuDue={caratteristicaPiuDue}
-        setCaratteristicaPiuDue={setCaratteristicaPiuDue}
-        caratteristicaPiuUno={caratteristicaPiuUno}
-        setCaratteristicaPiuUno={setCaratteristicaPiuUno}
-      />
-    );
-  }
+  /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
+
+  // Hook personalizzato per gestire gli slot degli incantesimi
+  const { slotConsumati, cambiaSlot } = useSlotIncantesimi();
 
   // Cerca nel JSON la classe che ha l'ID scelto dall'utente
   const classeSelezionata = classi.find(
@@ -282,7 +256,6 @@ function App() {
       ? progressioneSlot[tipoProgressione][livello - 1] ?? []
       : [];
 
-
   // Determina la risorsa della classe selezionata, se presente (tipo il Monk ha i punti Ki, il Warlock ha i punti Patto, ecc.)
   const risorsaClasse = classeSelezionata?.risorsaClasse;
 
@@ -295,7 +268,8 @@ function App() {
     risorsaClasse,
     livello
   );
-  /////////// CALCOLO DEI TRUCCHETTI E DEGLI INCANTESIMI PREPARATI //////////
+
+
   const regoleClasse = progressioniIncantesimi[classe];
 
   const regoleSottoclasse =
@@ -337,6 +311,40 @@ function App() {
     massimoTrucchetti,
     massimoIncantesimiPreparati,
   });
+
+  /////// RENDERING DEL SITO, Creazione personaggi qua ///////
+  if (!personaggioCreato) {
+    return (
+      <CreaPersonaggio
+        nome={nome}
+        setNome={setNome}
+        classe={classe}
+        setClasse={setClasse}
+        razzaId={razzaId}
+        setRazzaId={setRazzaId}
+        sottorazzaId={sottorazzaId}
+        setSottorazzaId={setSottorazzaId}
+        taglia={taglia}
+        setTaglia={setTaglia}
+        primaLinguaId={primaLinguaId}
+        setPrimaLinguaId={setPrimaLinguaId}
+        secondaLinguaId={secondaLinguaId}
+        setSecondaLinguaId={setSecondaLinguaId}
+        caratteristiche={caratteristiche}
+        cambiaCaratteristica={cambiaCaratteristica}
+        backgroundId={backgroundId}
+        setBackgroundId={setBackgroundId}
+        creaPersonaggio={creaPersonaggio}
+        distribuzioneBackground={distribuzioneBackground}
+        setDistribuzioneBackground={setDistribuzioneBackground}
+        caratteristicaPiuDue={caratteristicaPiuDue}
+        setCaratteristicaPiuDue={setCaratteristicaPiuDue}
+        caratteristicaPiuUno={caratteristicaPiuUno}
+        setCaratteristicaPiuUno={setCaratteristicaPiuUno}
+      />
+    );
+  }
+
 
   // Funzioni per cambiare gli incantesimi scelti, con controlli di validità
   // function cambiaTrucchetto(id: string) {
@@ -413,6 +421,8 @@ function App() {
       descrizioneBackground={backgroundSelezionato?.descrizione}
       abilitaBackground={backgroundSelezionato?.abilita ?? []}
       slotMassimi={slotMassimi}
+      slotConsumati={slotConsumati}
+      onCambiaSlot={cambiaSlot}
       sottoclasseId={sottoclasseId}
       onCambiaSottoclasse={setSottoclasseId}
       sottoclassiDisponibili={sottoclassiDisponibili}

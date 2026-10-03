@@ -1,30 +1,14 @@
-import { useState } from "react";
-
 type SezioneSlotIncantesimoProps = {
   slotMassimi: number[];
+  slotConsumati: Set<string>;
+  onCambiaSlot: (id: string) => void;
 };
 
 export default function SezioneSlotIncantesimo({
   slotMassimi,
+  slotConsumati,
+  onCambiaSlot,
 }: SezioneSlotIncantesimoProps) {
-  const [slotConsumati, setSlotConsumati] = useState<Set<string>>(
-    () => new Set()
-  );
-
-  function cambiaSlot(id: string) {
-    setSlotConsumati((precedenti) => {
-      const aggiornati = new Set(precedenti);
-
-      if (aggiornati.has(id)) {
-        aggiornati.delete(id);
-      } else {
-        aggiornati.add(id);
-      }
-
-      return aggiornati;
-    });
-  }
-
   const haSlot = slotMassimi.some((quantita) => quantita > 0);
 
   if (!haSlot) {
@@ -48,7 +32,7 @@ export default function SezioneSlotIncantesimo({
                   <input
                     type="checkbox"
                     checked={slotConsumati.has(id)}
-                    onChange={() => cambiaSlot(id)}
+                    onChange={() => onCambiaSlot(id)}
                     aria-label={`Slot ${indiceSlot + 1} di livello ${
                       indice + 1
                     } consumato`}

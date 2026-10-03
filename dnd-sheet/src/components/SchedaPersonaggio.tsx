@@ -65,6 +65,8 @@ type Props = {
     puntiRisorsaSpesi: number;
     livelloSlotRisorsa: number;
     onCambiaPuntiRisorsaSpesi: (nuovoValore: number) => void;
+    slotConsumati: Set<string>;
+    onCambiaSlot: (id: string) => void;
 
     // Incantesimi e trucchetti
     massimoTrucchetti: number;
@@ -119,6 +121,8 @@ function SchedaPersonaggio({
     puntiRisorsaSpesi,
     onCambiaPuntiRisorsaSpesi,
     livelloSlotRisorsa,
+    slotConsumati,
+    onCambiaSlot,
 }: Props) {
 
     {/* Rendering della scheda del personaggio */ }
@@ -149,8 +153,11 @@ function SchedaPersonaggio({
             />
 
             {/* Slot incantesimo */}
-            <SezioneSlotIncantesimo slotMassimi={slotMassimi} />
-
+            <SezioneSlotIncantesimo
+                slotMassimi={slotMassimi}
+                slotConsumati={slotConsumati}
+                onCambiaSlot={onCambiaSlot}
+            />
             {spellDisponibili.length > 0 && (
                 <SezioneIncantesimi
                     spellDisponibili={spellDisponibili}
