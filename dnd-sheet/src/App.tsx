@@ -32,7 +32,12 @@ import {
 import {
   // nomiCaratteristiche,
   type Caratteristica,
+  type Personaggio,
 } from "./types/personaggio";
+
+import {
+  costruisciPersonaggio,
+} from "./engine/costruisciPersonaggio";
 
 import {
   modificatore,
@@ -72,7 +77,9 @@ function App() {
     bozzaIniziale,
   );
 
-  const [personaggioCreato, setPersonaggioCreato] = useState(false);   // Stato per verificare se il personaggio è stato creato
+  const [personaggio, setPersonaggio] =
+    useState<Personaggio | null>(null);
+
   const [livello, setLivello] = useState(1);  // Livello del personaggio
   const [erroriForm, setErroriForm] = useState<string[]>([]); // Stato per gli errori di validazione del form
 
@@ -149,13 +156,12 @@ function App() {
 
     setErroriForm([]);
 
-    dispatchBozza({
-      type: "CAMBIA_CAMPO",
-      campo: "nome",
-      valore: bozza.nome.trim(),
-    });
+    const nuovoPersonaggio = costruisciPersonaggio(
+      bozza,
+      caratteristicheFinali,
+    );
 
-    setPersonaggioCreato(true);
+    setPersonaggio(nuovoPersonaggio);
   }
 
   // Funzione per caricare un personaggio di prova, utile per testare l'applicazione
@@ -290,7 +296,7 @@ function App() {
   } = useRisorseClasse();
 
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
-  if (!personaggioCreato) {
+  if (!personaggio) {
     return (
       <CreaPersonaggio
         bozza={bozza}
@@ -316,7 +322,7 @@ function App() {
   /////// RENDERING DEL SITO, visualizzazione personaggio creato ///////
   return (
     <SchedaPersonaggio
-      nome={bozza.nome}
+      nome={personaggio.nome}
       livello={livello}
       onSaliDiLivello={() => setLivello((precedente) => precedente + 1)}
       bonusCompetenza={statistiche.bonusCompetenza}
@@ -326,11 +332,11 @@ function App() {
       nomeRazza={razzaSelezionata?.nome}
       nomeSottorazza={sottorazzaSelezionata?.nome}
       tipoCreatura={razzaSelezionata?.tipoCreatura}
-      taglia={bozza.taglia}
+      taglia={personaggio.taglia}
       velocita={razzaSelezionata?.velocita}
-      primaLinguaId={bozza.primaLinguaId}
-      secondaLinguaId={bozza.secondaLinguaId}
-      caratteristiche={caratteristicheFinali}
+      primaLinguaId={personaggio.lingue[1]}
+      secondaLinguaId={personaggio.lingue[2]}
+      caratteristiche={personaggio.caratteristiche}
       modificatore={modificatore}
       classeArmatura={classeArmatura}
       abilitaCompetenti={abilitaCompetenti}
@@ -342,13 +348,16 @@ function App() {
       slotMassimi={slotMassimi}
       slotConsumati={slotConsumati}
       onCambiaSlot={cambiaSlot}
-      sottoclasseId={bozza.sottoclasseId}
+      sottoclasseId={personaggio.sottoclasseId}
       onCambiaSottoclasse={(nuovaSottoclasseId) =>
-        dispatchBozza({
-          type: "CAMBIA_CAMPO",
-          campo: "sottoclasseId",
-          valore: nuovaSottoclasseId,
-        })
+        setPersonaggio((precedente) =>
+          precedente
+            ? {
+              ...precedente,
+              sottoclasseId: nuovaSottoclasseId,
+            }
+            : precedente,
+        )
       }
       sottoclassiDisponibili={sottoclassiDisponibili}
       massimoTrucchetti={massimoTrucchetti}
