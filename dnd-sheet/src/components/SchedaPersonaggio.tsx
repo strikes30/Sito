@@ -55,7 +55,6 @@ type Props = {
     armaEquipaggiataId: string | null;
     onScegliArma: (armaId: string) => void;
 
-    abilitaCompetenti: string[];
     onCambiaCompetenzaAbilita: (id: string) => void;
 
     tiriSalvezzaCompetenti: string[];
@@ -63,6 +62,7 @@ type Props = {
     // Background
     nomeBackground: string | undefined;
     descrizioneBackground: string | undefined;
+    abilitaClasse: string[];
     abilitaBackground: string[];
 
     // Slot incantesimo o altre risorse della classe (come punti Ki del Monk o punti Patto del Warlock)
@@ -119,7 +119,7 @@ function SchedaPersonaggio({
     caratteristiche,
     modificatore,
     classeArmatura,
-    abilitaCompetenti,
+    abilitaClasse,
     onCambiaCompetenzaAbilita,
     tiriSalvezzaCompetenti,
     nomeBackground,
@@ -220,7 +220,7 @@ function SchedaPersonaggio({
                 modificatore={modificatore}
                 bonusCompetenza={bonusCompetenza}
                 tiriSalvezzaCompetenti={tiriSalvezzaCompetenti}
-                abilitaCompetenti={abilitaCompetenti}
+                abilitaClasse={abilitaClasse}
                 abilitaBackground={abilitaBackground}
                 onCambiaCompetenzaAbilita={onCambiaCompetenzaAbilita}
             />

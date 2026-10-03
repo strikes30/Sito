@@ -67,7 +67,7 @@ export function costruisciPersonaggio(
       caratteristicheFinali,
     ),
 
-    abilitaCompetenti: [],
+    abilitaCompetenti: bozza.abilitaCompetenti,
 
     trucchettiScelti: [],
     incantesimiScelti: [],

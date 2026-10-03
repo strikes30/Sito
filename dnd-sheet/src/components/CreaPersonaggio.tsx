@@ -4,6 +4,9 @@ import classi from "../data/classi.json";
 import razze from "../data/razze.json";
 import lingue from "../data/lingue.json";
 import backgrounds from "../data/background.json";
+import type { Classe } from "../types/datiGioco";
+
+import { SelettoreCompetenzeAbilita } from "./creazione/SelettoreCompetenzaAbilita";
 
 const nomiCaratteristiche = [
     "Forza",
@@ -28,6 +31,12 @@ type Props = {
     creaPersonaggio: (evento: React.SubmitEvent<HTMLFormElement>) => void;
     caricaPersonaggioDiProva: () => void;
     erroriForm: string[];
+    abilitaDisponibili: Classe["competenzeAbilita"]["scelte"];
+    numeroAbilitaDaScegliere: number;
+    abilitaSelezionate: string[];
+    onCambiaCompetenzaAbilita: (
+        abilitaId: string,
+    ) => void;
 };
 
 export function CreaPersonaggio({
@@ -37,6 +46,10 @@ export function CreaPersonaggio({
     creaPersonaggio,
     caricaPersonaggioDiProva,
     erroriForm,
+    abilitaDisponibili,
+    numeroAbilitaDaScegliere,
+    abilitaSelezionate,
+    onCambiaCompetenzaAbilita,
 }: Props) {
 
     // Ottieni la razza selezionata in base all'ID della razza
@@ -88,7 +101,7 @@ export function CreaPersonaggio({
                         </ul>
                     </section>
                 )}
-                
+
                 {/* Gruppo per il nome del personaggio */}
                 <div>
                     <label htmlFor="nome">Nome: </label>
@@ -157,6 +170,14 @@ export function CreaPersonaggio({
                             ))}
                     </select>
                 </div>
+
+                {/* Gruppo per le competenze di classe */}
+                <SelettoreCompetenzeAbilita
+                    abilitaDisponibili={abilitaDisponibili}
+                    abilitaSelezionate={abilitaSelezionate}
+                    numeroDaScegliere={numeroAbilitaDaScegliere}
+                    onCambia={onCambiaCompetenzaAbilita}
+                />
 
                 {razzaSelezionata && sottorazzeDisponibili.length > 0 && (
                     <div>

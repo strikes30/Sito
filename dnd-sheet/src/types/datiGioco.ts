@@ -7,9 +7,15 @@ export type TipoRecupero =
   | "riposo-breve"
   | "riposo-lungo";
 
+export type SceltaCompetenzeAbilita = {
+  numero: number;
+  scelte: string[];
+};
+
 export type Classe = {
   id: string;
   nome: string;
+  competenzeAbilita: SceltaCompetenzeAbilita;
   dadoVita: number;
   progressioneSlot: ProgressioneSlot;
   tiriSalvezza: string[];

@@ -17,8 +17,10 @@ type SezioneCaratteristicheProps = {
   modificatore: (punteggio: number) => number;
   bonusCompetenza: number;
   tiriSalvezzaCompetenti: string[];
-  abilitaCompetenti: string[];
+
+  abilitaClasse: string[];
   abilitaBackground: string[];
+
   onCambiaCompetenzaAbilita: (id: string) => void;
 };
 
@@ -27,7 +29,7 @@ export default function SezioneCaratteristiche({
   modificatore,
   bonusCompetenza,
   tiriSalvezzaCompetenti,
-  abilitaCompetenti,
+  abilitaClasse,
   abilitaBackground,
   onCambiaCompetenzaAbilita,
 }: SezioneCaratteristicheProps) {
@@ -84,9 +86,12 @@ export default function SezioneCaratteristiche({
                     abilitaSingola.id
                   );
 
+                  const competenteDaClasse =
+                    abilitaClasse.includes(abilitaSingola.id);
+
                   const competente =
                     competenteDaBackground ||
-                    abilitaCompetenti.includes(abilitaSingola.id);
+                    competenteDaClasse;
 
                   const bonusAbilita =
                     bonus + (competente ? bonusCompetenza : 0);
@@ -97,17 +102,14 @@ export default function SezioneCaratteristiche({
                         <input
                           type="checkbox"
                           checked={competente}
-                          disabled={competenteDaBackground}
-                          onChange={() =>
-                            onCambiaCompetenzaAbilita(abilitaSingola.id)
-                          }
+                          disabled
+                          readOnly
                         />
                         {abilitaSingola.nome}:{" "}
                         {bonusAbilita >= 0 ? "+" : ""}
                         {bonusAbilita}
                         {competenteDaBackground && " (background)"}
-                        {abilitaCompetenti.includes(abilitaSingola.id) && " (scelta)"}
-                      </label>
+                        {competenteDaClasse && " (classe)"}</label>
                     </li>
                   );
                 })}

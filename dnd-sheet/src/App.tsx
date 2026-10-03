@@ -166,6 +166,16 @@ function App() {
     });
   }
 
+  // Funzione per cambiare lo stato di competenza di un'abilita nella bozza del personaggio
+  function cambiaCompetenzaAbilitaBozza(
+    abilitaId: string,
+  ) {
+    dispatchBozza({
+      type: "CAMBIA_COMPETENZA_ABILITA",
+      abilitaId,
+    });
+  }
+
   // Cerca nel JSON la razza che ha l'ID scelto dall'utente
   const razzaSelezionata = razze.find(
     (razza) => razza.id === bozza.razzaId,
@@ -316,18 +326,18 @@ function App() {
         : precedente,
     );
   }
-  
+
   // Funzione per cambiare l'arma equipaggiata del personaggio
   function cambiaArmaEquipaggiata(armaId: string) {
-  setPersonaggio((precedente) =>
-    precedente
-      ? {
+    setPersonaggio((precedente) =>
+      precedente
+        ? {
           ...precedente,
           armaEquipaggiataId: armaId,
         }
-      : precedente,
-  );
-}
+        : precedente,
+    );
+  }
 
   // Funzioni per cambiare i trucchetti e gli incantesimi scelti del personaggio
   function cambiaIncantesimiPersonaggio(nuoviIncantesimi: string[]) {
@@ -533,7 +543,6 @@ function App() {
     sottorazza: sottorazzaScheda,
     background: backgroundScheda,
     sottoclassiDisponibili: sottoclassiScheda,
-    sottoclasse: sottoclasseScheda,
     armiCompetenti,
     statistiche,
   } = useDatiPersonaggio({
@@ -567,6 +576,16 @@ function App() {
         creaPersonaggio={creaPersonaggio}
         caricaPersonaggioDiProva={caricaPersonaggioDiProva}
         erroriForm={erroriForm}
+        abilitaDisponibili={
+          classeSelezionata?.competenzeAbilita.scelte ?? []
+        }
+        numeroAbilitaDaScegliere={
+          classeSelezionata?.competenzeAbilita.numero ?? 0
+        }
+        abilitaSelezionate={bozza.abilitaCompetenti}
+        onCambiaCompetenzaAbilita={
+          cambiaCompetenzaAbilitaBozza
+        }
       />
     );
   }
@@ -636,7 +655,7 @@ function App() {
       caratteristiche={personaggio.caratteristiche}
       modificatore={modificatore}
       classeArmatura={classeArmatura}
-      abilitaCompetenti={personaggio.abilitaCompetenti}
+      abilitaClasse={personaggio.abilitaCompetenti}
       onCambiaCompetenzaAbilita={cambiaCompetenzaAbilita}
       tiriSalvezzaCompetenti={classeScheda?.tiriSalvezza ?? []}
       nomeBackground={backgroundScheda?.nome}

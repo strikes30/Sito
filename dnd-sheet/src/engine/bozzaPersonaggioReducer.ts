@@ -13,28 +13,49 @@ const classi = classiJson as Classe[];
 
 export type AzioneBozza =
   | {
-    type: "CAMBIA_CAMPO";
-    campo:
-      | "nome"
-      | "taglia"
-      | "sottorazzaId"
-      | "primaLinguaId"
-      | "secondaLinguaId"
-      | "caratteristicaPiuDue"
-      | "caratteristicaPiuUno";
-    valore: string;
-  }
-  | { type: "CAMBIA_DISTRIBUZIONE"; valore: DistribuzioneBackground }
+      type: "CAMBIA_CAMPO";
+      campo:
+        | "nome"
+        | "taglia"
+        | "sottorazzaId"
+        | "primaLinguaId"
+        | "secondaLinguaId"
+        | "caratteristicaPiuDue"
+        | "caratteristicaPiuUno";
+      valore: string;
+    }
   | {
-    type: "CAMBIA_CARATTERISTICA";
-    caratteristica: Caratteristica;
-    valore: number | null;
-  }
-  | { type: "SELEZIONA_RAZZA"; razzaId: string }
-  | { type: "SELEZIONA_CLASSE"; classeId: string }
-  | { type: "SELEZIONA_BACKGROUND"; backgroundId: string }
-  | { type: "CARICA_BOZZA"; bozza: BozzaPersonaggio }
-  | { type: "RESET" };
+      type: "CAMBIA_COMPETENZA_ABILITA";
+      abilitaId: string;
+    }
+  | {
+      type: "CAMBIA_DISTRIBUZIONE";
+      valore: DistribuzioneBackground;
+    }
+  | {
+      type: "CAMBIA_CARATTERISTICA";
+      caratteristica: Caratteristica;
+      valore: number | null;
+    }
+  | {
+      type: "SELEZIONA_RAZZA";
+      razzaId: string;
+    }
+  | {
+      type: "SELEZIONA_CLASSE";
+      classeId: string;
+    }
+  | {
+      type: "SELEZIONA_BACKGROUND";
+      backgroundId: string;
+    }
+  | {
+      type: "CARICA_BOZZA";
+      bozza: BozzaPersonaggio;
+    }
+  | {
+      type: "RESET";
+    };
 
 
 export function bozzaPersonaggioReducer(
@@ -59,6 +80,8 @@ export function bozzaPersonaggioReducer(
         caratteristicaPiuDue: "",
         caratteristicaPiuUno: "",
       };
+
+
 
 
     case "CAMBIA_CARATTERISTICA":
@@ -104,6 +127,25 @@ export function bozzaPersonaggioReducer(
         caratteristicaPiuUno: "",
       };
 
+
+    case "CAMBIA_COMPETENZA_ABILITA": {
+      const abilitaGiaSelezionata =
+        stato.abilitaCompetenti.includes(
+          azione.abilitaId,
+        );
+
+      return {
+        ...stato,
+        abilitaCompetenti: abilitaGiaSelezionata
+          ? stato.abilitaCompetenti.filter(
+            (id) => id !== azione.abilitaId,
+          )
+          : [
+            ...stato.abilitaCompetenti,
+            azione.abilitaId,
+          ],
+      };
+    }
 
     case "CARICA_BOZZA":
       return azione.bozza;

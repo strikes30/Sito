@@ -15,6 +15,7 @@ export type BozzaPersonaggio = {
   razzaId: string;
   sottorazzaId: string;
   taglia: string;
+  abilitaCompetenti: string[];
   primaLinguaId: string;
   secondaLinguaId: string;
   backgroundId: string;
@@ -30,6 +31,7 @@ export const bozzaIniziale: BozzaPersonaggio = {
   nome: "",
   classeId: "",
   sottoclasseId: "",
+  abilitaCompetenti: [],
   razzaId: "",
   sottorazzaId: "",
   taglia: "",
