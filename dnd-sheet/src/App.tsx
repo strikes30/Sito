@@ -77,10 +77,13 @@ function App() {
     bozzaIniziale,
   );
 
+  // Stato per il personaggio creato, inizialmente nullo
   const [personaggio, setPersonaggio] =
     useState<Personaggio | null>(null);
 
-  const [livello, setLivello] = useState(1);  // Livello del personaggio
+  // Determina il livello corrente del personaggio, se esiste, altrimenti assume il livello 1
+  const livelloCorrente = personaggio?.livello ?? 1;
+
   const [erroriForm, setErroriForm] = useState<string[]>([]); // Stato per gli errori di validazione del form
 
   // Filtra le sottoclassi disponibili in base alla classe selezionata
@@ -219,7 +222,7 @@ function App() {
 
   // Determina il tipo di progressione degli slot in base alla classe selezionata
   const tipoProgressione =
-    livello >= 3 && sottoclasseSelezionata?.progressioneSlot
+    livelloCorrente >= 3 && sottoclasseSelezionata?.progressioneSlot
       ? sottoclasseSelezionata.progressioneSlot
       : classeSelezionata?.progressioneSlot;
 
@@ -227,7 +230,7 @@ function App() {
     tipoProgressione === "completa" ||
       tipoProgressione === "metà" ||
       tipoProgressione === "terzo"
-      ? progressioneSlot[tipoProgressione][livello - 1] ?? []
+      ? progressioneSlot[tipoProgressione][livelloCorrente - 1] ?? []
       : [];
 
   // Determina la risorsa della classe selezionata, se presente (tipo il Monk ha i punti Ki, il Warlock ha i punti Patto, ecc.)
@@ -235,12 +238,12 @@ function App() {
 
   const puntiRisorsaMassimi = calcolaPuntiRisorsaMassimi(
     risorsaClasse,
-    livello
+    livelloCorrente
   );
 
   const livelloSlotRisorsa = calcolaLivelloSlotRisorsa(
     risorsaClasse,
-    livello
+    livelloCorrente
   );
 
   // Determina le regole degli incantesimi in base alla classe o sottoclasse selezionata
@@ -248,7 +251,7 @@ function App() {
 
   // Determina le regole degli incantesimi in base alla sottoclasse selezionata, se il livello è almeno 3
   const regoleSottoclasse =
-    livello >= 3 && sottoclasseSelezionata
+    livelloCorrente >= 3 && sottoclasseSelezionata
       ? progressioniIncantesimi[sottoclasseSelezionata.id]
       : undefined;
 
@@ -256,10 +259,10 @@ function App() {
   const regoleIncantesimi = regoleClasse ?? regoleSottoclasse;
 
   const massimoTrucchetti =
-    regoleIncantesimi?.trucchetti[livello - 1] ?? 0;
+    regoleIncantesimi?.trucchetti[livelloCorrente - 1] ?? 0;
 
   const massimoIncantesimiPreparati =
-    regoleIncantesimi?.preparati[livello - 1] ?? 0;
+    regoleIncantesimi?.preparati[livelloCorrente - 1] ?? 0;
 
   // Determina la lista di incantesimi disponibili in base alla classe o sottoclasse selezionata
   const listaIncantesimi =
@@ -268,7 +271,7 @@ function App() {
   const livelloMassimoSpell = calcolaLivelloMassimoIncantesimo(
     bozza.classeId,
     slotMassimi,
-    classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1]
+    classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livelloCorrente - 1]
   );
 
   // Filtra gli incantesimi disponibili in base alla lista di incantesimi, al numero massimo di trucchetti e al livello massimo degli incantesimi
@@ -309,11 +312,36 @@ function App() {
     );
   }
 
+  // I dati ufficiali del personaggio creato
+  const classeScheda = classi.find(
+    (classe) => classe.id === personaggio.classeId,
+  );
+
+  const razzaScheda = razze.find(
+    (razza) => razza.id === personaggio.razzaId,
+  );
+
+  const sottorazzaScheda = razzaScheda?.sottorazze.find(
+    (sottorazza) => sottorazza.id === personaggio.sottorazzaId,
+  );
+
+  const backgroundScheda = backgrounds.find(
+    (background) => background.id === personaggio.backgroundId,
+  );
+
+  const sottoclassiScheda = sottoclassi.filter(
+    (sottoclasse) => sottoclasse.classeId === personaggio.classeId,
+  );
+
+  const sottoclasseScheda = sottoclassiScheda.find(
+    (sottoclasse) => sottoclasse.id === personaggio.sottoclasseId,
+  );
+
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
   const statistiche = calcolaStatisticheDerivate({
-    caratteristicheFinali,
-    classe: classeSelezionata,
-    livello,
+    caratteristicheFinali: personaggio.caratteristiche,
+    classe: classeScheda,
+    livello: personaggio.livello,
   });
 
   const puntiFeritaMassimi = statistiche.puntiFeritaMassimi;
@@ -323,9 +351,17 @@ function App() {
   return (
     <SchedaPersonaggio
       nome={personaggio.nome}
-      livello={livello}
-      onSaliDiLivello={() => setLivello((precedente) => precedente + 1)}
-      bonusCompetenza={statistiche.bonusCompetenza}
+      livello={personaggio.livello}
+      onSaliDiLivello={() =>
+        setPersonaggio((precedente) =>
+          precedente
+            ? {
+              ...precedente,
+              livello: precedente.livello + 1,
+            }
+            : precedente,
+        )
+      } bonusCompetenza={statistiche.bonusCompetenza}
       nomeClasse={classeSelezionata?.nome}
       dadoVita={classeSelezionata?.dadoVita}
       puntiFeritaMassimi={puntiFeritaMassimi}
