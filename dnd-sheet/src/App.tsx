@@ -68,6 +68,9 @@ function App() {
   // Stato per il background del personaggio, inizializzato a una stringa vuota
   const [backgroundId, setBackgroundId] = useState("");
 
+  // Stato per i punti risorsa spesi, inizializzato a 0
+  const [puntiRisorsaSpesi, setPuntiRisorsaSpesi] = useState(0);
+
   // Filtra le sottoclassi disponibili in base alla classe selezionata
   const sottoclassiDisponibili = sottoclassi.filter(
     (voce) => voce.classeId === classe
@@ -394,6 +397,8 @@ function App() {
       onCambiaIncantesimo={cambiaIncantesimo}
       risorsaClasseNome={risorsaClasse?.nome}
       puntiRisorsaMassimi={puntiRisorsaMassimi}
+      puntiRisorsaSpesi={puntiRisorsaSpesi}
+      onCambiaPuntiRisorsaSpesi={setPuntiRisorsaSpesi}
     />
   );
 }

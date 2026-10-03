@@ -74,6 +74,8 @@ type Props = {
     slotMassimi: number[];
     risorsaClasseNome?: string;
     puntiRisorsaMassimi: number;
+    puntiRisorsaSpesi: number;
+    onCambiaPuntiRisorsaSpesi: (nuovoValore: number) => void;
 
     // Incantesimi e trucchetti
     massimoTrucchetti: number;
@@ -156,6 +158,8 @@ function SchedaPersonaggio({
     onCambiaIncantesimo,
     risorsaClasseNome,
     puntiRisorsaMassimi,
+    puntiRisorsaSpesi,
+    onCambiaPuntiRisorsaSpesi
 }: Props) {
 
     {/* Gestione dello stato degli slot consumati */ }
@@ -374,15 +378,35 @@ function SchedaPersonaggio({
                 </section>
             )}
 
+            {/* Risorse della classe (come punti Ki del Monk o punti Patto del Warlock) */}
             {risorsaClasseNome && puntiRisorsaMassimi > 0 && (
                 <section>
                     <h2>{risorsaClasseNome}</h2>
 
+                    <p>
+                        {puntiRisorsaMassimi - puntiRisorsaSpesi} / {puntiRisorsaMassimi}
+                    </p>
+
                     {Array.from({ length: puntiRisorsaMassimi }, (_, indice) => (
                         <label key={indice}>
-                            <input type="checkbox" />
+                            <input
+                                type="checkbox"
+                                checked={indice < puntiRisorsaSpesi}
+                                onChange={() =>
+                                    onCambiaPuntiRisorsaSpesi(
+                                        indice < puntiRisorsaSpesi ? indice : indice + 1
+                                    )
+                                }
+                            />
                         </label>
                     ))}
+
+                    <button
+                        type="button"
+                        onClick={() => onCambiaPuntiRisorsaSpesi(0)}
+                    >
+                        Recupera tutti
+                    </button>
                 </section>
             )}
 
