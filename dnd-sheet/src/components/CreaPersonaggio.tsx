@@ -55,6 +55,8 @@ type Props = {
     setCaratteristicaPiuUno: (valore: string) => void;
 
     creaPersonaggio: (evento: React.SubmitEvent<HTMLFormElement>) => void;
+
+    caricaPersonaggioDiProva: () => void;
 };
 
 function CreaPersonaggio({
@@ -83,6 +85,7 @@ function CreaPersonaggio({
     setCaratteristicaPiuDue,
     caratteristicaPiuUno,
     setCaratteristicaPiuUno,
+    caricaPersonaggioDiProva,
 }: Props) {
 
     // Ottieni la razza selezionata in base all'ID della razza
@@ -109,6 +112,13 @@ function CreaPersonaggio({
     return (
         <main>
             <h1>Crea il personaggio</h1>
+
+            <button
+                type="button"
+                onClick={caricaPersonaggioDiProva}
+            >
+                Carica personaggio di prova
+            </button>
 
             {/* Gruppo per il nome del personaggio */}
             <form onSubmit={creaPersonaggio}>

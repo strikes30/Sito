@@ -7,6 +7,8 @@ import sottoclassi from "./data/sottoclassi.json";
 import progressioneIncantesimi from "./data/progressionSpell.json";
 import spells from "./data/spells.json";
 
+import { useRisorseClasse } from "./hooks/useRisorseClasse";
+
 import {
   calcolaLivelloMassimoIncantesimo,
   filtraSpellDisponibili,
@@ -65,8 +67,6 @@ function App() {
   const [livello, setLivello] = useState(1);  // Livello del personaggio
   const [primaLinguaId, setPrimaLinguaId] = useState("");  // Prima lingua del personaggio
   const [secondaLinguaId, setSecondaLinguaId] = useState("");  // Seconda lingua del personaggio
-  // const [trucchettiScelti, setTrucchettiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
-  // const [incantesimiScelti, setIncantesimiScelti] = useState<string[]>([]);  // Stato per gli incantesimi scelti dal personaggio
 
   // Stato per le caratteristiche del personaggio, inizializzate a null
   const [caratteristiche, setCaratteristiche] = useState<
@@ -82,9 +82,6 @@ function App() {
 
   // Stato per il background del personaggio, inizializzato a una stringa vuota
   const [backgroundId, setBackgroundId] = useState("");
-
-  // Stato per i punti risorsa spesi, inizializzato a 0
-  const [puntiRisorsaSpesi, setPuntiRisorsaSpesi] = useState(0);
 
   // Filtra le sottoclassi disponibili in base alla classe selezionata
   const sottoclassiDisponibili = sottoclassi.filter(
@@ -164,7 +161,6 @@ function App() {
     }
   }
 
-
   // Funzione per creare il personaggio, con controlli di validità
   function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
     evento.preventDefault();
@@ -220,6 +216,35 @@ function App() {
     setPersonaggioCreato(true);
   }
 
+  // Funzione per caricare un personaggio di prova, utile per testare l'applicazione
+  function caricaPersonaggioDiProva() {
+    setNome("Personaggio");
+    setClasse("warlock");
+    setRazzaId("umano");
+
+    setTaglia("Media");
+
+    // Sostituisci questi id con quelli presenti davvero in lingue.json.
+    setPrimaLinguaId("elfico");
+    setSecondaLinguaId("nanico");
+
+    // Sostituisci con un id esistente in background.json.
+    setBackgroundId("accolito");
+
+    setDistribuzioneBackground("tre");
+
+    setCaratteristiche({
+      Forza: 10,
+      Destrezza: 15,
+      Costituzione: 14,
+      Intelligenza: 13,
+      Saggezza: 12,
+      Carisma: 8,
+    });
+
+    // IMPORTANTE:
+    // Non mettere setPersonaggioCreato(true) qui.
+  }
 
   // Stato per le abilità competenti del personaggio
   const [abilitaCompetenti, setAbilitaCompetenti] = useState<string[]>([]);
@@ -269,14 +294,16 @@ function App() {
     livello
   );
 
-
+  // Determina le regole degli incantesimi in base alla classe o sottoclasse selezionata
   const regoleClasse = progressioniIncantesimi[classe];
 
+  // Determina le regole degli incantesimi in base alla sottoclasse selezionata, se il livello è almeno 3
   const regoleSottoclasse =
     livello >= 3 && sottoclasseSelezionata
       ? progressioniIncantesimi[sottoclasseSelezionata.id]
       : undefined;
 
+  // Determina le regole degli incantesimi da usare, dando priorità alla sottoclasse se presente
   const regoleIncantesimi = regoleClasse ?? regoleSottoclasse;
 
   const massimoTrucchetti =
@@ -295,6 +322,7 @@ function App() {
     classeSelezionata?.risorsaClasse?.livelloSlotPerLivello?.[livello - 1]
   );
 
+  // Filtra gli incantesimi disponibili in base alla lista di incantesimi, al numero massimo di trucchetti e al livello massimo degli incantesimi
   const spellDisponibili = filtraSpellDisponibili(
     spells,
     listaIncantesimi,
@@ -311,6 +339,12 @@ function App() {
     massimoTrucchetti,
     massimoIncantesimiPreparati,
   });
+
+  // Hook personalizzato per gestire i punti risorsa della classe
+  const {
+    puntiRisorsaSpesi,
+    cambiaPuntiRisorsaSpesi,
+  } = useRisorseClasse();
 
   /////// RENDERING DEL SITO, Creazione personaggi qua ///////
   if (!personaggioCreato) {
@@ -341,41 +375,10 @@ function App() {
         setCaratteristicaPiuDue={setCaratteristicaPiuDue}
         caratteristicaPiuUno={caratteristicaPiuUno}
         setCaratteristicaPiuUno={setCaratteristicaPiuUno}
+        caricaPersonaggioDiProva={caricaPersonaggioDiProva}
       />
     );
   }
-
-
-  // Funzioni per cambiare gli incantesimi scelti, con controlli di validità
-  // function cambiaTrucchetto(id: string) {
-  //   if (!spellDisponibili.some((spell) => spell.id === id && spell.level === 0)) {
-  //     return;
-  //   }
-
-  //   setTrucchettiScelti((precedenti) => {
-  //     if (precedenti.includes(id)) {
-  //       return precedenti.filter((precedente) => precedente !== id);
-  //     }
-
-  //     if (precedenti.length >= massimoTrucchetti) return precedenti;
-  //     return [...precedenti, id];
-  //   });
-  // }
-
-  // function cambiaIncantesimo(id: string) {
-  //   if (!spellDisponibili.some((spell) => spell.id === id && spell.level > 0)) {
-  //     return;
-  //   }
-
-  //   setIncantesimiScelti((precedenti) => {
-  //     if (precedenti.includes(id)) {
-  //       return precedenti.filter((precedente) => precedente !== id);
-  //     }
-
-  //     if (precedenti.length >= massimoIncantesimiPreparati) return precedenti;
-  //     return [...precedenti, id];
-  //   });
-  // }
 
   // Estrae il punteggio di Costituzione dalle caratteristiche del personaggio
   const costituzione = caratteristicheFinali.Costituzione;
@@ -437,7 +440,7 @@ function App() {
       risorsaClasseId={risorsaClasse?.id}
       puntiRisorsaMassimi={puntiRisorsaMassimi}
       puntiRisorsaSpesi={puntiRisorsaSpesi}
-      onCambiaPuntiRisorsaSpesi={setPuntiRisorsaSpesi}
+      onCambiaPuntiRisorsaSpesi={cambiaPuntiRisorsaSpesi}
       livelloSlotRisorsa={livelloSlotRisorsa}
     />
   );
