@@ -8,7 +8,13 @@ import type {
 export type AzioneBozza =
   | {
     type: "CAMBIA_CAMPO";
-    campo: keyof Omit<BozzaPersonaggio, "caratteristiche">;
+    campo:
+    | "nome"
+    | "taglia"
+    | "primаLinguaId"
+    | "secondaLinguaId"
+    | "caratteristicaPiuDue"
+    | "caratteristicaPiuUno";
     valore: string;
   }
   | { type: "CAMBIA_DISTRIBUZIONE"; valore: DistribuzioneBackground }

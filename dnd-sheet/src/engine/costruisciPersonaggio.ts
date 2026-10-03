@@ -12,13 +12,27 @@ type CaratteristicheConPossibiliNull = Record<
 function rimuoviNullDalleCaratteristiche(
   caratteristiche: CaratteristicheConPossibiliNull,
 ): Record<Caratteristica, number> {
+  const richiediValore = (
+    nome: Caratteristica,
+  ): number => {
+    const valore = caratteristiche[nome];
+
+    if (valore === null) {
+      throw new Error(
+        `Impossibile creare il personaggio: manca il valore di ${nome}.`,
+      );
+    }
+
+    return valore;
+  };
+
   return {
-    Forza: caratteristiche.Forza ?? 0,
-    Destrezza: caratteristiche.Destrezza ?? 0,
-    Costituzione: caratteristiche.Costituzione ?? 0,
-    Intelligenza: caratteristiche.Intelligenza ?? 0,
-    Saggezza: caratteristiche.Saggezza ?? 0,
-    Carisma: caratteristiche.Carisma ?? 0,
+    Forza: richiediValore("Forza"),
+    Destrezza: richiediValore("Destrezza"),
+    Costituzione: richiediValore("Costituzione"),
+    Intelligenza: richiediValore("Intelligenza"),
+    Saggezza: richiediValore("Saggezza"),
+    Carisma: richiediValore("Carisma"),
   };
 }
 
