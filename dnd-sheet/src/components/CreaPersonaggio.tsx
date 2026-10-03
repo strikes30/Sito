@@ -27,6 +27,7 @@ type Props = {
     ) => void;
     creaPersonaggio: (evento: React.SubmitEvent<HTMLFormElement>) => void;
     caricaPersonaggioDiProva: () => void;
+    erroriForm: string[];
 };
 
 export function CreaPersonaggio({
@@ -35,6 +36,7 @@ export function CreaPersonaggio({
     cambiaCaratteristica,
     creaPersonaggio,
     caricaPersonaggioDiProva,
+    erroriForm,
 }: Props) {
 
     // Ottieni la razza selezionata in base all'ID della razza
@@ -71,6 +73,23 @@ export function CreaPersonaggio({
 
             {/* Gruppo per il nome del personaggio */}
             <form onSubmit={creaPersonaggio}>
+
+                {/* Mostra gli errori del form se presenti */}
+                {erroriForm.length > 0 && (
+                    <section
+                        role="alert"
+                        aria-labelledby="errori-form"
+                    >
+                        <h2 id="errori-form">Correggi questi punti</h2>
+                        <ul>
+                            {erroriForm.map((errore) => (
+                                <li key={errore}>{errore}</li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
+                
+                {/* Gruppo per il nome del personaggio */}
                 <div>
                     <label htmlFor="nome">Nome: </label>
                     <input

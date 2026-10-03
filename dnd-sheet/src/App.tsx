@@ -30,7 +30,7 @@ import {
 
 
 import {
-  nomiCaratteristiche,
+  // nomiCaratteristiche,
   type Caratteristica,
 } from "./types/personaggio";
 
@@ -41,6 +41,8 @@ import {
 import { calcolaStatisticheDerivate } from "./utils/calcolaStatisticheDerivate";
 
 import { calcolaCaratteristicheFinali } from "./utils/calcolaCaratteristicheFinali";
+
+import { validaBozzaPersonaggio } from "./engine/validaBozzaPersonaggio";
 
 import classi from "./data/classi.json";
 import razze from "./data/razze.json";
@@ -72,6 +74,7 @@ function App() {
 
   const [personaggioCreato, setPersonaggioCreato] = useState(false);   // Stato per verificare se il personaggio è stato creato
   const [livello, setLivello] = useState(1);  // Livello del personaggio
+  const [erroriForm, setErroriForm] = useState<string[]>([]); // Stato per gli errori di validazione del form
 
   // Filtra le sottoclassi disponibili in base alla classe selezionata
   const sottoclassiDisponibili = sottoclassi.filter(
@@ -117,83 +120,39 @@ function App() {
   );
 
   // Calcola le caratteristiche finali del personaggio, tenendo conto dei bonus del background
-const caratteristicheFinali = calcolaCaratteristicheFinali(
-  bozza.caratteristiche,
-  backgroundSelezionato,
-  bozza.distribuzioneBackground,
-  bozza.caratteristicaPiuDue,
-  bozza.caratteristicaPiuUno,
-);
+  const caratteristicheFinali = calcolaCaratteristicheFinali(
+    bozza.caratteristiche,
+    backgroundSelezionato,
+    bozza.distribuzioneBackground,
+    bozza.caratteristicaPiuDue,
+    bozza.caratteristicaPiuUno,
+  );
 
   // Funzione per creare il personaggio, con controlli di validità
-  function creaPersonaggio(evento: React.SubmitEvent<HTMLFormElement>) {
+  function creaPersonaggio(
+    evento: React.FormEvent<HTMLFormElement>,
+  ) {
     evento.preventDefault();
 
-    const nomePulito = bozza.nome.trim();
+    const errori = validaBozzaPersonaggio({
+      bozza,
+      razzaSelezionata,
+      sottorazzaSelezionata,
+      backgroundSelezionato,
+      lingueIniziali,
+    });
 
-    if (nomePulito === "") return;
-
-    if (
-      nomiCaratteristiche.some(
-        (caratteristica) =>
-          bozza.caratteristiche[caratteristica] === null,
-      )
-    ) {
+    if (errori.length > 0) {
+      setErroriForm(errori);
       return;
     }
 
-    if (!razzaSelezionata) return;
-
-    if (!razzaSelezionata.taglie.includes(bozza.taglia)) {
-      return;
-    }
-
-    if (
-      razzaSelezionata.sottorazze.length > 0 &&
-      !sottorazzaSelezionata
-    ) {
-      return;
-    }
-
-    if (
-      bozza.primaLinguaId === bozza.secondaLinguaId ||
-      !lingueIniziali.some(
-        (lingua) => lingua.id === bozza.primaLinguaId,
-      ) ||
-      !lingueIniziali.some(
-        (lingua) => lingua.id === bozza.secondaLinguaId,
-      )
-    ) {
-      return;
-    }
-
-    if (!backgroundSelezionato) return;
-
-    const caratteristicheDisponibili =
-      backgroundSelezionato.caratteristicheDisponibili;
-
-    if (bozza.distribuzioneBackground === "due") {
-      if (
-        !caratteristicheDisponibili.includes(
-          bozza.caratteristicaPiuDue,
-        ) ||
-        !caratteristicheDisponibili.includes(
-          bozza.caratteristicaPiuUno,
-        ) ||
-        bozza.caratteristicaPiuDue === bozza.caratteristicaPiuUno
-      ) {
-        return;
-      }
-    } else if (bozza.distribuzioneBackground === "tre") {
-      if (caratteristicheDisponibili.length !== 3) return;
-    } else {
-      return;
-    }
+    setErroriForm([]);
 
     dispatchBozza({
       type: "CAMBIA_CAMPO",
       campo: "nome",
-      valore: nomePulito,
+      valore: bozza.nome.trim(),
     });
 
     setPersonaggioCreato(true);
@@ -339,6 +298,7 @@ const caratteristicheFinali = calcolaCaratteristicheFinali(
         cambiaCaratteristica={cambiaCaratteristica}
         creaPersonaggio={creaPersonaggio}
         caricaPersonaggioDiProva={caricaPersonaggioDiProva}
+        erroriForm={erroriForm}
       />
     );
   }
